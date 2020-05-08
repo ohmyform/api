@@ -1,0 +1,37 @@
+version: "3"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - "./data/mongo:/data"
+#  api:
+#    build: .
+#    volumes:
+#      - ".:/usr/src/app"
+#    environment:
+#      MONGODB_URI: mongodb://mongo/ohmyform
+#      MAILER_URI: smtp://mail:1025
+#    command: yarn start:dev
+#    links:
+#      - mongo
+#      - mail
+#    ports:
+#      - "6000:3000"
+#    depends_on:
+#      - mongo
+  mail:
+    image: mailhog/mailhog
+    ports:
+      - "6001:8025"
+  mongoexpress:
+    image: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+    ports:
+      - "6002:8081"
+    links:
+      - mongo
+    depends_on:
+      - mongo
