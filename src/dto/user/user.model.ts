@@ -21,7 +21,7 @@ export class UserModel {
   @Field()
   readonly lastName?: string
 
-  constructor(user: Partial<UserDocument>) {
+  constructor(user: UserDocument) {
     this.id = user.id
     this.username = user.username
     this.email = user.email

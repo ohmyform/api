@@ -16,6 +16,8 @@ export class AuthService {
   async validateUser(username: string, password: string): Promise<UserDocument> {
     console.log('check user??', username)
 
+    // TODO only allow login for verified users!
+
     const user = await this.userService.findByUsername(username);
     if (user && await this.passwordService.verify(password, user.passwordHash, user.salt)) {
       return user;

@@ -1,11 +1,11 @@
 import { Document, Schema } from 'mongoose';
 import { defaultLanguage, languages } from '../config/languages';
-import { FieldDocument, FieldSchemaName } from './field.schema';
+import { FormFieldDocument, FormFieldSchemaName } from './form.field.schema';
 
 export interface VisitorDataDocument extends Document {
   readonly introParagraph?: string
   readonly referrer?: string
-  readonly filledOutFields: [FieldDocument]
+  readonly filledOutFields: [FormFieldDocument]
   readonly timeElapsed: number
   readonly isSubmitted: boolean
   readonly language: string
@@ -24,7 +24,7 @@ export const VisitorDataSchema = new Schema({
   filledOutFields: {
     type: [{
       type: Schema.Types.ObjectId,
-      ref: FieldSchemaName,
+      ref: FormFieldSchemaName,
     }],
   },
   timeElapsed: {

@@ -24,9 +24,4 @@ export const RatingField: SchemaDefinition = {
       'Trash',
     ],
   },
-  validShapes: {
-    type: [{
-      type: String,
-    }]
-  }
 }

@@ -2,8 +2,9 @@ import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestj
 import { Roles } from '../../decorator/roles.decorator';
 import { User } from '../../decorator/user.decorator';
 import { DesignModel } from '../../dto/form/design.model';
+import { FormFieldModel } from '../../dto/form/form.field.model';
 import { FormModel } from '../../dto/form/form.model';
-import { FormPageModel } from '../../dto/form/form.page.model';
+import { PageModel } from '../../dto/form/page.model';
 import { RespondentNotificationsModel } from '../../dto/form/respondent.notifications.model';
 import { SelfNotificationsModel } from '../../dto/form/self.notifications.model';
 import { UserModel } from '../../dto/user/user.model';
@@ -33,6 +34,17 @@ export class FormResolver {
     cache.addForm(form)
 
     return new FormModel(form)
+  }
+
+  @ResolveField('fields', () => [FormFieldModel])
+  async getFields(
+    @User() user: UserDocument,
+    @Parent() parent: FormModel,
+    @Context('cache') cache: ContextCache,
+  ): Promise<FormFieldModel[]> {
+    const form = await cache.getForm(parent.id)
+
+    return form.fields.map(field => new FormFieldModel(field))
   }
 
   @ResolveField('isLive', () => Boolean)
@@ -67,13 +79,13 @@ export class FormResolver {
     return new SelfNotificationsModel(form.selfNotifications)
   }
 
-  @ResolveField('respondentNotifications', () => SelfNotificationsModel)
+  @ResolveField('respondentNotifications', () => RespondentNotificationsModel)
   @Roles('admin')
   async getRespondentNotifications(
     @User() user: UserDocument,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
-  ): Promise<SelfNotificationsModel> {
+  ): Promise<RespondentNotificationsModel> {
     const form = await cache.getForm(parent.id)
 
     if (!await this.formService.isAdmin(form, user)) {
@@ -94,24 +106,24 @@ export class FormResolver {
     return new DesignModel(form.design)
   }
 
-  @ResolveField('startPage', () => FormPageModel)
+  @ResolveField('startPage', () => PageModel)
   async getStartPage(
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
-  ): Promise<FormPageModel> {
+  ): Promise<PageModel> {
     const form = await cache.getForm(parent.id)
 
-    return new FormPageModel(form.startPage)
+    return new PageModel(form.startPage)
   }
 
-  @ResolveField('endPage', () => FormPageModel)
+  @ResolveField('endPage', () => PageModel)
   async getEndPage(
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
-  ): Promise<FormPageModel> {
+  ): Promise<PageModel> {
     const form = await cache.getForm(parent.id)
 
-    return new FormPageModel(form.endPage)
+    return new PageModel(form.endPage)
   }
 
   @ResolveField('admin', () => UserModel)

@@ -1,16 +1,17 @@
 import { Document, Schema } from 'mongoose';
-import { FieldSchema } from './field.schema';
 import { FormSchemaName } from './form.schema';
+import { SubmissionFieldDocument, SubmissionFieldSchemaName } from './submission.field.schema';
 
-export const FormSubmissionSchemaName = 'FormSubmission'
+export const SubmissionSchemaName = 'FormSubmission'
 
-export interface FormSubmissionDocument extends Document {
+export interface SubmissionDocument extends Document {
+  fields: SubmissionFieldDocument[]
 }
 
-export const FormSubmissionSchema = new Schema({
+export const SubmissionSchema = new Schema({
   fields: {
     alias: 'form_fields',
-    type: [FieldSchema],
+    type: [SubmissionFieldSchemaName],
     default: [],
   },
   form: {
@@ -50,8 +51,8 @@ export const FormSubmissionSchema = new Schema({
   }
 })
 
-export const FormSubmissionDefinition = {
-  name: FormSubmissionSchemaName,
-  schema: FormSubmissionSchema,
+export const SubmissionDefinition = {
+  name: SubmissionSchemaName,
+  schema: SubmissionSchema,
 }
 

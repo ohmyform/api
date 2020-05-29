@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { GraphQLError } from 'graphql';
 import { Model, Types } from 'mongoose';
 import { FormDocument, FormSchemaName } from '../../schema/form.schema';
 import { UserDocument } from '../../schema/user.schema';
@@ -18,6 +17,19 @@ export class FormService {
     }
 
     return Types.ObjectId(form.admin.id).equals(Types.ObjectId(user.id))
+  }
+
+  async find(user: UserDocument, start: number, limit: number, sort: any = {}): Promise<[FormDocument[], number]> {
+    const qb = this.formModel.find()
+
+    // TODO apply restrictions based on user!
+
+    return [
+      await qb.sort(sort)
+        .skip(start)
+        .limit(limit),
+      await qb.count()
+    ]
   }
 
   async findById(id: string): Promise<FormDocument> {

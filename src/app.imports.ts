@@ -1,15 +1,16 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HttpModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { GraphQLFederationModule } from '@nestjs/graphql';
+import { GraphQLModule } from '@nestjs/graphql';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import crypto from 'crypto';
+import { Request } from 'express-serve-static-core';
+import { IncomingHttpHeaders } from 'http';
 import { ConsoleModule } from 'nestjs-console';
 import { LoggerModule, Params as LoggerModuleParams } from 'nestjs-pino/dist';
 import { join } from 'path';
-import { ContextCache } from './resolver/context.cache';
 import { schema } from './schema';
 
 export const LoggerConfig: LoggerModuleParams = {
@@ -60,14 +61,14 @@ export const imports = [
     })
   }),
   LoggerModule.forRoot(LoggerConfig),
-  GraphQLFederationModule.forRoot({
+  GraphQLModule.forRoot({
     debug: process.env.NODE_ENV !== 'production',
     definitions: {
       outputAs: 'class',
     },
     introspection: true,
     playground: true,
-    // installSubscriptionHandlers: true,
+    installSubscriptionHandlers: true,
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     // to allow guards on resolver props https://github.com/nestjs/graphql/issues/295
     fieldResolverEnhancers: [
@@ -77,11 +78,22 @@ export const imports = [
     resolverValidationOptions: {
 
     },
-    context: ({ req }) => {
-      return {
-        cache: new ContextCache(),
-        req,
+    context: ({ req, connection }) => {
+      if (!req && connection) {
+        const headers: IncomingHttpHeaders = {}
+
+        Object.keys(connection.context).forEach(key => {
+          headers[key.toLowerCase()] = connection.context[key]
+        })
+
+        return {
+          req: {
+            headers
+          } as Request
+        }
       }
+
+      return { req }
     },
   }),
   MongooseModule.forRootAsync({

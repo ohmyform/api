@@ -1,5 +1,5 @@
 import { Schema, SchemaDefinition } from 'mongoose';
-import { FieldSchemaName } from '../field.schema';
+import { FormFieldSchemaName } from '../form.field.schema';
 
 export const LogicJump: SchemaDefinition = {
   expressionString: {
@@ -21,14 +21,14 @@ export const LogicJump: SchemaDefinition = {
   },
   fieldA: {
     type: Schema.Types.ObjectId,
-    ref: FieldSchemaName
+    ref: FormFieldSchemaName
   },
   valueB: {
     type: String,
   },
   jumpTo: {
     type: Schema.Types.ObjectId,
-    ref: FieldSchemaName
+    ref: FormFieldSchemaName
   },
   enabled: {
     type: Boolean,

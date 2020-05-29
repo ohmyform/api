@@ -2,8 +2,8 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { FormPage } from '../../schema/form.schema';
 import { ButtonModel } from './button.model';
 
-@ObjectType('FormPage')
-export class FormPageModel {
+@ObjectType('Page')
+export class PageModel {
   @Field()
   readonly show: boolean
 

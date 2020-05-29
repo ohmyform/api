@@ -1,9 +1,13 @@
-import { FieldResolver } from './field.resolver';
-import { FormCreateResolver } from './form.create.resolver';
+import { FormCreateMutation } from './form.create.mutation';
+import { FormDeleteMutation } from './form.delete.mutation';
 import { FormResolver } from './form.resolver';
+import { FormSearchResolver } from './form.search.resolver';
+import { FormUpdateMutation } from './form.update.mutation';
 
 export const formResolvers = [
   FormResolver,
-  FormCreateResolver,
-  FieldResolver,
+  FormSearchResolver,
+  FormCreateMutation,
+  FormDeleteMutation,
+  FormUpdateMutation,
 ]

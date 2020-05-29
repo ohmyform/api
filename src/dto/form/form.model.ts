@@ -21,12 +21,12 @@ export class FormModel {
   @Field()
   readonly showFooter: boolean
 
-  constructor(partial: Partial<FormDocument>) {
-    this.id = partial.id
-    this.title = partial.title
-    this.created = partial.created
-    this.lastModified = partial.lastModified
-    this.language = partial.language
-    this.showFooter = partial.showFooter
+  constructor(form: FormDocument) {
+    this.id = form.id
+    this.title = form.title
+    this.created = form.created
+    this.lastModified = form.lastModified
+    this.language = form.language
+    this.showFooter = form.showFooter
   }
 }

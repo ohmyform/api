@@ -1,9 +1,11 @@
+import { FormFieldDefinition } from './form.field.schema';
 import { FormDefinition } from './form.schema';
-import { FormSubmissionDefinition, FormSubmissionSchema } from './form.submission.schema';
+import { SubmissionDefinition } from './submission.schema';
 import { UserDefinition } from './user.schema';
 
 export const schema = [
   FormDefinition,
-  FormSubmissionDefinition,
+  FormFieldDefinition,
+  SubmissionDefinition,
   UserDefinition,
 ]

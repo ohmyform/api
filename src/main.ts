@@ -19,5 +19,5 @@ import { AppModule } from './app.module';
   app.enableCors({origin: '*'})
   app.getHttpAdapter().options('*', cors())
 
-  await app.listen(process.env.PORT || 3000);
+  await app.listen(process.env.PORT || 4100);
 })()

@@ -9,7 +9,7 @@ export class ButtonModel {
   readonly action?: string
 
   @Field({ nullable: true })
-  readonly text: string
+  readonly text?: string
 
   @Field({ nullable: true })
   readonly bgColor?: string

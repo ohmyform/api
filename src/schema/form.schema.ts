@@ -1,12 +1,10 @@
-import exp from 'constants';
 import { Document, Schema } from 'mongoose';
 import { matchType } from '../config/fields';
 import { defaultLanguage, languages } from '../config/languages';
-import { rolesType } from '../config/roles';
 import { ButtonDocument, ButtonSchema } from './button.schema';
-import { FieldDocument, FieldSchema } from './field.schema';
-import { VisitorDataDocument, VisitorDataSchema } from './visitor.data.schema';
+import { FormFieldDocument, FormFieldSchema } from './form.field.schema';
 import { UserDocument, UserSchemaName } from './user.schema';
+import { VisitorDataDocument, VisitorDataSchema } from './visitor.data.schema';
 
 export const FormSchemaName = 'Form'
 
@@ -58,7 +56,7 @@ export interface FormDocument extends Document {
     readonly visitors: [VisitorDataDocument]
   }
 
-  readonly fields: [FieldDocument]
+  readonly fields: [FormFieldDocument]
 
   readonly admin: UserDocument
 
@@ -103,9 +101,10 @@ export const FormSchema = new Schema({
       type: [VisitorDataSchema],
     },
   },
-  fields: {
-    alias: 'form_fields',
-    type: [FieldSchema],
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  form_fields: {
+    alias: 'fields',
+    type: [FormFieldSchema],
     default: [],
   },
   admin: {
@@ -113,18 +112,18 @@ export const FormSchema = new Schema({
     ref: UserSchemaName,
   },
   startPage: {
-    show: {
-      alias: 'showStart',
+    showStart: {
+      alias: 'startPage.show',
       type: Boolean,
       default: false
     },
-    title: {
-      alias: 'introTitle',
+    introTitle: {
+      alias: 'startPage.title',
       type: String,
       default: 'Welcome to Form',
     },
-    paragraph: {
-      alias: 'introParagraph',
+    introParagraph: {
+      alias: 'startPage.paragraph',
       type: String,
       default: 'Start',
     },
@@ -133,8 +132,8 @@ export const FormSchema = new Schema({
     },
   },
   endPage: {
-    show: {
-      alias: 'showEnd',
+    showEnd: {
+      alias: 'endPage.show',
       type: Boolean,
       default: false,
     },
@@ -157,8 +156,8 @@ export const FormSchema = new Schema({
     fromField: {
       type: String,
     },
-    toEmail: {
-      alias: 'toEmails',
+    toEmails: {
+      alias: 'selfNotifications.toEmail',
       type: String,
     },
     subject: {
@@ -176,8 +175,8 @@ export const FormSchema = new Schema({
     toField: {
       type: String,
     },
-    fromEmail: {
-      alias: 'fromEmails',
+    fromEmails: {
+      alias: 'respondentNotifications.fromEmail',
       type: String,
       match: matchType.email,
     },

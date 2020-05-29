@@ -6,6 +6,10 @@ services:
       - "27017:27017"
     volumes:
       - "./data/mongo:/data"
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
 #  api:
 #    build: .
 #    volumes:
