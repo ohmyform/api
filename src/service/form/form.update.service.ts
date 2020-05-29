@@ -26,6 +26,10 @@ export class FormUpdateService {
       form.set('showFooter', input.showFooter)
     }
 
+    if (input.isLive !== undefined) {
+      form.set('isLive', input.isLive)
+    }
+
     const fieldMapping = {}
 
     if (input.fields !== undefined) {
@@ -47,8 +51,6 @@ export class FormUpdateService {
 
         return field
       }))
-
-      console.log('field mapping', fieldMapping)
 
       form.set('fields', nextFields)
     }
