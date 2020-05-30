@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
+import { FilterQuery, Model, Types } from 'mongoose';
 import { FormDocument, FormSchemaName } from '../../schema/form.schema';
 import { UserDocument } from '../../schema/user.schema';
 
@@ -19,8 +19,16 @@ export class FormService {
     return Types.ObjectId(form.admin.id).equals(Types.ObjectId(user.id))
   }
 
-  async find(user: UserDocument, start: number, limit: number, sort: any = {}): Promise<[FormDocument[], number]> {
-    const qb = this.formModel.find()
+  async find(start: number, limit: number, sort: any = {}, user?: UserDocument): Promise<[FormDocument[], number]> {
+    let conditions: FilterQuery<FormDocument>
+
+    if (user) {
+      conditions = {
+        admin: user
+      }
+    }
+
+    const qb = this.formModel.find(conditions)
 
     // TODO apply restrictions based on user!
 

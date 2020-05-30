@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { ColorsInput } from './colors.input';
 
-@InputType('DesignInput')
+@InputType()
 export class DesignInput {
   @Field()
   readonly colors: ColorsInput

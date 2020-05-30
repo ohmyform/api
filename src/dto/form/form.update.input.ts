@@ -5,7 +5,7 @@ import { PageInput } from './page.input';
 import { RespondentNotificationsInput } from './respondent.notifications.input';
 import { SelfNotificationsInput } from './self.notifications.input';
 
-@InputType('FormUpdateInput')
+@InputType()
 export class FormUpdateInput {
   @Field(() => ID)
   readonly id: string

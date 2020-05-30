@@ -21,7 +21,12 @@ export class FormSearchResolver {
     @Args('limit', {type: () => GraphQLInt, defaultValue: 50, nullable: true}) limit,
     @Context('cache') cache: ContextCache,
   ) {
-    const [forms, total] = await this.formService.find(user, start, limit)
+    const [forms, total] = await this.formService.find(
+      start,
+      limit,
+      {},
+      user.roles.includes('superuser') ? null : user,
+    )
 
     forms.forEach(form => cache.addForm(form))
 

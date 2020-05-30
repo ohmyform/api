@@ -15,6 +15,9 @@ export class ButtonModel {
   readonly bgColor?: string
 
   @Field({ nullable: true })
+  readonly activeColor?: string
+
+  @Field({ nullable: true })
   readonly color?: string
 
   constructor(button: Partial<ButtonModel>) {
@@ -22,6 +25,7 @@ export class ButtonModel {
     this.action = button.action
     this.text = button.text
     this.bgColor = button.bgColor
+    this.activeColor = button.activeColor
     this.color = button.color
   }
 }

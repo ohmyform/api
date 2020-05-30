@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { ButtonInput } from './button.input';
 
-@InputType('PageInput')
+@InputType()
 export class PageInput {
   @Field()
   readonly show: boolean

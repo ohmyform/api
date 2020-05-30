@@ -37,6 +37,7 @@ export interface Colors {
   readonly questionColor: string
   readonly answerColor: string
   readonly buttonColor: string
+  readonly buttonActiveColor: string
   readonly buttonTextColor: string
 }
 
@@ -92,6 +93,14 @@ export const FormSchema = new Schema({
     enum: languages,
     default: defaultLanguage,
     required: true,
+  },
+  showFooter: {
+    type: Boolean,
+    default: true,
+  },
+  isLive: {
+    type: Boolean,
+    default: true,
   },
   analytics: {
     gaCode: {
@@ -193,14 +202,6 @@ export const FormSchema = new Schema({
       default: false,
     },
   },
-  showFooter: {
-    type: Boolean,
-    default: true,
-  },
-  isLive: {
-    type: Boolean,
-    default: true,
-  },
   design: {
     colors: {
       backgroundColor: {
@@ -223,10 +224,15 @@ export const FormSchema = new Schema({
         match: matchType.color,
         default: '#fff'
       },
+      buttonActiveColor: {
+        type: String,
+        match: matchType.color,
+        default: '#40a9ff'
+      },
       buttonTextColor: {
         type: String,
         match: matchType.color,
-        default: '#333'
+        default: '#666'
       },
     },
 

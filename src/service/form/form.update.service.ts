@@ -8,8 +8,8 @@ import { FormDocument, FormSchemaName } from '../../schema/form.schema';
 @Injectable()
 export class FormUpdateService {
   constructor(
-    @InjectModel(FormSchemaName) private formModel: Model<FormDocument>,
-    @InjectModel(FormFieldSchemaName) private formFieldModel: Model<FormFieldDocument>,
+    @InjectModel(FormSchemaName) private readonly formModel: Model<FormDocument>,
+    @InjectModel(FormFieldSchemaName) private readonly formFieldModel: Model<FormFieldDocument>,
   ) {
   }
 
@@ -37,7 +37,7 @@ export class FormUpdateService {
         let field = form.fields.find(field => field.id.toString() === nextField.id)
 
         if (!field) {
-          field = await this.formFieldModel.create({
+          field = new this.formFieldModel({
             type: nextField.type,
           })
         }

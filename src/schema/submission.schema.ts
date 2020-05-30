@@ -1,17 +1,38 @@
 import { Document, Schema } from 'mongoose';
-import { FormSchemaName } from './form.schema';
-import { SubmissionFieldDocument, SubmissionFieldSchemaName } from './submission.field.schema';
+import { FormDocument, FormSchemaName } from './form.schema';
+import { SubmissionFieldDocument, SubmissionFieldSchema } from './submission.field.schema';
+import { UserDocument, UserSchemaName } from './user.schema';
 
-export const SubmissionSchemaName = 'FormSubmission'
+export const SubmissionSchemaName = 'Submission'
+
+export interface GeoLocation {
+  readonly country?: string
+  readonly city?: string
+}
+
+export interface Device {
+  readonly type?: string
+  readonly name?: string
+}
 
 export interface SubmissionDocument extends Document {
-  fields: SubmissionFieldDocument[]
+  readonly fields: SubmissionFieldDocument[]
+  readonly form: FormDocument
+  readonly ipAddr: string
+  readonly tokenHash: string
+  readonly geoLocation: GeoLocation
+  readonly device: Device
+  readonly timeElapsed: number
+  readonly percentageComplete: number
+
+  readonly user?: UserDocument
+  readonly created: Date
+  readonly lastModified: Date
 }
 
 export const SubmissionSchema = new Schema({
   fields: {
-    alias: 'form_fields',
-    type: [SubmissionFieldSchemaName],
+    type: [SubmissionFieldSchema],
     default: [],
   },
   form: {
@@ -19,14 +40,21 @@ export const SubmissionSchema = new Schema({
     ref: FormSchemaName,
     required: true
   },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: UserSchemaName,
+  },
   ipAddr: {
     type: String
   },
+  tokenHash: {
+    type: String
+  },
   geoLocation: {
-    Country: {
+    country: {
       type: String
     },
-    City: {
+    city: {
       type: String
     }
   },
@@ -39,10 +67,12 @@ export const SubmissionSchema = new Schema({
     }
   },
   timeElapsed: {
-    type: Number
+    type: Number,
+    default: 0,
   },
   percentageComplete: {
-    type: Number
+    type: Number,
+    default: 0,
   },
 }, {
   timestamps: {

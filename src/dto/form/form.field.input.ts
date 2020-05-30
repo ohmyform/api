@@ -1,6 +1,6 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 
-@InputType('FormFieldInput')
+@InputType()
 export class FormFieldInput {
   @Field(() => ID)
   readonly id: string

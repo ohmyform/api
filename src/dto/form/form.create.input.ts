@@ -1,8 +1,16 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
-import { FormUpdateInput } from './form.update.input';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType('FormCreateInput')
-export class FormCreateInput extends FormUpdateInput {
-  @Field(() => ID, { nullable: true })
-  readonly id: string
+export class FormCreateInput {
+  @Field()
+  readonly title: string
+
+  @Field()
+  readonly language: string
+
+  @Field({ nullable: true })
+  readonly showFooter: boolean
+
+  @Field({ nullable: true })
+  readonly isLive: boolean
 }

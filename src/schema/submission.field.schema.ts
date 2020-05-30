@@ -5,12 +5,12 @@ import { FormFieldDocument, FormFieldSchemaName } from './form.field.schema';
 export const SubmissionFieldSchemaName = 'SubmissionField'
 
 export interface SubmissionFieldDocument extends Document {
-  field: FormFieldDocument
-  fieldType: string
-  fieldValue: any
+  readonly field: FormFieldDocument
+  readonly fieldType: string
+  readonly fieldValue: any
 }
 
-export const SubmissionFormFieldSchema = new Schema({
+export const SubmissionFieldSchema = new Schema({
   field: {
     type: Schema.Types.ObjectId,
     ref: FormFieldSchemaName
@@ -24,3 +24,9 @@ export const SubmissionFormFieldSchema = new Schema({
     default: '',
   },
 })
+
+export const SubmissionFieldDefinition = {
+  name: SubmissionFieldSchemaName,
+  schema: SubmissionFieldSchema,
+}
+

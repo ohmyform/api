@@ -16,6 +16,9 @@ export class ColorsModel {
   readonly buttonColor: string
 
   @Field()
+  readonly buttonActiveColor: string
+
+  @Field()
   readonly buttonTextColor: string
 
   constructor(partial: Partial<Colors>) {
@@ -23,6 +26,7 @@ export class ColorsModel {
     this.questionColor = partial.questionColor
     this.answerColor = partial.answerColor
     this.buttonColor = partial.buttonColor
+    this.buttonActiveColor = partial.buttonActiveColor
     this.buttonTextColor = partial.buttonTextColor
   }
 }
