@@ -1,7 +1,8 @@
-import { Args, Context, GraphQLExecutionContext, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { rolesType } from '../../config/roles';
+import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Roles } from '../../decorator/roles.decorator';
+import { User } from '../../decorator/user.decorator';
 import { UserModel } from '../../dto/user/user.model';
+import { UserDocument } from '../../schema/user.schema';
 import { UserService } from '../../service/user/user.service';
 import { ContextCache } from '../context.cache';
 
@@ -26,11 +27,24 @@ export class UserResolver {
   }
 
   @ResolveField('roles', () => [String])
-  @Roles('superuser')
+  @Roles('user')
   async getRoles(
-    @Parent() user: UserModel,
+    @User() user: UserDocument,
+    @Parent() parent: UserModel,
     @Context('cache') cache: ContextCache,
   ): Promise<string[]> {
-    return (await cache.getUser(user.id)).roles
+    return await this.returnFieldForSuperuser(
+      await cache.getUser(parent.id),
+      user,
+      c => c.roles
+    )
+  }
+
+  async returnFieldForSuperuser<T>(parent: UserDocument, user: UserDocument, callback: (user: UserDocument) => T): Promise<T> {
+    if (user.id !== parent.id && !await this.userService.isSuperuser(user)) {
+      throw new Error('No access to roles')
+    }
+
+    return callback(parent)
   }
 }

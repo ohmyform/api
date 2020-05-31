@@ -7,6 +7,9 @@ export class UserModel {
   readonly id: string
 
   @Field()
+  readonly verifiedEmail: boolean
+
+  @Field()
   readonly username: string
 
   @Field()
@@ -15,11 +18,17 @@ export class UserModel {
   @Field()
   readonly language: string
 
-  @Field()
+  @Field({ nullable: true })
   readonly firstName?: string
 
-  @Field()
+  @Field({ nullable: true })
   readonly lastName?: string
+
+  @Field()
+  readonly created: Date
+
+  @Field({ nullable: true })
+  readonly lastModified: Date
 
   constructor(user: UserDocument) {
     this.id = user.id
@@ -29,5 +38,10 @@ export class UserModel {
     this.language = user.language
     this.firstName = user.firstName
     this.lastName = user.lastName
+
+    this.verifiedEmail = !user.token
+
+    this.created = user.created
+    this.lastModified = user.lastModified
   }
 }

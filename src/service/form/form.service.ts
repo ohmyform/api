@@ -28,15 +28,14 @@ export class FormService {
       }
     }
 
-    const qb = this.formModel.find(conditions)
-
-    // TODO apply restrictions based on user!
-
     return [
-      await qb.sort(sort)
+      await this.formModel
+        .find(conditions)
+        .sort(sort)
         .skip(start)
         .limit(limit),
-      await qb.count()
+      await this.formModel
+        .countDocuments(conditions)
     ]
   }
 

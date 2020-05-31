@@ -25,6 +25,9 @@ export class SubmissionResolver {
       cache.addFormField(field)
     })
 
-    return submission.fields.map(field => new SubmissionFieldModel(field))
+    return submission.fields.map(field => {
+      cache.addSubmissionField(field)
+      return new SubmissionFieldModel(field)
+    })
   }
 }

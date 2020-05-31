@@ -4,27 +4,23 @@ import { Roles } from '../../decorator/roles.decorator';
 import { User } from '../../decorator/user.decorator';
 import { DeletedModel } from '../../dto/deleted.model';
 import { UserDocument } from '../../schema/user.schema';
-import { FormDeleteService } from '../../service/form/form.delete.service';
-import { FormService } from '../../service/form/form.service';
+import { UserDeleteService } from '../../service/user/user.delete.service';
 
 @Injectable()
-export class FormDeleteMutation {
+export class UserDeleteMutation {
   constructor(
-    private readonly deleteService: FormDeleteService,
-    private readonly formService: FormService,
+    private readonly deleteService: UserDeleteService,
   ) {
   }
 
   @Mutation(() => DeletedModel)
   @Roles('admin')
-  async deleteForm(
-    @User() user: UserDocument,
+  async deleteUser(
+    @User() auth: UserDocument,
     @Args({ name: 'id', type: () => ID}) id: string,
-  ) {
-    const form = await this.formService.findById(id)
-
-    if (!form.isLive && !await this.formService.isAdmin(form, user)) {
-      throw new Error('invalid form')
+  ): Promise<DeletedModel> {
+    if (auth.id === id) {
+      throw new Error('cannot delete your own user')
     }
 
     await this.deleteService.delete(id)

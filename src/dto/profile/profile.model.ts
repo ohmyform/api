@@ -1,9 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { UserDocument } from '../../schema/user.schema';
-import { UserModel } from './user.model';
+import { UserModel } from '../user/user.model';
 
-@ObjectType('OwnUser')
-export class OwnUserModel extends UserModel {
+@ObjectType('Profile')
+export class ProfileModel extends UserModel {
   @Field(() => [String])
   readonly roles: string[]
 

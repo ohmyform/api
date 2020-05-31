@@ -24,13 +24,13 @@ export class FormUpdateMutation {
     @Args({ name: 'form', type: () => FormUpdateInput }) input: FormUpdateInput,
     @Context('cache') cache: ContextCache,
   ): Promise<FormModel> {
-    let form = await this.formService.findById(input.id)
+    const form = await this.formService.findById(input.id)
 
     if (!form.isLive && !await this.formService.isAdmin(form, user)) {
       throw new Error('invalid form')
     }
 
-    form = await this.updateService.update(form, input)
+    await this.updateService.update(form, input)
 
     cache.addForm(form)
 

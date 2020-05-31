@@ -1,19 +1,19 @@
 import { Context, Query } from '@nestjs/graphql';
 import { Roles } from '../../decorator/roles.decorator';
 import { User } from '../../decorator/user.decorator';
-import { OwnUserModel } from '../../dto/user/own.user.model';
+import { ProfileModel } from '../../dto/profile/profile.model';
 import { UserDocument } from '../../schema/user.schema';
 import { ContextCache } from '../context.cache';
 
 export class ProfileResolver {
-  @Query(() => OwnUserModel)
+  @Query(() => ProfileModel)
   @Roles('user')
   async me(
     @User() user: UserDocument,
     @Context('cache') cache: ContextCache,
-  ): Promise<OwnUserModel> {
+  ): Promise<ProfileModel> {
     cache.addUser(user)
 
-    return new OwnUserModel(user)
+    return new ProfileModel(user)
   }
 }

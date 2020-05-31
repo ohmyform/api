@@ -1,5 +1,5 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { FilterQuery, Model } from 'mongoose';
 import { FormDocument } from '../../schema/form.schema';
 import { SubmissionDocument, SubmissionSchemaName } from '../../schema/submission.schema';
 import { SubmissionTokenService } from './submission.token.service';
@@ -16,15 +16,18 @@ export class SubmissionService {
   }
 
   async find(form: FormDocument, start: number, limit: number, sort: any = {}): Promise<[SubmissionDocument[], number]> {
-    const qb = this.submissionModel.find({
+    const conditions: FilterQuery<SubmissionDocument> = {
       form
-    })
+    }
 
     return [
-      await qb.sort(sort)
+      await this.submissionModel
+        .find(conditions)
+        .sort(sort)
         .skip(start)
         .limit(limit),
-      await qb.count()
+      await this.submissionModel
+        .countDocuments(conditions)
     ]
   }
 

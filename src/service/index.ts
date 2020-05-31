@@ -6,11 +6,13 @@ import { PinoLogger } from 'nestjs-pino/dist';
 import { authServices } from './auth';
 import { formServices } from './form';
 import { MailService } from './mail.service';
+import { profileServices } from './profile';
 import { submissionServices } from './submission';
 import { userServices } from './user';
 
 export const services = [
   ...userServices,
+  ...profileServices,
   ...formServices,
   ...authServices,
   ...submissionServices,

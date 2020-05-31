@@ -1,5 +1,6 @@
 import { FormFieldDocument } from '../schema/form.field.schema';
 import { FormDocument } from '../schema/form.schema';
+import { SubmissionFieldDocument } from '../schema/submission.field.schema';
 import { SubmissionDocument } from '../schema/submission.schema';
 import { UserDocument } from '../schema/user.schema';
 
@@ -16,7 +17,11 @@ export class ContextCache {
     [id: string]: SubmissionDocument,
   } = {}
 
-  private formField: {
+  private submissionFields: {
+    [id: string]: SubmissionFieldDocument,
+  } = {}
+
+  private formFields: {
     [id: string]: FormFieldDocument,
   } = {}
 
@@ -44,11 +49,19 @@ export class ContextCache {
     return this.submissions[id]
   }
 
-  public addFormField(formField: FormFieldDocument) {
-    this.formField[formField.id] = formField
+  public addFormField(field: FormFieldDocument) {
+    this.formFields[field.id] = field
   }
 
   public async getFormField(id: any): Promise<FormFieldDocument> {
-    return this.formField[id]
+    return this.formFields[id]
+  }
+
+  public addSubmissionField(field: SubmissionFieldDocument) {
+    this.submissionFields[field.id] = field
+  }
+
+  public async getSubmissionField(id: any): Promise<SubmissionFieldDocument> {
+    return this.submissionFields[id]
   }
 }
