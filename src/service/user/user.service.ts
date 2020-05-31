@@ -39,7 +39,19 @@ export class UserService {
   async findByUsername(username: string): Promise<UserDocument> {
     const user = await this.userModel.findOne({
       username,
-    })
+    }).exec()
+
+    if (!user) {
+      throw new Error('no user found')
+    }
+
+    return user
+  }
+
+  async findByEmail(email: string): Promise<UserDocument> {
+    const user = await this.userModel.findOne({
+      email,
+    }).exec()
 
     if (!user) {
       throw new Error('no user found')

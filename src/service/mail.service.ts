@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import fs from 'fs';
 import handlebars from 'handlebars';
+import htmlToText from 'html-to-text';
+import mjml2html from 'mjml';
 import { PinoLogger } from 'nestjs-pino/dist';
 import { join } from 'path';
 import { defaultLanguage } from '../config/languages';
@@ -24,19 +26,20 @@ export class MailService {
     try {
       const path = this.getTemplatePath(template, language)
 
-      const process = (file: string) => {
-        const content = fs.readFileSync(join(path, file))
-        const template = handlebars.compile(content.toString('UTF-8'))
+      const html = mjml2html(
+        handlebars.compile(
+          fs.readFileSync(path).toString('UTF-8')
+        )(context),
+        {
+          minify: true
+        }
+      ).html
 
-        return template(context)
-      }
+      const text = htmlToText.fromString(html)
 
-      await this.nestMailer.sendMail({
-        to,
-        subject: process('subject.txt'),
-        html: process('body.html'),
-        text: process('body.txt'),
-      })
+      const subject = /<title>(.*?)<\/title>/gi.test(html) ? html.match(/<title>(.*?)<\/title>/gi)[1] : template
+
+      await this.nestMailer.sendMail({ to, subject, html, text })
       this.logger.info('sent email')
     } catch (error) {
       this.logger.error({
@@ -50,10 +53,10 @@ export class MailService {
   }
 
   private getTemplatePath(template: string, language: string): string {
-    let templatePath = join(this.configService.get<string>('LOCALES_PATH'), language, 'mail', template)
+    let templatePath = join(this.configService.get<string>('LOCALES_PATH'), language, 'mail', `${template}.mjml`)
 
     if (!fs.existsSync(templatePath)) {
-      templatePath = join(this.configService.get<string>('LOCALES_PATH'), 'en', 'mail', template)
+      templatePath = join(this.configService.get<string>('LOCALES_PATH'), 'en', 'mail', `${template}.mjml`)
     }
 
     if (!fs.existsSync(templatePath)) {

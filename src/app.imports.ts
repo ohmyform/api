@@ -45,7 +45,7 @@ export const imports = [
       () => {
         return {
           LOCALES_PATH: join(process.cwd(), 'locales'),
-          AUTH_SECRET: process.env.AUTH_SECRET || crypto.randomBytes(20).toString('hex'),
+          SECRET_KEY: process.env.SECRET_KEY || crypto.randomBytes(20).toString('hex'),
         }
       }
     ],
@@ -54,7 +54,7 @@ export const imports = [
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: async (configService: ConfigService): Promise<JwtModuleOptions> => ({
-      secret: configService.get<string>('AUTH_SECRET'),
+      secret: configService.get<string>('SECRET_KEY'),
       signOptions: {
         expiresIn: '4h',
       },

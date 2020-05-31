@@ -15,7 +15,12 @@ WORKDIR /usr/src/app
 
 COPY --from=builder /usr/src/app /usr/src/app
 
-ENV PORT=3000
+ENV PORT=3000 \
+    SECRET_KEY=ChangeMe \
+    CREATE_ADMIN=FALSE \
+    ADMIN_EMAIL=admin@ohmyform.com \
+    ADMIN_USERNAME=root \
+    ADMIN_PASSWORD=root \
 
 EXPOSE 3000
 
