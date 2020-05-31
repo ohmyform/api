@@ -20,7 +20,7 @@ ENV PORT=3000 \
     CREATE_ADMIN=FALSE \
     ADMIN_EMAIL=admin@ohmyform.com \
     ADMIN_USERNAME=root \
-    ADMIN_PASSWORD=root \
+    ADMIN_PASSWORD=root
 
 EXPOSE 3000
 
