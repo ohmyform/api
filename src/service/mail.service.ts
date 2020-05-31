@@ -37,7 +37,7 @@ export class MailService {
 
       const text = htmlToText.fromString(html)
 
-      const subject = /<title>(.*?)<\/title>/gi.test(html) ? html.match(/<title>(.*?)<\/title>/gi)[1] : template
+      const subject = /<title>(.*?)<\/title>/gi.test(html) ? /<title>(.*?)<\/title>/gi.exec(html)[1] : template
 
       await this.nestMailer.sendMail({ to, subject, html, text })
       this.logger.info('sent email')
