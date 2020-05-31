@@ -1,5 +1,11 @@
 # OhMyForm API
 
+[![Financial Contributors on Open Collective](https://opencollective.com/ohmyform-sustainability/all/badge.svg?label=financial+contributors)](https://opencollective.com/ohmyform-sustainability)
+![Project Status](https://img.shields.io/badge/status-0.9.0-green.svg)
+
+[![Discord](https://img.shields.io/discord/595773457862492190.svg?label=Discord%20Chat)](https://discord.gg/MJqAuAZ)
+> An *open source alternative to TypeForm* that can create stunning mobile-ready forms, surveys and questionnaires.
+
 ## Description
 
 [OhMyForm](https://github.com/ohmyforn) api backend
@@ -17,36 +23,11 @@ $ npm install
 
 ```bash
 # development
-$ npm run start
+$ yarn run start
 
 # watch mode
-$ npm run start:dev
+$ yarn run start:dev
 
 # production mode
-$ npm run start:prod
+$ yarn run start:prod
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Support
-
-TODO
-
-## Stay in touch
-
-- Website - [https://ohmyform.com](https://ohmyform.com/)
-
-## License
-
-TODO
