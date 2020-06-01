@@ -12,13 +12,16 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
   }
 
   async onApplicationBootstrap(): Promise<void> {
-    const tracker = new MatomoTracker(1, this.host)
+    const tracker = new MatomoTracker(2, this.host)
 
     tracker.on('error', () => {
-      this.logger.error('failed to register instance')
+      this.logger.error('failed to add installation metrics')
     })
 
+    this.logger.info('try to add installation metrics')
+
     tracker.track({
+      url: `http://localhost/version/${process.env.npm_package_version}`,
       // eslint-disable-next-line @typescript-eslint/camelcase
       action_name: 'startup',
       ua: process.arch
