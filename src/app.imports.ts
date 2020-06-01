@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import crypto from 'crypto';
 import { Request } from 'express-serve-static-core';
 import { IncomingHttpHeaders } from 'http';
@@ -39,6 +40,12 @@ export const imports = [
   HttpModule.register({
     timeout: 5000,
     maxRedirects: 10,
+  }),
+  ServeStaticModule.forRoot({
+    rootPath: join(__dirname, '..', 'public'),
+    exclude: [
+
+    ]
   }),
   ConfigModule.forRoot({
     load: [

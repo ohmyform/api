@@ -17,12 +17,13 @@ services:
 #    environment:
 #      MONGODB_URI: mongodb://mongo/ohmyform
 #      MAILER_URI: smtp://mail:1025
-#    command: yarn start:dev
+#      PORT: 3000
+    #command: yarn start:dev
 #    links:
 #      - mongo
 #      - mail
 #    ports:
-#      - "6000:3000"
+#      - "6100:3000"
 #    depends_on:
 #      - mongo
   mail:

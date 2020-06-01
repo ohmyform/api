@@ -9,7 +9,7 @@ COPY . .
 RUN yarn install --frozen-lockfile
 RUN yarn build
 
-FROM node:12-alpine
+FROM node:12
 
 WORKDIR /usr/src/app
 

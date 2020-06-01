@@ -41,11 +41,14 @@ export class BootService implements OnApplicationBootstrap {
       return
     } catch (e) {}
 
-    await this.createService.create({
+    const user = await this.createService.create({
       username,
       email,
       password,
     })
+
+    user.set('roles', ['user', 'admin', 'superuser'])
+    await user.save()
 
     this.logger.info('new root user created')
   }

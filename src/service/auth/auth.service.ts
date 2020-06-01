@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { PinoLogger } from 'nestjs-pino/dist';
 import { AuthJwtModel } from '../../dto/auth/auth.jwt.model';
 import { UserDocument } from '../../schema/user.schema';
 import { UserService } from '../user/user.service';
@@ -11,17 +12,21 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     private passwordService: PasswordService,
+    private logger: PinoLogger,
   ) {}
 
   async validateUser(username: string, password: string): Promise<UserDocument> {
-    console.log('check user??', username)
-
     // TODO only allow login for verified users!
 
-    const user = await this.userService.findByUsername(username);
-    if (user && await this.passwordService.verify(password, user.passwordHash, user.salt)) {
-      return user;
+    try {
+      const user = await this.userService.findByUsername(username);
+      if (user && await this.passwordService.verify(password, user.passwordHash, user.salt)) {
+        return user;
+      }
+    } catch (e) {
+      this.logger.error(`failed to verify user? ${e.message}`)
     }
+
     return null;
   }
 
