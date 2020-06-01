@@ -5,6 +5,7 @@ import Redis from 'ioredis';
 import { PinoLogger } from 'nestjs-pino/dist';
 import { authServices } from './auth';
 import { formServices } from './form';
+import { InstallationMetricsService } from './installation.metrics.service';
 import { MailService } from './mail.service';
 import { profileServices } from './profile';
 import { submissionServices } from './submission';
@@ -17,6 +18,7 @@ export const services = [
   ...authServices,
   ...submissionServices,
   MailService,
+  InstallationMetricsService,
   {
     provide: 'PUB_SUB',
     inject: [ConfigService, PinoLogger],

@@ -49,6 +49,7 @@
     "html-to-text": "^5.1.1",
     "inquirer": "^7.1.0",
     "ioredis": "^4.17.1",
+    "matomo-tracker": "^2.2.2",
     "migrate-mongoose": "^4.0.0",
     "mjml": "^4.6.3",
     "mongoose": "^5.9.11",
