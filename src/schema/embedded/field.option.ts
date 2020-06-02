@@ -1,16 +1,25 @@
-import { SchemaDefinition } from 'mongoose';
+import { Document, SchemaDefinition } from 'mongoose';
+
+export interface FieldOptionDocument extends Document {
+  readonly key?: string
+  readonly title?: string
+  readonly value: string
+}
 
 export const FieldOption: SchemaDefinition = {
-  id: {
-    alias: 'option_id',
-    type: Number,
-  },
-  title: {
-    alias: 'option_title',
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  option_id: {
+    alias: 'key',
     type: String,
   },
-  value: {
-    alias: 'option_value',
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  option_title: {
+    alias: 'title',
+    type: String,
+  },
+  // eslint-disable-next-line @typescript-eslint/camelcase
+  option_value: {
+    alias: 'value',
     type: String,
     trim: true,
   },

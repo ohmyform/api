@@ -1,4 +1,8 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
+import { FormFieldOptionInput } from './form.field.option.input';
+import { FormFieldRatingInput } from './form.field.rating.input';
+import { LogicJumpInput } from './logic.jump.input';
+import { LogicJumpModel } from './logic.jump.model';
 
 @InputType()
 export class FormFieldInput {
@@ -19,4 +23,13 @@ export class FormFieldInput {
 
   @Field()
   readonly value: string
+
+  @Field(() => [FormFieldOptionInput], { nullable: true })
+  readonly options: [FormFieldOptionInput]
+
+  @Field(() => LogicJumpInput, { nullable: true })
+  readonly logicJump: LogicJumpModel
+
+  @Field(() => FormFieldRatingInput, { nullable: true })
+  readonly rating: FormFieldRatingInput
 }

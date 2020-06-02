@@ -1,5 +1,13 @@
-import { Schema, SchemaDefinition } from 'mongoose';
+import { Document, Schema, SchemaDefinition } from 'mongoose';
 import { FormFieldSchemaName } from '../form.field.schema';
+
+export interface LogicJumpDocument extends Document {
+  readonly expressionString?: string
+  readonly fieldA?: string
+  readonly valueB?: string
+  readonly jumpTo?: string
+  readonly enabled?: boolean
+}
 
 export const LogicJump: SchemaDefinition = {
   expressionString: {

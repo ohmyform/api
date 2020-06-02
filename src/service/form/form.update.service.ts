@@ -49,6 +49,18 @@ export class FormUpdateService {
         field.set('required', nextField.required)
         field.set('value', nextField.value)
 
+        if (nextField.logicJump !== undefined) {
+          field.set('logicJump', nextField.logicJump)
+        }
+
+        if (nextField.options !== undefined) {
+          field.set('options', nextField.options)
+        }
+
+        if (nextField.rating !== undefined) {
+          field.set('rating', nextField.rating)
+        }
+
         return field
       }))
 

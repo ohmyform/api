@@ -1,4 +1,9 @@
-import { SchemaDefinition } from 'mongoose';
+import { Document, SchemaDefinition } from 'mongoose';
+
+export interface RatingFieldDocument extends Document {
+  readonly steps?: number
+  readonly shape?: string
+}
 
 export const RatingField: SchemaDefinition = {
   steps: {
