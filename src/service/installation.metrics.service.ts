@@ -1,4 +1,5 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import MatomoTracker from 'matomo-tracker';
 import { PinoLogger } from 'nestjs-pino/dist';
 
@@ -8,24 +9,39 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
 
   constructor(
     private readonly logger: PinoLogger,
+    private readonly configService: ConfigService,
   ) {
   }
 
   async onApplicationBootstrap(): Promise<void> {
+    if (this.configService.get<boolean>('DISABLE_INSTALLATION_METRICS')) {
+      this.logger.info('installation metrics are disabled')
+      return
+    }
+
     const tracker = new MatomoTracker(2, this.host)
 
     tracker.on('error', () => {
       this.logger.error('failed to add installation metrics')
     })
 
-    this.logger.info('try to add installation metrics')
-
+    this.logger.info('try to add startup metric')
     tracker.track({
       url: `http://localhost/version/${process.env.npm_package_version}`,
       // eslint-disable-next-line @typescript-eslint/camelcase
       action_name: 'startup',
       ua: process.arch
     })
+
+    setInterval(() => {
+      this.logger.info('try to add running metric')
+      tracker.track({
+        url: `http://localhost/version/${process.env.npm_package_version}`,
+        // eslint-disable-next-line @typescript-eslint/camelcase
+        action_name: 'running',
+        ua: process.arch
+      })
+    }, 3600000)
   }
 
 
