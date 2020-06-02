@@ -20,11 +20,16 @@ export class SubmissionStartService {
     input: SubmissionStartInput,
     user?: UserDocument,
   ): Promise<SubmissionDocument> {
-    return await this.submissionModel.create({
+    const data: any = {
       form,
       device: input.device,
-      user,
       tokenHash: await this.tokenService.hash(input.token)
-    })
+    }
+
+    if (user) {
+      data.user = user
+    }
+
+    return await this.submissionModel.create(data)
   }
 }
