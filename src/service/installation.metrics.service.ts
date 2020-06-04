@@ -41,7 +41,7 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
         action_name: 'running',
         ua: process.arch
       })
-    }, 3600000)
+    }, 24 * 60 * 60 * 1000)
   }
 
 
