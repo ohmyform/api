@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+### Security
+
+## [0.9.2]
+
+### Security
+
+- update apollo-server for https://github.com/advisories/GHSA-w42g-7vfc-xf37
  
 ## [0.9.1] - 2020-06-02
 
