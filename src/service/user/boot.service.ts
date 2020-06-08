@@ -48,7 +48,11 @@ export class BootService implements OnApplicationBootstrap {
     })
 
     user.set('roles', ['user', 'admin', 'superuser'])
-    await user.save()
+    try {
+      await user.save()
+    } catch (e) {
+      this.logger.error('could not create admin user')
+    }
 
     this.logger.info('new root user created')
   }

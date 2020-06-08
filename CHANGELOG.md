@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+
+- startup error with invalid create admin config
+
 ### Security
 
 ## [0.9.2]
