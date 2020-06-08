@@ -8,6 +8,7 @@ import { formServices } from './form';
 import { InstallationMetricsService } from './installation.metrics.service';
 import { MailService } from './mail.service';
 import { profileServices } from './profile';
+import {SettingService} from './setting.service'
 import { submissionServices } from './submission';
 import { userServices } from './user';
 
@@ -17,6 +18,7 @@ export const services = [
   ...formServices,
   ...authServices,
   ...submissionServices,
+  SettingService,
   MailService,
   InstallationMetricsService,
   {

@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
  
 ### Added
+
+- `SIGNUP_DISABLED=true` to prevent users from signing up 
+
 ### Changed
 ### Fixed
 
