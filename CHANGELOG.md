@@ -8,16 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
  
 ### Added
+### Changed
+### Fixed
+### Security
+
+## [0.9.4] - 2020-06-09
+ 
+### Added
 
 - `SIGNUP_DISABLED=true` to prevent users from signing up 
 - travis lints
 
-### Changed
 ### Fixed
 
 - startup error with invalid create admin config
-
-### Security
 
 ## [0.9.2]
 
