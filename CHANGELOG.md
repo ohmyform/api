@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - `SIGNUP_DISABLED=true` to prevent users from signing up 
+- travis lints
 
 ### Changed
 ### Fixed
