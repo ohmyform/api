@@ -13,6 +13,7 @@ export class SettingService {
     return [
       'SIGNUP_DISABLED',
       'LOGIN_NOTE',
+      'HIDE_CONTRIB',
     ].includes(key)
   }
 
@@ -21,6 +22,7 @@ export class SettingService {
       case 'SIGNUP_DISABLED':
       case 'LOGIN_NOTE':
       case 'DEFAULT_ROLE':
+      case 'HIDE_CONTRIB':
         return new SettingModel(key, this.configService.get(key))
     }
 
