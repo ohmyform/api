@@ -18,7 +18,7 @@ export class SettingModel {
     this.key = key
     this.value = value
 
-    this.isTrue = value.toLowerCase() === 'true' || value === '1'
+    this.isTrue = value ? (value.toLowerCase() === 'true' || value === '1') : false
     this.isFalse = !this.isTrue
   }
 }
