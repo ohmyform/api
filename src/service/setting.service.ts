@@ -9,9 +9,17 @@ export class SettingService {
   ) {
   }
 
+  isPublicKey(key: string): boolean {
+    return [
+      'SIGNUP_DISABLED',
+      'LOGIN_NOTE',
+    ].includes(key)
+  }
+
   async getByKey(key: string): Promise<SettingModel> {
     switch (key) {
       case 'SIGNUP_DISABLED':
+      case 'LOGIN_NOTE':
         return new SettingModel(key, this.configService.get(key))
     }
 

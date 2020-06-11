@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
  
 ### Added
+
+- `DEFAULT_ROLE` -> `admin` | `superuser` | `user` - with `user` being the default, making it possible that new users can create their own forms after creating
+- `LOGIN_NOTE` -> markdown for Login Page, to show info text on login page
+
 ### Changed
 ### Fixed
 
