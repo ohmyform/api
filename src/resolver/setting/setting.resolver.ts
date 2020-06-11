@@ -1,3 +1,4 @@
+import {Injectable} from '@nestjs/common'
 import {ConfigService} from '@nestjs/config'
 import {Args, ID, Query} from '@nestjs/graphql'
 import {Roles} from '../../decorator/roles.decorator'
@@ -8,6 +9,7 @@ import {UserModel} from '../../dto/user/user.model'
 import {UserDocument} from '../../schema/user.schema'
 import {SettingService} from '../../service/setting.service'
 
+@Injectable()
 export class SettingResolver {
   private publicKeys: string[] = [
     'SIGNUP_DISABLED',

@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+
+- di on setting resolver, prevented signup settings to be visible in ui
+
 ### Security
 
 ## [0.9.4] - 2020-06-09
