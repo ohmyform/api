@@ -20,6 +20,7 @@ export class SettingService {
     switch (key) {
       case 'SIGNUP_DISABLED':
       case 'LOGIN_NOTE':
+      case 'DEFAULT_ROLE':
         return new SettingModel(key, this.configService.get(key))
     }
 
