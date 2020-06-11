@@ -127,7 +127,7 @@ export class FormResolver {
   }
 
   @ResolveField('admin', () => UserModel)
-  @Roles('superuser')
+  @Roles('admin')
   async getAdmin(
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,

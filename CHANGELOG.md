@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - di on setting resolver, prevented signup settings to be visible in ui
+- return admin of form also for admins
 
 ### Security
 
