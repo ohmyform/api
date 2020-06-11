@@ -8,18 +8,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
  
 ### Added
+### Changed
+### Fixed
+### Security
+
+## [0.9.5] - 2020-06-10
+ 
+### Added
 
 - `DEFAULT_ROLE` -> `admin` | `superuser` | `user` - with `user` being the default, making it possible that new users can create their own forms after creating
 - `LOGIN_NOTE` -> markdown for Login Page, to show info text on login page
 - `HIDE_CONTRIB` -> ability to hide contribution banner
 
-### Changed
 ### Fixed
 
 - di on setting resolver, prevented signup settings to be visible in ui
 - return admin of form also for admins
-
-### Security
 
 ## [0.9.4] - 2020-06-09
  
