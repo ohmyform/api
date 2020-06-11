@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/ohmyform/api.svg?branch=master)](https://travis-ci.org/ohmyform/api)
 ![Latest Release](https://badgen.net/github/tag/ohmyform/api)
-![Docker Pulls](https://badgen.net/docker/pulls/ohmyform/api)
+[![Docker Pulls](https://badgen.net/docker/pulls/ohmyform/api)](https://hub.docker.com/r/ohmyform/api)
 [![Lokalise](https://badgen.net/badge/Lokalise/EN/green?icon=libraries)](https://app.lokalise.com/public/379418475ede5d5c6937b0.31012044/)
 ![Last Commit](https://badgen.net/github/last-commit/ohmyform/api)
 
