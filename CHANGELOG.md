@@ -8,7 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
  
 ### Added
+
+- default index.html for api without bundled ui
+
 ### Changed
+
+- minify containers to reduce layer size
+
 ### Fixed
 
 - bug in settings resolver with nullable fields
