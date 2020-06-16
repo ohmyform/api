@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Security
 
+- container now runs as non root user
+
 ## [0.9.5] - 2020-06-10
  
 ### Added
