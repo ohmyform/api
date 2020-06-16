@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 ### Changed
 ### Fixed
+
+- bug in settings resolver with nullable fields
+
 ### Security
 
 - container now runs as non root user

@@ -5,8 +5,8 @@ export class SettingModel {
   @Field(() => ID)
   readonly key: string
 
-  @Field()
-  readonly value: string
+  @Field({ nullable: true })
+  readonly value?: string
 
   @Field()
   readonly isTrue: boolean
