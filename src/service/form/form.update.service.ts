@@ -49,6 +49,10 @@ export class FormUpdateService {
         field.set('required', nextField.required)
         field.set('value', nextField.value)
 
+        if (nextField.slug !== undefined) {
+          field.set('slug', nextField.slug)
+        }
+
         if (nextField.logicJump !== undefined) {
           field.set('logicJump', nextField.logicJump)
         }

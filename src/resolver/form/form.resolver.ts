@@ -126,7 +126,7 @@ export class FormResolver {
     return new PageModel(form.endPage)
   }
 
-  @ResolveField('admin', () => UserModel)
+  @ResolveField('admin', () => UserModel, { nullable: true })
   @Roles('admin')
   async getAdmin(
     @Parent() parent: FormModel,
@@ -137,6 +137,10 @@ export class FormResolver {
     if (!form.populated('admin')) {
       form.populate('admin')
       await form.execPopulate()
+    }
+
+    if (!form.admin) {
+      return null
     }
 
     return new UserModel(form.admin)

@@ -12,6 +12,9 @@ export class FormFieldModel {
   @Field()
   readonly title: string
 
+  @Field({ nullable: true })
+  readonly slug?: string
+
   @Field()
   readonly type: string
 
@@ -36,6 +39,7 @@ export class FormFieldModel {
   constructor(document: FormFieldDocument) {
     this.id = document.id
     this.title = document.title
+    this.slug = document.slug
     this.type = document.type
     this.description = document.description
     this.required = document.required

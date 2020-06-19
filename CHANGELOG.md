@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - default index.html for api without bundled ui
+- slug for form fields can now be saved
 
 ### Changed
 
@@ -18,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - bug in settings resolver with nullable fields
+- bug if user was deleted and form still exists
 
 ### Security
 

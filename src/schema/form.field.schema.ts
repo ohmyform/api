@@ -1,5 +1,5 @@
 import { Document, Schema } from 'mongoose';
-import { fieldTypes } from '../config/fields';
+import { fieldTypes, matchType } from '../config/fields'
 import { FieldOption } from './embedded/field.option';
 import { LogicJump } from './embedded/logic.jump';
 import { RatingField } from './embedded/rating.field';
@@ -9,6 +9,7 @@ export const FormFieldSchemaName = 'FormField'
 export interface FormFieldDocument extends Document {
   title: string
   description: string
+  slug?: string
   logicJump: any
   rating: any
   options: any
@@ -26,6 +27,12 @@ export const FormFieldSchema = new Schema({
   description: {
     type: String,
     default: '',
+  },
+  slug: {
+    type: String,
+    required: false,
+    match: matchType.slug,
+    trim: true,
   },
   logicJump: {
     type: LogicJump,
