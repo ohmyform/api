@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { FormUpdateInput } from '../../dto/form/form.update.input';
 import { FormFieldDocument, FormFieldSchemaName } from '../../schema/form.field.schema';
+import { FormHookDocument, FormHookSchemaName } from '../../schema/form.hook.schema'
 import { FormDocument, FormSchemaName } from '../../schema/form.schema';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class FormUpdateService {
   constructor(
     @InjectModel(FormSchemaName) private readonly formModel: Model<FormDocument>,
     @InjectModel(FormFieldSchemaName) private readonly formFieldModel: Model<FormFieldDocument>,
+    @InjectModel(FormHookSchemaName) private readonly formHookModel: Model<FormHookDocument>,
   ) {
   }
 
@@ -69,6 +71,27 @@ export class FormUpdateService {
       }))
 
       form.set('fields', nextFields)
+    }
+
+    if (input.hooks !== undefined) {
+      const nextHooks = input.hooks.map((nextHook) => {
+        let hook = form.hooks && form.hooks.find(hook => hook.id.toString() === nextHook.id)
+
+        if (!hook) {
+          hook = new this.formHookModel({})
+        }
+
+        // ability for other fields to apply mapping
+        hook.set('url', nextHook.url)
+
+        if (nextHook.format !== undefined) {
+          hook.set('format', nextHook.format)
+        }
+
+        return hook
+      })
+
+      form.set('hooks', nextHooks)
     }
 
     const extractField = (id) => {

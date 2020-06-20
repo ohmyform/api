@@ -14,29 +14,32 @@ export class SubmissionHookService {
   }
 
   public async process(submission: SubmissionDocument): Promise<void> {
+    if (!submission.populated('form')) {
+      submission.populate('form')
+      await submission.execPopulate()
+    }
+
     await Promise.all(submission.form.hooks.map(async (hook) => {
       if (!hook.enabled) {
         return
       }
 
       try {
-        await this.httpService.post(
+        const response = await this.httpService.post(
           hook.url,
           await this.format(submission, hook.format)
-        )
+        ).toPromise()
+
+        console.log('sent', response.data)
       } catch (e) {
         this.logger.error(`failed to post to "${hook.url}: ${e.message}`)
+        this.logger.error(e.stack)
         throw e
       }
     }))
   }
 
   private async format(submission: SubmissionDocument, format?: string): Promise<any> {
-    if (!submission.populated('form')) {
-      submission.populate('form')
-      await submission.execPopulate()
-    }
-
     const fields = {}
     submission.form.fields.forEach((field) => {
       fields[field.id] = field
@@ -48,12 +51,15 @@ export class SubmissionHookService {
       created: submission.created,
       lastModified: submission.lastModified,
       fields: submission.fields.map((submissionField) => {
-        const formField = submission.form.fields.find(formField => formField.id.toString() === submissionField.field)
+        const formField = submission.form.fields.find(formField => formField.id.toString() === submissionField.field) || {
+          id: submissionField.field,
+          slug: null
+        }
 
         return {
           field: formField.id,
           slug: formField.slug || null,
-          value: submissionField.fieldValue
+          ...submissionField.fieldValue
         }
       })
     }

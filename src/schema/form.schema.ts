@@ -3,7 +3,7 @@ import { matchType } from '../config/fields';
 import { defaultLanguage, languages } from '../config/languages';
 import { ButtonDocument, ButtonSchema } from './button.schema';
 import { FormFieldDocument, FormFieldSchema } from './form.field.schema';
-import { FormHookDocument } from './form.hook.schema'
+import { FormHookDocument, FormHookSchema } from './form.hook.schema'
 import { UserDocument, UserSchemaName } from './user.schema';
 import { VisitorDataDocument, VisitorDataSchema } from './visitor.data.schema';
 
@@ -116,6 +116,10 @@ export const FormSchema = new Schema({
   form_fields: {
     alias: 'fields',
     type: [FormFieldSchema],
+    default: [],
+  },
+  hooks: {
+    type: [FormHookSchema],
     default: [],
   },
   admin: {

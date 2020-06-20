@@ -1,6 +1,7 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { DesignInput } from './design.input';
 import { FormFieldInput } from './form.field.input';
+import { FormHookInput } from './form.hook.input'
 import { PageInput } from './page.input';
 import { RespondentNotificationsInput } from './respondent.notifications.input';
 import { SelfNotificationsInput } from './self.notifications.input';
@@ -24,6 +25,9 @@ export class FormUpdateInput {
 
   @Field(() => [FormFieldInput], { nullable: true })
   readonly fields: FormFieldInput[]
+
+  @Field(() => [FormHookInput], { nullable: true })
+  readonly hooks: FormHookInput[]
 
   @Field({ nullable: true })
   readonly design: DesignInput
