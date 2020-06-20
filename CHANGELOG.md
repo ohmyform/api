@@ -11,6 +11,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - default index.html for api without bundled ui
 - slug for form fields can now be saved
+- submission webhooks with ability to customize json payload
+  ```
+  {
+    form: ID
+    submission: ID
+    created: DateTime
+    lastModified: DateTime
+    fields: [
+        {
+            field: ID
+            slug: String
+            value: any
+        }
+    ]
+  }
+  ```
+  
 
 ### Changed
 

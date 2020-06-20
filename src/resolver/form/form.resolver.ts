@@ -3,6 +3,7 @@ import { Roles } from '../../decorator/roles.decorator';
 import { User } from '../../decorator/user.decorator';
 import { DesignModel } from '../../dto/form/design.model';
 import { FormFieldModel } from '../../dto/form/form.field.model';
+import { FormHookModel } from '../../dto/form/form.hook.model'
 import { FormModel } from '../../dto/form/form.model';
 import { PageModel } from '../../dto/form/page.model';
 import { RespondentNotificationsModel } from '../../dto/form/respondent.notifications.model';
@@ -45,6 +46,17 @@ export class FormResolver {
     const form = await cache.getForm(parent.id)
 
     return form.fields.map(field => new FormFieldModel(field))
+  }
+
+  @ResolveField('hooks', () => [FormHookModel])
+  async getHooks(
+    @User() user: UserDocument,
+    @Parent() parent: FormModel,
+    @Context('cache') cache: ContextCache,
+  ): Promise<FormHookModel[]> {
+    const form = await cache.getForm(parent.id)
+
+    return form.hooks.map(hook => new FormHookModel(hook))
   }
 
   @ResolveField('isLive', () => Boolean)

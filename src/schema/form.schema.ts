@@ -3,6 +3,7 @@ import { matchType } from '../config/fields';
 import { defaultLanguage, languages } from '../config/languages';
 import { ButtonDocument, ButtonSchema } from './button.schema';
 import { FormFieldDocument, FormFieldSchema } from './form.field.schema';
+import { FormHookDocument } from './form.hook.schema'
 import { UserDocument, UserSchemaName } from './user.schema';
 import { VisitorDataDocument, VisitorDataSchema } from './visitor.data.schema';
 
@@ -58,6 +59,7 @@ export interface FormDocument extends Document {
   }
 
   readonly fields: [FormFieldDocument]
+  readonly hooks: [FormHookDocument]
 
   readonly admin: UserDocument
 

@@ -2,15 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import dayjs from 'dayjs';
 import { Model } from 'mongoose';
+import { PinoLogger } from 'nestjs-pino/dist'
 import { SubmissionSetFieldInput } from '../../dto/submission/submission.set.field.input';
 import { SubmissionFieldDocument, SubmissionFieldSchemaName } from '../../schema/submission.field.schema';
 import { SubmissionDocument, SubmissionSchemaName } from '../../schema/submission.schema';
+import { SubmissionHookService } from './submission.hook.service'
 
 @Injectable()
 export class SubmissionSetFieldService {
   constructor(
     @InjectModel(SubmissionSchemaName) private readonly submissionModel: Model<SubmissionDocument>,
     @InjectModel(SubmissionFieldSchemaName) private readonly submissionFieldModel: Model<SubmissionFieldDocument>,
+    private readonly webHook: SubmissionHookService,
+    private readonly logger: PinoLogger,
   ) {
   }
 
@@ -45,5 +49,11 @@ export class SubmissionSetFieldService {
     }
 
     await submission.save()
+
+    if (submission.percentageComplete === 1) {
+      this.webHook.process(submission).catch(e => {
+        this.logger.error(`failed to send webhooks: ${e.message}`)
+      })
+    }
   }
 }
