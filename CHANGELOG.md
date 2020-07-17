@@ -6,7 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
  
 ## [Unreleased]
+
+### Added
+
+### Changed
+
+### Fixed
+
+### Security
  
+## [0.9.6] - 2020-07-17
+
 ### Added
 
 - default index.html for api without bundled ui
