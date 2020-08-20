@@ -34,7 +34,7 @@
     "@nestjs/serve-static": "^2.1.1",
     "@types/html-to-text": "^5.1.0",
     "apollo-server-express": "^2.14.2",
-    "bcrypt": "^4.0.1",
+    "bcrypt": "^5.0.0",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.2",
     "commander": "^5.1.0",
