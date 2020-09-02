@@ -28,7 +28,7 @@ export class MailService {
 
       const html = mjml2html(
         handlebars.compile(
-          fs.readFileSync(path).toString('UTF-8')
+          fs.readFileSync(path).toString('utf-8')
         )(context),
         {
           minify: true

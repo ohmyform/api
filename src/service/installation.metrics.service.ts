@@ -28,7 +28,6 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
     this.logger.info('try to add startup metric')
     tracker.track({
       url: `http://localhost/version/${process.env.npm_package_version}`,
-      // eslint-disable-next-line @typescript-eslint/camelcase
       action_name: 'startup',
       ua: process.arch
     })
@@ -37,7 +36,6 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
       this.logger.info('try to add running metric')
       tracker.track({
         url: `http://localhost/version/${process.env.npm_package_version}`,
-        // eslint-disable-next-line @typescript-eslint/camelcase
         action_name: 'running',
         ua: process.arch
       })

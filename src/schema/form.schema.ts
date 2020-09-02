@@ -112,7 +112,6 @@ export const FormSchema = new Schema({
       type: [VisitorDataSchema],
     },
   },
-  // eslint-disable-next-line @typescript-eslint/camelcase
   form_fields: {
     alias: 'fields',
     type: [FormFieldSchema],

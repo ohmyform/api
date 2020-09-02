@@ -7,17 +7,14 @@ export interface FieldOptionDocument extends Document {
 }
 
 export const FieldOption: SchemaDefinition = {
-  // eslint-disable-next-line @typescript-eslint/camelcase
   option_id: {
     alias: 'key',
     type: String,
   },
-  // eslint-disable-next-line @typescript-eslint/camelcase
   option_title: {
     alias: 'title',
     type: String,
   },
-  // eslint-disable-next-line @typescript-eslint/camelcase
   option_value: {
     alias: 'value',
     type: String,
