@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 ### Security
+
+- upgraded dependencies
  
 ## [0.9.6] - 2020-07-17
 
