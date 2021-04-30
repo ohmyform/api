@@ -4,9 +4,22 @@
 | ---- | ------------- | ----------- |
 | DISABLE_INSTALLATION_METRICS | *not set* | Per default installations are [publishing](./installation.metrics.md) their existence |
 | SECRET_KEY | `changeMe` | JWT Secret for authentication |
-| MONGODB_URI | `mongodb://localhost/ohmyform` | MongoDB Connection |
-| MAILER_URI | `smtp://localhost:1025` | [Mail Connection](https://nodemailer.com/smtp/) |
-| MAILER_FROM | `OhMyForm <no-reply@localhost>` | Default From path, make sure that your mail server supports the given from addres |
 | CLI | *automatically* | activates pretty print for log output |
 | NODE_ENV | `production` | |
+
+## Mailing
+
+| Name | Default Value | Description |
+| ---- | ------------- | ----------- |
+| MAILER_URI | `smtp://localhost:1025` | [Mail Connection](https://nodemailer.com/smtp/) |
+| MAILER_FROM | `OhMyForm <no-reply@localhost>` | Default From path, make sure that your mail server supports the given from addres |
+
+## Database Variables
+
+| Name | Default Value | Description |
+| ---- | ------------- | ----------- |
+| DB_URI | `sqlite://data.sqlite` | url in the format `TYPE://USER:PASS@HOST:PORT/NAME?EXTRA` ([read more](https://typeorm.io/#/connection-options/common-connection-options)) |
+| DB_TABLE_PREFIX | *empty* | prefix all tables if used within same database as other applications. |
+| DB_LOGGING | `false` | if `true` all db interactions will be logged to stdout |
+| DB_MIGRATE | `true` | can be used in load balanced environments to only allow one container to perform migrations / manually execute migrations
 

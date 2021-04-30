@@ -6,12 +6,15 @@ import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
 import crypto from 'crypto';
 import { Request } from 'express-serve-static-core';
 import { IncomingHttpHeaders } from 'http';
 import { ConsoleModule } from 'nestjs-console';
 import { LoggerModule, Params as LoggerModuleParams } from 'nestjs-pino/dist';
 import { join } from 'path';
+import { DatabaseType } from 'typeorm'
+import { entities } from './entity'
 import { schema } from './schema';
 
 export const LoggerConfig: LoggerModuleParams = {
@@ -102,6 +105,22 @@ export const imports = [
 
       return { req }
     },
+  }),
+  TypeOrmModule.forRootAsync({
+    imports: [ConfigModule],
+    inject: [ConfigService],
+    useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
+      name: 'ohmyform',
+      url: configService.get<string>('DB_URI', 'sqlite://data.sqlite') as any,
+      entityPrefix: configService.get<string>('DB_TABLE_PREFIX', ''),
+      logging: configService.get<string>('DB_LOGGING', 'false') === 'true',
+      entities,
+      migrationsTableName: 'nest_migrations',
+      migrations: [
+        `${__dirname}/**/migrations/**/*{.ts,.js}`,
+      ],
+      migrationsRun: configService.get<boolean>('DB_MIGRATE', true),
+    }),
   }),
   MongooseModule.forRootAsync({
     imports: [ConfigModule],

@@ -1,15 +1,26 @@
 version: "3"
 services:
-  mongo:
-    image: mongo
-    ports:
-      - "27017:27017"
+  #mongo:
+  #  image: mongo
+  #  ports:
+  #    - "27017:27017"
+  #  volumes:
+  #    - "./data/mongo:/data/db"
+
+  db:
+    image: postgres:10-alpine
     volumes:
-      - "./data/mongo:/data/db"
+      - ./pg_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: ohmyform
+    ports:
+      - "5432:5432"
   redis:
     image: redis
     ports:
-      - "6379:6379"
+      - "6003:6379"
 #  api:
 #    build: .
 #    volumes:
@@ -30,14 +41,14 @@ services:
     image: mailhog/mailhog
     ports:
       - "6001:8025"
-      - "1025:1025"
-  mongoexpress:
-    image: mongo-express
-    environment:
-      ME_CONFIG_MONGODB_SERVER: mongo
-    ports:
-      - "6002:8081"
-    links:
-      - mongo
-    depends_on:
-      - mongo
+      - "6004:1025"
+  #mongoexpress:
+  #  image: mongo-express
+  #  environment:
+  #    ME_CONFIG_MONGODB_SERVER: mongo
+  #  ports:
+  #    - "6002:8081"
+  #  links:
+  #    - mongo
+  #  depends_on:
+  #    - mongo
