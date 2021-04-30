@@ -1,7 +1,10 @@
-import { ColorsEmbedded } from './form.design.colors.embedded'
+import { Column } from 'typeorm'
+import { ColorsEmbedded } from './colors.embedded'
 
 export class DesignEmbedded {
-  colors: ColorsEmbedded
+  @Column(() => ColorsEmbedded)
+  colors: ColorsEmbedded = new ColorsEmbedded()
 
+  @Column({ nullable: true })
   font?: string
 }

@@ -1,22 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { FormCreateInput } from '../../dto/form/form.create.input';
-import { FormDocument, FormSchemaName } from '../../schema/form.schema';
-import { UserDocument } from '../../schema/user.schema';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { FormCreateInput } from '../../dto/form/form.create.input'
+import { FormEntity } from '../../entity/form.entity'
+import { UserEntity } from '../../entity/user.entity'
 
 @Injectable()
 export class FormCreateService {
   constructor(
-    @InjectModel(FormSchemaName) private readonly formModel: Model<FormDocument>,
+    @InjectRepository(FormEntity)
+    private readonly formRepository: Repository<FormEntity>
   ) {
   }
 
-  async create(admin: UserDocument, input: FormCreateInput): Promise<FormDocument> {
-    return await this.formModel.create({
-      admin,
-      ...input,
-    })
+  async create(admin: UserEntity, input: FormCreateInput): Promise<FormEntity> {
+    const form = new FormEntity()
+
+    form.title = input.title
+    form.isLive = input.isLive
+    form.showFooter = input.showFooter
+    form.language = input.language
+
+    form.admin = admin
+
+    return await this.formRepository.save(form)
   }
 }
 

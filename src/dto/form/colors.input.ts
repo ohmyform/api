@@ -1,22 +1,22 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql'
 
 @InputType()
 export class ColorsInput {
   @Field()
-  readonly backgroundColor: string
+  readonly background: string
 
   @Field()
-  readonly questionColor: string
+  readonly question: string
 
   @Field()
-  readonly answerColor: string
+  readonly answer: string
 
   @Field()
-  readonly buttonColor: string
+  readonly button: string
 
   @Field()
-  readonly buttonActiveColor: string
+  readonly buttonActive: string
 
   @Field()
-  readonly buttonTextColor: string
+  readonly buttonText: string
 }

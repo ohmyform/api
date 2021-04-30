@@ -1,4 +1,4 @@
-import { UserCommand } from './user.command';
+import { UserCommand } from './user.command'
 
 export const commands = [
   UserCommand,

@@ -1,14 +1,15 @@
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { FormDocument, FormSchemaName } from '../../schema/form.schema';
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { FormEntity } from '../../entity/form.entity'
 
 export class FormStatisticService {
   constructor(
-    @InjectModel(FormSchemaName) private formModel: Model<FormDocument>,
+    @InjectRepository(FormEntity)
+    private readonly formRepository: Repository<FormEntity>
   ) {
   }
 
   async getTotal(): Promise<number> {
-    return await this.formModel.estimatedDocumentCount();
+    return await this.formRepository.count();
   }
 }

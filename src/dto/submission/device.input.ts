@@ -1,4 +1,4 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql'
 
 @InputType()
 export class DeviceInput {
@@ -7,4 +7,7 @@ export class DeviceInput {
 
   @Field()
   readonly name: string
+
+  @Field({ nullable: true })
+  readonly language: string
 }

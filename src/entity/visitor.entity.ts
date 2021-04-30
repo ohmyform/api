@@ -1,7 +1,16 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { FormFieldDocument } from '../schema/form.field.schema'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn
+} from 'typeorm'
+import { DeviceEmbedded } from './embedded/device.embedded'
+import { GeoLocationEmbedded } from './embedded/geo.location.embedded'
 import { FormEntity } from './form.entity'
-import { FormFieldEntity } from './form.field.entity'
+import { SubmissionEntity } from './submission.entity'
 
 @Entity({ name: 'form_visitor' })
 export class VisitorEntity {
@@ -11,16 +20,24 @@ export class VisitorEntity {
   @ManyToOne(() => FormEntity, form => form.visitors)
   public form: FormEntity
 
-  @ManyToOne(() => FormEntity, form => form.visitors)
-  public submission: FormEntity
+  @OneToMany(() => SubmissionEntity, submission => submission.visitor)
+  public submissions: SubmissionEntity[]
 
   @Column({ nullable: true })
   readonly referrer?: string
 
-  readonly timeElapsed: number
-  readonly isSubmitted: boolean
-  readonly language: string
+  @Column()
   readonly ipAddr: string
-  readonly deviceType: string
-  readonly userAgent: string
+
+  @Column(() => GeoLocationEmbedded)
+  public geoLocation: GeoLocationEmbedded = new GeoLocationEmbedded()
+
+  @Column(() => DeviceEmbedded)
+  public device: DeviceEmbedded = new DeviceEmbedded()
+
+  @CreateDateColumn()
+  public created: Date
+
+  @UpdateDateColumn()
+  public updated: Date
 }

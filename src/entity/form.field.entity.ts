@@ -1,5 +1,4 @@
 import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { LogicEmbedded } from './embedded/logic.embedded'
 import { RatingEmbedded } from './embedded/rating.embedded'
 import { FormEntity } from './form.entity'
 import { FormFieldLogicEntity } from './form.field.logic.entity'
@@ -22,13 +21,13 @@ export class FormFieldEntity {
   @Column({ nullable: true })
   public slug?: string
 
-  @OneToMany(() => FormFieldLogicEntity, logic => logic.field)
+  @OneToMany(() => FormFieldLogicEntity, logic => logic.field, { eager: true })
   public logic: FormFieldLogicEntity[]
 
   @Column(() => RatingEmbedded)
   public rating: RatingEmbedded = new RatingEmbedded()
 
-  @OneToMany(() => FormFieldOptionEntity, option => option.field)
+  @OneToMany(() => FormFieldOptionEntity, option => option.field, { eager: true })
   public options?: FormFieldOptionEntity[]
 
   @Column()

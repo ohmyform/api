@@ -1,21 +1,26 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { FormDocument, FormSchemaName } from '../../schema/form.schema';
-import { SubmissionDocument, SubmissionSchemaName } from '../../schema/submission.schema';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { FormEntity } from '../../entity/form.entity'
+import { SubmissionEntity } from '../../entity/submission.entity'
 
 @Injectable()
 export class FormDeleteService {
   constructor(
-    @InjectModel(FormSchemaName) private formModel: Model<FormDocument>,
-    @InjectModel(SubmissionSchemaName) private readonly submissionModel: Model<SubmissionDocument>,
+    @InjectRepository(FormEntity)
+    private readonly formRepository: Repository<FormEntity>,
+    @InjectRepository(SubmissionEntity)
+    private readonly submissionRepository: Repository<SubmissionEntity>,
   ) {
   }
 
   async delete(id: string): Promise<void> {
-    const form = await this.formModel.findByIdAndDelete(id).exec()
-    await this.submissionModel.deleteMany({
-      form
-    }).exec()
+    await this.submissionRepository.createQueryBuilder('s')
+      .delete()
+      .where('s.form = :form', { form: id })
+
+    await this.formRepository.createQueryBuilder('f')
+      .delete()
+      .where('f.id = :form', { form: id })
   }
 }

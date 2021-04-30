@@ -1,5 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { ButtonInput } from './button.input';
+import { Field, InputType } from '@nestjs/graphql'
+import { ButtonInput } from './button.input'
 
 @InputType()
 export class PageInput {

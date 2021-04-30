@@ -1,9 +1,9 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { GraphQLInt } from 'graphql';
-import { SubmissionModel } from './submission.model';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { GraphQLInt } from 'graphql'
+import { SubmissionModel } from './submission.model'
 
-@ObjectType('PagerSubmission')
-export class PagerSubmissionModel {
+@ObjectType('SubmissionPager')
+export class SubmissionPagerModel {
   @Field(() => [SubmissionModel])
   entries: SubmissionModel[]
 

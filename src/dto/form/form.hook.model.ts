@@ -1,5 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { FormHookDocument } from '../../schema/form.hook.schema'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { FormHookEntity } from '../../entity/form.hook.entity'
 
 @ObjectType('FormHook')
 export class FormHookModel {
@@ -15,8 +15,8 @@ export class FormHookModel {
   @Field({ nullable: true })
   readonly format?: string
 
-  constructor(hook: FormHookDocument) {
-    this.id = hook.id
+  constructor(hook: FormHookEntity) {
+    this.id = hook.id.toString()
     this.enabled = hook.enabled
     this.url = hook.url
     this.format = hook.format

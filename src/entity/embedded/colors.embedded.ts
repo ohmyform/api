@@ -1,8 +1,21 @@
+import { Column } from 'typeorm'
+
 export class ColorsEmbedded {
-  readonly background: string
-  readonly question: string
-  readonly answer: string
-  readonly button: string
-  readonly buttonActive: string
-  readonly buttonText: string
+  @Column({ nullable: true })
+  public background?: string
+
+  @Column({ nullable: true })
+  public question?: string
+
+  @Column({ nullable: true })
+  public answer?: string
+
+  @Column({ nullable: true })
+  public button?: string
+
+  @Column({ nullable: true })
+  public buttonActive?: string
+
+  @Column({ nullable: true })
+  public buttonText?: string
 }

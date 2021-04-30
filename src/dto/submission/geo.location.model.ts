@@ -1,5 +1,5 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { GeoLocation } from '../../schema/submission.schema';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { GeoLocationEmbedded } from '../../entity/embedded/geo.location.embedded'
 
 @ObjectType('GeoLocation')
 export class GeoLocationModel {
@@ -9,7 +9,7 @@ export class GeoLocationModel {
   @Field({ nullable: true })
   city?: string
 
-  constructor(geo: GeoLocation) {
+  constructor(geo: GeoLocationEmbedded) {
     this.country = geo.country
     this.city = geo.city
   }

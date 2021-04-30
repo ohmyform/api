@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { Args, ID, Mutation } from '@nestjs/graphql';
-import { Roles } from '../../decorator/roles.decorator';
-import { User } from '../../decorator/user.decorator';
-import { DeletedModel } from '../../dto/deleted.model';
-import { UserDocument } from '../../schema/user.schema';
-import { FormDeleteService } from '../../service/form/form.delete.service';
-import { FormService } from '../../service/form/form.service';
+import { Injectable } from '@nestjs/common'
+import { Args, ID, Mutation } from '@nestjs/graphql'
+import { Roles } from '../../decorator/roles.decorator'
+import { User } from '../../decorator/user.decorator'
+import { DeletedModel } from '../../dto/deleted.model'
+import { UserEntity } from '../../entity/user.entity'
+import { FormDeleteService } from '../../service/form/form.delete.service'
+import { FormService } from '../../service/form/form.service'
 
 @Injectable()
 export class FormDeleteMutation {
@@ -18,9 +18,9 @@ export class FormDeleteMutation {
   @Mutation(() => DeletedModel)
   @Roles('admin')
   async deleteForm(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Args({ name: 'id', type: () => ID}) id: string,
-  ) {
+  ): Promise<DeletedModel> {
     const form = await this.formService.findById(id)
 
     if (!form.isLive && !await this.formService.isAdmin(form, user)) {

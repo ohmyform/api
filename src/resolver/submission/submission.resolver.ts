@@ -1,32 +1,32 @@
-import { Context, Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { User } from '../../decorator/user.decorator';
-import { SubmissionFieldModel } from '../../dto/submission/submission.field.model';
-import { SubmissionModel } from '../../dto/submission/submission.model';
-import { UserDocument } from '../../schema/user.schema';
-import { ContextCache } from '../context.cache';
+import { Context, Parent, ResolveField, Resolver } from '@nestjs/graphql'
+import { User } from '../../decorator/user.decorator'
+import { SubmissionFieldModel } from '../../dto/submission/submission.field.model'
+import { SubmissionModel } from '../../dto/submission/submission.model'
+import { FormEntity } from '../../entity/form.entity'
+import { FormFieldEntity } from '../../entity/form.field.entity'
+import { SubmissionEntity } from '../../entity/submission.entity'
+import { SubmissionFieldEntity } from '../../entity/submission.field.entity'
+import { UserEntity } from '../../entity/user.entity'
+import { ContextCache } from '../context.cache'
 
 @Resolver(() => SubmissionModel)
 export class SubmissionResolver {
   @ResolveField('fields', () => [SubmissionFieldModel])
   async getFields(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Parent() parent: SubmissionModel,
     @Context('cache') cache: ContextCache,
   ): Promise<SubmissionFieldModel[]> {
-    const submission = await cache.getSubmission(parent.id)
+    const submission = await cache.get<SubmissionEntity>(cache.getCacheKey(SubmissionEntity.name, parent.id))
 
-    if (!submission.populated('form')) {
-      submission.populate('form')
-      await submission.execPopulate()
-    }
+    cache.add(cache.getCacheKey(FormEntity.name, submission.form.id), submission.form)
 
-    cache.addForm(submission.form)
     submission.form.fields.forEach(field => {
-      cache.addFormField(field)
+      cache.add(cache.getCacheKey(FormFieldEntity.name, field.id), field)
     })
 
     return submission.fields.map(field => {
-      cache.addSubmissionField(field)
+      cache.add(cache.getCacheKey(SubmissionFieldEntity.name, field.id), field)
       return new SubmissionFieldModel(field)
     })
   }

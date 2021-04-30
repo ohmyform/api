@@ -1,5 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { UserDocument } from '../../schema/user.schema';
+import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { UserEntity } from '../../entity/user.entity'
 
 @ObjectType('User')
 export class UserModel {
@@ -30,8 +30,8 @@ export class UserModel {
   @Field({ nullable: true })
   readonly lastModified: Date
 
-  constructor(user: UserDocument) {
-    this.id = user.id
+  constructor(user: UserEntity) {
+    this.id = user.id.toString()
     this.username = user.username
     this.email = user.email
 

@@ -1,10 +1,10 @@
-import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Roles } from '../../decorator/roles.decorator';
-import { User } from '../../decorator/user.decorator';
-import { UserModel } from '../../dto/user/user.model';
-import { UserDocument } from '../../schema/user.schema';
-import { UserService } from '../../service/user/user.service';
-import { ContextCache } from '../context.cache';
+import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { Roles } from '../../decorator/roles.decorator'
+import { User } from '../../decorator/user.decorator'
+import { UserModel } from '../../dto/user/user.model'
+import { UserEntity } from '../../entity/user.entity'
+import { UserService } from '../../service/user/user.service'
+import { ContextCache } from '../context.cache'
 
 @Resolver(() => UserModel)
 export class UserResolver {
@@ -15,13 +15,13 @@ export class UserResolver {
 
   @Query(() => UserModel)
   @Roles('admin')
-  async getUserById(
+  public async getUserById(
     @Args('id', {type: () => ID}) id,
     @Context('cache') cache: ContextCache,
-  ) {
+  ): Promise<UserModel> {
     const user = await this.userService.findById(id)
 
-    cache.addUser(user)
+    cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
 
     return new UserModel(user)
   }
@@ -29,18 +29,18 @@ export class UserResolver {
   @ResolveField('roles', () => [String])
   @Roles('user')
   async getRoles(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Parent() parent: UserModel,
     @Context('cache') cache: ContextCache,
   ): Promise<string[]> {
     return await this.returnFieldForSuperuser(
-      await cache.getUser(parent.id),
+      await cache.get<UserEntity>(cache.getCacheKey(UserEntity.name, parent.id)),
       user,
       c => c.roles
     )
   }
 
-  async returnFieldForSuperuser<T>(parent: UserDocument, user: UserDocument, callback: (user: UserDocument) => T): Promise<T> {
+  async returnFieldForSuperuser<T>(parent: UserEntity, user: UserEntity, callback: (user: UserEntity) => T): Promise<T> {
     if (user.id !== parent.id && !await this.userService.isSuperuser(user)) {
       throw new Error('No access to roles')
     }

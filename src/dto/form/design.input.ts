@@ -1,5 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { ColorsInput } from './colors.input';
+import { Field, InputType } from '@nestjs/graphql'
+import { ColorsInput } from './colors.input'
 
 @InputType()
 export class DesignInput {

@@ -1,5 +1,4 @@
-import { Field, ID, InputType } from '@nestjs/graphql';
-import { GraphQLString } from 'graphql';
+import { Field, ID, InputType } from '@nestjs/graphql'
 
 @InputType()
 export class UserUpdateInput {
@@ -21,7 +20,7 @@ export class UserUpdateInput {
   @Field({ nullable: true })
   readonly password: string
 
-  @Field(() => [GraphQLString], { nullable: true })
+  @Field(() => [String], { nullable: true })
   readonly roles: string[]
 
   @Field({ nullable: true })

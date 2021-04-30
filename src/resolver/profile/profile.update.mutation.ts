@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { Args, Context, Mutation } from '@nestjs/graphql';
-import { User } from '../../decorator/user.decorator';
-import { ProfileModel } from '../../dto/profile/profile.model';
-import { ProfileUpdateInput } from '../../dto/profile/profile.update.input';
-import { UserDocument } from '../../schema/user.schema';
-import { ProfileUpdateService } from '../../service/profile/profile.update.service';
-import { ContextCache } from '../context.cache';
+import { Injectable } from '@nestjs/common'
+import { Args, Context, Mutation } from '@nestjs/graphql'
+import { User } from '../../decorator/user.decorator'
+import { ProfileModel } from '../../dto/profile/profile.model'
+import { ProfileUpdateInput } from '../../dto/profile/profile.update.input'
+import { UserEntity } from '../../entity/user.entity'
+import { ProfileUpdateService } from '../../service/profile/profile.update.service'
+import { ContextCache } from '../context.cache'
 
 @Injectable()
 export class ProfileUpdateMutation {
@@ -16,13 +16,13 @@ export class ProfileUpdateMutation {
 
   @Mutation(() => ProfileModel)
   async updateProfile(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Args({ name: 'user', type: () => ProfileUpdateInput }) input: ProfileUpdateInput,
     @Context('cache') cache: ContextCache,
   ): Promise<ProfileModel> {
     await this.updateService.update(user, input)
 
-    cache.addUser(user)
+    cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
 
     return new ProfileModel(user)
   }

@@ -1,9 +1,7 @@
 import { HttpService, Injectable } from '@nestjs/common'
-import fs from "fs"
-import { PinoLogger } from 'nestjs-pino/dist'
-import { FormDocument } from '../../schema/form.schema'
 import handlebars from 'handlebars'
-import { SubmissionDocument } from '../../schema/submission.schema'
+import { PinoLogger } from 'nestjs-pino/dist'
+import { SubmissionEntity } from '../../entity/submission.entity'
 
 @Injectable()
 export class SubmissionHookService {
@@ -13,12 +11,7 @@ export class SubmissionHookService {
   ) {
   }
 
-  public async process(submission: SubmissionDocument): Promise<void> {
-    if (!submission.populated('form')) {
-      submission.populate('form')
-      await submission.execPopulate()
-    }
-
+  public async process(submission: SubmissionEntity): Promise<void> {
     await Promise.all(submission.form.hooks.map(async (hook) => {
       if (!hook.enabled) {
         return
@@ -39,7 +32,7 @@ export class SubmissionHookService {
     }))
   }
 
-  private async format(submission: SubmissionDocument, format?: string): Promise<any> {
+  private async format(submission: SubmissionEntity, format?: string): Promise<any> {
     const fields = {}
     submission.form.fields.forEach((field) => {
       fields[field.id] = field
@@ -51,15 +44,10 @@ export class SubmissionHookService {
       created: submission.created,
       lastModified: submission.lastModified,
       fields: submission.fields.map((submissionField) => {
-        const formField = submission.form.fields.find(formField => formField.id.toString() === submissionField.field) || {
-          id: submissionField.field,
-          slug: null
-        }
-
         return {
-          field: formField.id,
-          slug: formField.slug || null,
-          ...submissionField.fieldValue
+          field: submissionField.field.id,
+          slug: submissionField.field.slug || null,
+          value: submissionField.field.value
         }
       })
     }

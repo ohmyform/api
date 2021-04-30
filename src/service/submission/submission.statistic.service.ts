@@ -1,14 +1,15 @@
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { SubmissionDocument, SubmissionSchemaName } from '../../schema/submission.schema';
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { SubmissionEntity } from '../../entity/submission.entity'
 
 export class SubmissionStatisticService {
   constructor(
-    @InjectModel(SubmissionSchemaName) private readonly submissionModel: Model<SubmissionDocument>,
+    @InjectRepository(SubmissionEntity)
+    private readonly submissionRepository: Repository<SubmissionEntity>,
   ) {
   }
 
   async getTotal(): Promise<number> {
-    return await this.submissionModel.estimatedDocumentCount();
+    return await this.submissionRepository.count();
   }
 }

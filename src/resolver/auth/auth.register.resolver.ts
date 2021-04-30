@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { Args, Mutation } from '@nestjs/graphql';
-import { PinoLogger } from 'nestjs-pino/dist';
-import { AuthJwtModel } from '../../dto/auth/auth.jwt.model';
-import { UserCreateInput } from '../../dto/user/user.create.input';
-import { AuthService } from '../../service/auth/auth.service';
-import {SettingService} from '../../service/setting.service'
-import { UserCreateService } from '../../service/user/user.create.service';
+import { Injectable } from '@nestjs/common'
+import { Args, Mutation } from '@nestjs/graphql'
+import { PinoLogger } from 'nestjs-pino/dist'
+import { AuthJwtModel } from '../../dto/auth/auth.jwt.model'
+import { UserCreateInput } from '../../dto/user/user.create.input'
+import { AuthService } from '../../service/auth/auth.service'
+import { SettingService } from '../../service/setting.service'
+import { UserCreateService } from '../../service/user/user.create.service'
 
 @Injectable()
 export class AuthRegisterResolver {

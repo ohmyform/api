@@ -1,5 +1,4 @@
 import { Field, ID, InputType } from '@nestjs/graphql'
-import { GraphQLInt } from 'graphql';
 
 @InputType()
 export class FormHookInput {

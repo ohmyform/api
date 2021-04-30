@@ -1,5 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { SubmissionDocument } from '../../schema/submission.schema';
+import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { SubmissionEntity } from '../../entity/submission.entity'
 
 @ObjectType('SubmissionProgress')
 export class SubmissionProgressModel {
@@ -18,8 +18,8 @@ export class SubmissionProgressModel {
   @Field({ nullable: true })
   readonly lastModified?: Date
 
-  constructor(submission: Partial<SubmissionDocument>) {
-    this.id = submission.id
+  constructor(submission: Partial<SubmissionEntity>) {
+    this.id = submission.id.toString()
 
     this.timeElapsed = submission.timeElapsed
     this.percentageComplete = submission.percentageComplete

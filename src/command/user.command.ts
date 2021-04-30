@@ -1,7 +1,7 @@
-import inquirer from 'inquirer';
-import { Command, Console } from 'nestjs-console';
-import { matchType, validatePassword } from '../config/fields';
-import { UserCreateService } from '../service/user/user.create.service';
+import inquirer from 'inquirer'
+import { Command, Console } from 'nestjs-console'
+import { matchType, validatePassword } from '../config/fields'
+import { UserCreateService } from '../service/user/user.create.service'
 
 @Console({
   name: 'user',

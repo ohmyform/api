@@ -1,17 +1,17 @@
-import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { Roles } from '../../decorator/roles.decorator';
-import { User } from '../../decorator/user.decorator';
-import { DesignModel } from '../../dto/form/design.model';
-import { FormFieldModel } from '../../dto/form/form.field.model';
+import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { Roles } from '../../decorator/roles.decorator'
+import { User } from '../../decorator/user.decorator'
+import { DesignModel } from '../../dto/form/design.model'
+import { FormFieldModel } from '../../dto/form/form.field.model'
 import { FormHookModel } from '../../dto/form/form.hook.model'
-import { FormModel } from '../../dto/form/form.model';
-import { PageModel } from '../../dto/form/page.model';
-import { RespondentNotificationsModel } from '../../dto/form/respondent.notifications.model';
-import { SelfNotificationsModel } from '../../dto/form/self.notifications.model';
-import { UserModel } from '../../dto/user/user.model';
-import { UserDocument } from '../../schema/user.schema';
-import { FormService } from '../../service/form/form.service';
-import { ContextCache } from '../context.cache';
+import { FormModel } from '../../dto/form/form.model'
+import { FormNotificationModel } from '../../dto/form/form.notification.model'
+import { PageModel } from '../../dto/form/page.model'
+import { UserModel } from '../../dto/user/user.model'
+import { FormEntity } from '../../entity/form.entity'
+import { UserEntity } from '../../entity/user.entity'
+import { FormService } from '../../service/form/form.service'
+import { ContextCache } from '../context.cache'
 
 @Resolver(() => FormModel)
 export class FormResolver {
@@ -20,41 +20,24 @@ export class FormResolver {
   ) {
   }
 
-  @Query(() => FormModel)
-  async getFormById(
-    @User() user: UserDocument,
-    @Args('id', {type: () => ID}) id,
-    @Context('cache') cache: ContextCache,
-  ) {
-    const form = await this.formService.findById(id)
-
-    if (!form.isLive && !await this.formService.isAdmin(form, user)) {
-      throw new Error('invalid form')
-    }
-
-    cache.addForm(form)
-
-    return new FormModel(form)
-  }
-
   @ResolveField('fields', () => [FormFieldModel])
   async getFields(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormFieldModel[]> {
-    const form = await cache.getForm(parent.id)
+    const form = await cache.get(cache.getCacheKey(FormEntity.name, parent.id))
 
     return form.fields.map(field => new FormFieldModel(field))
   }
 
   @ResolveField('hooks', () => [FormHookModel])
   async getHooks(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormHookModel[]> {
-    const form = await cache.getForm(parent.id)
+    const form = await cache.get(cache.getCacheKey(FormEntity.name, parent.id))
 
     return form.hooks.map(hook => new FormHookModel(hook))
   }
@@ -62,11 +45,11 @@ export class FormResolver {
   @ResolveField('isLive', () => Boolean)
   @Roles('admin')
   async getRoles(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<boolean> {
-    const form = await cache.getForm(parent.id)
+    const form = await cache.get(cache.getCacheKey(FormEntity.name, parent.id))
 
     if (!await this.formService.isAdmin(form, user)) {
       throw new Error('no access to field')
@@ -75,45 +58,29 @@ export class FormResolver {
     return form.isLive
   }
 
-  @ResolveField('selfNotifications', () => SelfNotificationsModel)
+  @ResolveField('notifications', () => [FormNotificationModel])
   @Roles('admin')
-  async getSelfNotifications(
-    @User() user: UserDocument,
+  async getNotifications(
+    @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
-  ): Promise<SelfNotificationsModel> {
-    const form = await cache.getForm(parent.id)
+  ): Promise<FormNotificationModel[]> {
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
 
     if (!await this.formService.isAdmin(form, user)) {
       throw new Error('no access to field')
     }
 
-    return new SelfNotificationsModel(form.selfNotifications)
-  }
-
-  @ResolveField('respondentNotifications', () => RespondentNotificationsModel)
-  @Roles('admin')
-  async getRespondentNotifications(
-    @User() user: UserDocument,
-    @Parent() parent: FormModel,
-    @Context('cache') cache: ContextCache,
-  ): Promise<RespondentNotificationsModel> {
-    const form = await cache.getForm(parent.id)
-
-    if (!await this.formService.isAdmin(form, user)) {
-      throw new Error('no access to field')
-    }
-
-    return new RespondentNotificationsModel(form.respondentNotifications)
+    return form.notifications.map(notification => new FormNotificationModel(notification))
   }
 
   @ResolveField('design', () => DesignModel)
   async getDesign(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<DesignModel> {
-    const form = await cache.getForm(parent.id)
+    const form = await cache.get(cache.getCacheKey(FormEntity.name, parent.id))
 
     return new DesignModel(form.design)
   }
@@ -123,7 +90,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<PageModel> {
-    const form = await cache.getForm(parent.id)
+    const form = await cache.get(cache.getCacheKey(FormEntity.name, parent.id))
 
     return new PageModel(form.startPage)
   }
@@ -133,7 +100,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<PageModel> {
-    const form = await cache.getForm(parent.id)
+    const form = await cache.get(cache.getCacheKey(FormEntity.name, parent.id))
 
     return new PageModel(form.endPage)
   }
@@ -144,7 +111,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<UserModel> {
-    const form = await cache.getForm(parent.id)
+    const form = await cache.get(cache.getCacheKey(FormEntity.name, parent.id))
 
     if (!form.populated('admin')) {
       form.populate('admin')

@@ -1,21 +1,17 @@
-import { MailerModule } from '@nestjs-modules/mailer';
-import { HttpModule, RequestMethod } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { GraphQLModule } from '@nestjs/graphql';
-import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
-import { MongooseModule } from '@nestjs/mongoose';
-import { MongooseModuleOptions } from '@nestjs/mongoose/dist/interfaces/mongoose-options.interface';
-import { ServeStaticModule } from '@nestjs/serve-static';
+import { MailerModule } from '@nestjs-modules/mailer'
+import { HttpModule, RequestMethod } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { GraphQLModule } from '@nestjs/graphql'
+import { JwtModule, JwtModuleOptions } from '@nestjs/jwt'
+import { ServeStaticModule } from '@nestjs/serve-static'
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm'
-import crypto from 'crypto';
-import { Request } from 'express-serve-static-core';
-import { IncomingHttpHeaders } from 'http';
-import { ConsoleModule } from 'nestjs-console';
-import { LoggerModule, Params as LoggerModuleParams } from 'nestjs-pino/dist';
-import { join } from 'path';
-import { DatabaseType } from 'typeorm'
+import crypto from 'crypto'
+import { Request } from 'express-serve-static-core'
+import { IncomingHttpHeaders } from 'http'
+import { ConsoleModule } from 'nestjs-console'
+import { LoggerModule, Params as LoggerModuleParams } from 'nestjs-pino/dist'
+import { join } from 'path'
 import { entities } from './entity'
-import { schema } from './schema';
 
 export const LoggerConfig: LoggerModuleParams = {
   pinoHttp: {
@@ -110,31 +106,19 @@ export const imports = [
     imports: [ConfigModule],
     inject: [ConfigService],
     useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
-      name: 'ohmyform',
-      url: configService.get<string>('DB_URI', 'sqlite://data.sqlite') as any,
-      entityPrefix: configService.get<string>('DB_TABLE_PREFIX', ''),
-      logging: configService.get<string>('DB_LOGGING', 'false') === 'true',
-      entities,
-      migrationsTableName: 'nest_migrations',
-      migrations: [
-        `${__dirname}/**/migrations/**/*{.ts,.js}`,
-      ],
-      migrationsRun: configService.get<boolean>('DB_MIGRATE', true),
-    }),
+        name: 'ohmyform',
+        type: configService.get<string>('DB_TYPE', 'sqlite') as any,
+        url: configService.get<string>('DB_URI', 'sqlite://data.sqlite'),
+        entityPrefix: configService.get<string>('DB_TABLE_PREFIX', ''),
+        logging: configService.get<string>('DB_LOGGING', 'false') === 'true',
+        entities,
+        migrations: [
+          `${__dirname}/**/migrations/**/*{.ts,.js}`,
+        ],
+        migrationsRun: configService.get<boolean>('DB_MIGRATE', true),
+      }),
   }),
-  MongooseModule.forRootAsync({
-    imports: [ConfigModule],
-    inject: [ConfigService],
-    useFactory: async (configService: ConfigService): Promise<MongooseModuleOptions> => ({
-      uri: configService.get<string>('MONGODB_URI', 'mongodb://localhost/ohmyform'),
-      // takes care of deprecations from https://mongoosejs.com/docs/deprecations.html
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    })
-  }),
-  MongooseModule.forFeature(schema),
+  TypeOrmModule.forFeature(entities),
   MailerModule.forRootAsync({
     imports: [ConfigModule],
     inject: [ConfigService],

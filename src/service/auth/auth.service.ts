@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { PinoLogger } from 'nestjs-pino/dist';
-import { AuthJwtModel } from '../../dto/auth/auth.jwt.model';
-import { UserDocument } from '../../schema/user.schema';
-import { UserService } from '../user/user.service';
-import { PasswordService } from './password.service';
+import { Injectable } from '@nestjs/common'
+import { JwtService } from '@nestjs/jwt'
+import { PinoLogger } from 'nestjs-pino/dist'
+import { AuthJwtModel } from '../../dto/auth/auth.jwt.model'
+import { UserEntity } from '../../entity/user.entity'
+import { UserService } from '../user/user.service'
+import { PasswordService } from './password.service'
 
 @Injectable()
 export class AuthService {
@@ -15,7 +15,7 @@ export class AuthService {
     private logger: PinoLogger,
   ) {}
 
-  async validateUser(username: string, password: string): Promise<UserDocument> {
+  async validateUser(username: string, password: string): Promise<UserEntity> {
     // TODO only allow login for verified users!
 
     try {
@@ -30,7 +30,7 @@ export class AuthService {
     return null;
   }
 
-  async login(user: UserDocument): Promise<AuthJwtModel> {
+  async login(user: UserEntity): Promise<AuthJwtModel> {
     return new AuthJwtModel({
       accessToken: this.jwtService.sign({
         username: user.username,

@@ -1,5 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { FormDocument } from '../../schema/form.schema';
+import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { FormEntity } from '../../entity/form.entity'
 
 @ObjectType('Form')
 export class FormModel {
@@ -21,8 +21,8 @@ export class FormModel {
   @Field()
   readonly showFooter: boolean
 
-  constructor(form: FormDocument) {
-    this.id = form.id
+  constructor(form: FormEntity) {
+    this.id = form.id.toString()
     this.title = form.title
     this.created = form.created
     this.lastModified = form.lastModified

@@ -1,5 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { GraphQLInt } from 'graphql';
+import { Field, InputType } from '@nestjs/graphql'
+import { GraphQLInt } from 'graphql'
 
 @InputType()
 export class FormFieldRatingInput {

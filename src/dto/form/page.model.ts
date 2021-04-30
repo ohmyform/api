@@ -1,6 +1,6 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { FormPage } from '../../schema/form.schema';
-import { ButtonModel } from './button.model';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { PageEntity } from '../../entity/page.entity'
+import { ButtonModel } from './button.model'
 
 @ObjectType('Page')
 export class PageModel {
@@ -19,7 +19,7 @@ export class PageModel {
   @Field(() => [ButtonModel])
   readonly buttons: ButtonModel[]
 
-  constructor(page: Partial<FormPage>) {
+  constructor(page: Partial<PageEntity>) {
     this.show = page.show
     this.title = page.title
     this.paragraph = page.paragraph

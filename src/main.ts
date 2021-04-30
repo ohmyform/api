@@ -1,9 +1,9 @@
-import { NestApplicationOptions, ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
-import cors from 'cors';
-import { Logger, PinoLogger } from 'nestjs-pino/dist';
-import { LoggerConfig } from './app.imports';
-import { AppModule } from './app.module';
+import { NestApplicationOptions, ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
+import cors from 'cors'
+import { Logger, PinoLogger } from 'nestjs-pino/dist'
+import { LoggerConfig } from './app.imports'
+import { AppModule } from './app.module'
 
 (async () => {
   const options: NestApplicationOptions =  {

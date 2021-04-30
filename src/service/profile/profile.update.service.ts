@@ -1,38 +1,53 @@
-import { Injectable } from '@nestjs/common';
-import { ProfileUpdateInput } from '../../dto/profile/profile.update.input';
-import { UserDocument } from '../../schema/user.schema';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { ProfileUpdateInput } from '../../dto/profile/profile.update.input'
+import { UserEntity } from '../../entity/user.entity'
+import { PasswordService } from '../auth/password.service'
 
 @Injectable()
 export class ProfileUpdateService {
-  async update(user: UserDocument, input: ProfileUpdateInput): Promise<UserDocument> {
+  constructor(
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
+    private readonly passwordService: PasswordService,
+  ) {
+  }
+
+  async update(user: UserEntity, input: ProfileUpdateInput): Promise<UserEntity> {
     if (input.firstName !== undefined) {
-      user.set('firstName', input.firstName)
+      user.firstName = input.firstName
     }
 
     if (input.lastName !== undefined) {
-      user.set('lastName', input.lastName)
+      user.lastName = input.lastName
     }
 
-    if (input.email !== undefined) {
-      user.set('email', input.email)
+    if (input.email !== undefined && user.email !== input.email) {
+      user.email = input.email
       // TODO request email verification
+
+      if (undefined !== await this.userRepository.findOne({ email: input.email })) {
+        throw new Error('email already in use')
+      }
     }
 
-    if (input.username !== undefined) {
-      user.set('username', input.username)
+    if (input.username !== undefined && user.username !== input.username) {
+      user.username = input.username
+
+      if (undefined !== await this.userRepository.findOne({ username: input.username })) {
+        throw new Error('username already in use')
+      }
     }
 
     if (input.language !== undefined) {
-      user.set('language', input.language)
+      user.language = input.language
     }
 
     if (input.password !== undefined) {
-      // user.set('language', input.language)
-      // TODO password handling
+      user.passwordHash = await this.passwordService.hash(input.password)
     }
 
-    await user.save()
-
-    return user
+    return await this.userRepository.save(user)
   }
 }

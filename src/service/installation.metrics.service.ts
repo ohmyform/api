@@ -1,7 +1,7 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import MatomoTracker from 'matomo-tracker';
-import { PinoLogger } from 'nestjs-pino/dist';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import MatomoTracker from 'matomo-tracker'
+import { PinoLogger } from 'nestjs-pino/dist'
 
 @Injectable()
 export class InstallationMetricsService implements OnApplicationBootstrap {

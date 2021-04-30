@@ -1,16 +1,16 @@
-import { ConfigService } from '@nestjs/config';
-import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { PubSub, PubSubEngine } from 'graphql-subscriptions';
-import Redis from 'ioredis';
-import { PinoLogger } from 'nestjs-pino/dist';
-import { authServices } from './auth';
-import { formServices } from './form';
-import { InstallationMetricsService } from './installation.metrics.service';
-import { MailService } from './mail.service';
-import { profileServices } from './profile';
-import {SettingService} from './setting.service'
-import { submissionServices } from './submission';
-import { userServices } from './user';
+import { ConfigService } from '@nestjs/config'
+import { RedisPubSub } from 'graphql-redis-subscriptions'
+import { PubSub, PubSubEngine } from 'graphql-subscriptions'
+import Redis from 'ioredis'
+import { PinoLogger } from 'nestjs-pino/dist'
+import { authServices } from './auth'
+import { formServices } from './form'
+import { InstallationMetricsService } from './installation.metrics.service'
+import { MailService } from './mail.service'
+import { profileServices } from './profile'
+import { SettingService } from './setting.service'
+import { submissionServices } from './submission'
+import { userServices } from './user'
 
 export const services = [
   ...userServices,

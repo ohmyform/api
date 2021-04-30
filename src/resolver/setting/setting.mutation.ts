@@ -1,5 +1,5 @@
-import {Injectable} from '@nestjs/common'
-import {Roles} from '../../decorator/roles.decorator'
+import { Injectable } from '@nestjs/common'
+import { Roles } from '../../decorator/roles.decorator'
 
 @Injectable()
 export class SettingMutation {

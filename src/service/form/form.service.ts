@@ -1,46 +1,42 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model, Types } from 'mongoose';
-import { FormDocument, FormSchemaName } from '../../schema/form.schema';
-import { UserDocument } from '../../schema/user.schema';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { FormEntity } from '../../entity/form.entity'
+import { UserEntity } from '../../entity/user.entity'
 
 @Injectable()
 export class FormService {
   constructor(
-    @InjectModel(FormSchemaName) private formModel: Model<FormDocument>,
+    @InjectRepository(FormEntity)
+    private readonly formRepository: Repository<FormEntity>,
   ) {
   }
 
-  async isAdmin(form: FormDocument, user: UserDocument): Promise<boolean> {
+  async isAdmin(form: FormEntity, user: UserEntity): Promise<boolean> {
     if (user.roles.includes('superuser')) {
       return true
     }
 
-    return Types.ObjectId(form.admin.id).equals(Types.ObjectId(user.id))
+    return form.admin.id === user.id
   }
 
-  async find(start: number, limit: number, sort: any = {}, user?: UserDocument): Promise<[FormDocument[], number]> {
-    let conditions: FilterQuery<FormDocument>
+  async find(start: number, limit: number, sort: any = {}, user?: UserEntity): Promise<[FormEntity[], number]> {
+    const qb = this.formRepository.createQueryBuilder('f')
 
     if (user) {
-      conditions = {
-        admin: user
-      }
+      qb.where('f.admin = :user', { user: user.id })
     }
 
-    return [
-      await this.formModel
-        .find(conditions)
-        .sort(sort)
-        .skip(start)
-        .limit(limit),
-      await this.formModel
-        .countDocuments(conditions)
-    ]
+    // TODO readd sort
+
+    qb.skip(start)
+    qb.take(limit)
+
+    return await qb.getManyAndCount()
   }
 
-  async findById(id: string): Promise<FormDocument> {
-    const form = await this.formModel.findById(id);
+  async findById(id: string): Promise<FormEntity> {
+    const form = await this.formRepository.findOne(id);
 
     if (!form) {
       throw new Error('no form found')

@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { FormFieldEntity } from './form.field.entity'
 
 type LogicAction = 'visible' | 'require' | 'disable' | 'jumpTo'

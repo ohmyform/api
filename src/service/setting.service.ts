@@ -1,6 +1,6 @@
-import {Injectable} from '@nestjs/common'
-import {ConfigService} from '@nestjs/config'
-import {SettingModel} from '../dto/setting/setting.model'
+import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { SettingModel } from '../dto/setting/setting.model'
 
 @Injectable()
 export class SettingService {

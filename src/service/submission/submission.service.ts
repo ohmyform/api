@@ -1,38 +1,36 @@
-import { InjectModel } from '@nestjs/mongoose';
-import { FilterQuery, Model } from 'mongoose';
-import { FormDocument } from '../../schema/form.schema';
-import { SubmissionDocument, SubmissionSchemaName } from '../../schema/submission.schema';
-import { SubmissionTokenService } from './submission.token.service';
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { FormEntity } from '../../entity/form.entity'
+import { SubmissionEntity } from '../../entity/submission.entity'
+import { SubmissionTokenService } from './submission.token.service'
 
 export class SubmissionService {
   constructor(
-    @InjectModel(SubmissionSchemaName) private readonly submissionModel: Model<SubmissionDocument>,
+    @InjectRepository(SubmissionEntity)
+    private readonly submissionRepository: Repository<SubmissionEntity>,
     private readonly tokenService: SubmissionTokenService
   ) {
   }
 
-  async isOwner(submission: SubmissionDocument, token: string): Promise<boolean> {
+  async isOwner(submission: SubmissionEntity, token: string): Promise<boolean> {
     return await this.tokenService.verify(token, submission.tokenHash)
   }
 
-  async find(form: FormDocument, start: number, limit: number, sort: any = {}): Promise<[SubmissionDocument[], number]> {
-    const conditions: FilterQuery<SubmissionDocument> = {
-      form
-    }
+  async find(form: FormEntity, start: number, limit: number, sort: any = {}): Promise<[SubmissionEntity[], number]> {
+    const qb = this.submissionRepository.createQueryBuilder('s')
 
-    return [
-      await this.submissionModel
-        .find(conditions)
-        .sort(sort)
-        .skip(start)
-        .limit(limit),
-      await this.submissionModel
-        .countDocuments(conditions)
-    ]
+    qb.where('s.form = :form', { form: form.id })
+
+    // TODO readd sort
+
+    qb.skip(start)
+    qb.take(limit)
+
+    return await qb.getManyAndCount()
   }
 
-  async findById(id: string): Promise<SubmissionDocument> {
-    const submission = await this.submissionModel.findById(id);
+  async findById(id: string): Promise<SubmissionEntity> {
+    const submission = await this.submissionRepository.findOne(id);
 
     if (!submission) {
       throw new Error('no form found')

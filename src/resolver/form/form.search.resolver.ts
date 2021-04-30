@@ -1,24 +1,25 @@
-import { Args, Context, Query, Resolver } from '@nestjs/graphql';
-import { GraphQLInt } from 'graphql';
-import { User } from '../../decorator/user.decorator';
-import { FormModel } from '../../dto/form/form.model';
-import { PagerFormModel } from '../../dto/form/pager.form.model';
-import { UserDocument } from '../../schema/user.schema';
-import { FormService } from '../../service/form/form.service';
-import { ContextCache } from '../context.cache';
+import { Args, Context, Query, Resolver } from '@nestjs/graphql'
+import { GraphQLInt } from 'graphql'
+import { User } from '../../decorator/user.decorator'
+import { FormModel } from '../../dto/form/form.model'
+import { FormPagerModel } from '../../dto/form/form.pager.model'
+import { FormEntity } from '../../entity/form.entity'
+import { UserEntity } from '../../entity/user.entity'
+import { FormService } from '../../service/form/form.service'
+import { ContextCache } from '../context.cache'
 
-@Resolver(() => PagerFormModel)
+@Resolver(() => FormPagerModel)
 export class FormSearchResolver {
   constructor(
     private readonly formService: FormService,
   ) {
   }
 
-  @Query(() => PagerFormModel)
+  @Query(() => FormPagerModel)
   async listForms(
-    @User() user: UserDocument,
-    @Args('start', {type: () => GraphQLInt, defaultValue: 0, nullable: true}) start,
-    @Args('limit', {type: () => GraphQLInt, defaultValue: 50, nullable: true}) limit,
+    @User() user: UserEntity,
+    @Args('start', {type: () => GraphQLInt, defaultValue: 0, nullable: true}) start: number,
+    @Args('limit', {type: () => GraphQLInt, defaultValue: 50, nullable: true}) limit: number,
     @Context('cache') cache: ContextCache,
   ) {
     const [forms, total] = await this.formService.find(
@@ -28,9 +29,9 @@ export class FormSearchResolver {
       user.roles.includes('superuser') ? null : user,
     )
 
-    forms.forEach(form => cache.addForm(form))
+    forms.forEach(form => cache.add(cache.getCacheKey(FormEntity.name, form.id), form))
 
-    return new PagerFormModel(
+    return new FormPagerModel(
       forms.map(form => new FormModel(form)),
       total,
       limit,

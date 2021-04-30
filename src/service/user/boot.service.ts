@@ -1,8 +1,8 @@
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { PinoLogger } from 'nestjs-pino/dist';
-import { UserCreateService } from './user.create.service';
-import { UserService } from './user.service';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import { PinoLogger } from 'nestjs-pino/dist'
+import { UserCreateService } from './user.create.service'
+import { UserService } from './user.service'
 
 @Injectable()
 export class BootService implements OnApplicationBootstrap {
@@ -41,17 +41,17 @@ export class BootService implements OnApplicationBootstrap {
       return
     } catch (e) {}
 
-    const user = await this.createService.create({
-      username,
-      email,
-      password,
-    })
-
-    user.set('roles', ['user', 'admin', 'superuser'])
     try {
-      await user.save()
+      await this.createService.create({
+        username,
+        email,
+        password,
+      }, ['user', 'admin', 'superuser'])
     } catch (e) {
-      this.logger.error('could not create admin user')
+      this.logger.error({
+        error: e,
+      }, 'could not create admin user')
+      return
     }
 
     this.logger.info('new root user created')

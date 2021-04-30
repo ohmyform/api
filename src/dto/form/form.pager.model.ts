@@ -1,9 +1,9 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { GraphQLInt } from 'graphql';
-import { FormModel } from './form.model';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { GraphQLInt } from 'graphql'
+import { FormModel } from './form.model'
 
-@ObjectType('PagerForm')
-export class PagerFormModel {
+@ObjectType('FormPager')
+export class FormPagerModel {
   @Field(() => [FormModel])
   entries: FormModel[]
 

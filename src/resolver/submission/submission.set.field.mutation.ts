@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { Args, Context, ID, Mutation } from '@nestjs/graphql';
-import { User } from '../../decorator/user.decorator';
-import { SubmissionProgressModel } from '../../dto/submission/submission.progress.model';
-import { SubmissionSetFieldInput } from '../../dto/submission/submission.set.field.input';
-import { UserDocument } from '../../schema/user.schema';
-import { SubmissionService } from '../../service/submission/submission.service';
-import { SubmissionSetFieldService } from '../../service/submission/submission.set.field.service';
-import { ContextCache } from '../context.cache';
+import { Injectable } from '@nestjs/common'
+import { Args, Context, ID, Mutation } from '@nestjs/graphql'
+import { User } from '../../decorator/user.decorator'
+import { SubmissionProgressModel } from '../../dto/submission/submission.progress.model'
+import { SubmissionSetFieldInput } from '../../dto/submission/submission.set.field.input'
+import { SubmissionEntity } from '../../entity/submission.entity'
+import { UserEntity } from '../../entity/user.entity'
+import { SubmissionService } from '../../service/submission/submission.service'
+import { SubmissionSetFieldService } from '../../service/submission/submission.set.field.service'
+import { ContextCache } from '../context.cache'
 
 @Injectable()
 export class SubmissionSetFieldMutation {
@@ -18,7 +19,7 @@ export class SubmissionSetFieldMutation {
 
   @Mutation(() => SubmissionProgressModel)
   async submissionSetField(
-    @User() user: UserDocument,
+    @User() user: UserEntity,
     @Args({ name: 'submission', type: () => ID }) id: string,
     @Args({ name: 'field', type: () => SubmissionSetFieldInput }) input: SubmissionSetFieldInput,
     @Context('cache') cache: ContextCache,
@@ -31,7 +32,7 @@ export class SubmissionSetFieldMutation {
 
     await this.setFieldService.saveField(submission, input)
 
-    cache.addSubmission(submission)
+    cache.add(cache.getCacheKey(SubmissionEntity.name, submission.id), submission)
 
     return new SubmissionProgressModel(submission)
   }

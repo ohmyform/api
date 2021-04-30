@@ -1,6 +1,6 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Design } from '../../schema/form.schema';
-import { ColorsModel } from './colors.model';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { DesignEmbedded } from '../../entity/embedded/design.embedded'
+import { ColorsModel } from './colors.model'
 
 @ObjectType('Design')
 export class DesignModel {
@@ -10,7 +10,7 @@ export class DesignModel {
   @Field({ nullable: true })
   readonly font?: string
 
-  constructor(partial: Partial<Design>) {
+  constructor(partial: Partial<DesignEmbedded>) {
     this.colors = new ColorsModel(partial.colors)
     this.font = partial.font
   }

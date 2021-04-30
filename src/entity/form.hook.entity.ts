@@ -10,11 +10,11 @@ export class FormHookEntity {
   public form: FormEntity
 
   @Column()
-  readonly enabled: boolean
+  public enabled: boolean
 
   @Column()
-  readonly url: string
+  public url: string
 
   @Column({ nullable: true })
-  readonly format?: string
+  public format?: string
 }

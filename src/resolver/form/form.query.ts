@@ -1,37 +1,36 @@
-import { Injectable } from '@nestjs/common'
-import { Args, Context, Mutation } from '@nestjs/graphql'
+import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import { Roles } from '../../decorator/roles.decorator'
 import { User } from '../../decorator/user.decorator'
+import { DesignModel } from '../../dto/form/design.model'
+import { FormFieldModel } from '../../dto/form/form.field.model'
+import { FormHookModel } from '../../dto/form/form.hook.model'
 import { FormModel } from '../../dto/form/form.model'
-import { FormUpdateInput } from '../../dto/form/form.update.input'
+import { FormNotificationModel } from '../../dto/form/form.notification.model'
+import { PageModel } from '../../dto/form/page.model'
+import { UserModel } from '../../dto/user/user.model'
 import { FormEntity } from '../../entity/form.entity'
 import { UserEntity } from '../../entity/user.entity'
 import { FormService } from '../../service/form/form.service'
-import { FormUpdateService } from '../../service/form/form.update.service'
 import { ContextCache } from '../context.cache'
 
-@Injectable()
-export class FormUpdateMutation {
+@Resolver(() => FormModel)
+export class FormResolver {
   constructor(
-    private readonly updateService: FormUpdateService,
     private readonly formService: FormService,
   ) {
   }
 
-  @Mutation(() => FormModel)
-  @Roles('admin')
-  async updateForm(
+  @Query(() => FormModel)
+  async getFormById(
     @User() user: UserEntity,
-    @Args({ name: 'form', type: () => FormUpdateInput }) input: FormUpdateInput,
+    @Args('id', {type: () => ID}) id,
     @Context('cache') cache: ContextCache,
   ): Promise<FormModel> {
-    const form = await this.formService.findById(input.id)
+    const form = await this.formService.findById(id)
 
     if (!form.isLive && !await this.formService.isAdmin(form, user)) {
       throw new Error('invalid form')
     }
-
-    await this.updateService.update(form, input)
 
     cache.add(cache.getCacheKey(FormEntity.name, form.id), form)
 

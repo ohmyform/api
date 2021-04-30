@@ -1,12 +1,12 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { SubmissionDocument } from '../../schema/submission.schema';
-import { DeviceModel } from './device.model';
-import { GeoLocationModel } from './geo.location.model';
+import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { SubmissionEntity } from '../../entity/submission.entity'
+import { DeviceModel } from './device.model'
+import { GeoLocationModel } from './geo.location.model'
 
 @ObjectType('Submission')
 export class SubmissionModel {
   @Field(() => ID)
-  readonly id: string
+  readonly id: number
 
   @Field()
   readonly ipAddr: string
@@ -29,7 +29,7 @@ export class SubmissionModel {
   @Field({ nullable: true })
   readonly lastModified?: Date
 
-  constructor(submission: SubmissionDocument) {
+  constructor(submission: SubmissionEntity) {
     this.id = submission.id
 
     this.ipAddr = submission.ipAddr

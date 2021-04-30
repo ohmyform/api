@@ -1,13 +1,13 @@
-import { MailerService } from '@nestjs-modules/mailer';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import fs from 'fs';
-import handlebars from 'handlebars';
-import htmlToText from 'html-to-text';
-import mjml2html from 'mjml';
-import { PinoLogger } from 'nestjs-pino/dist';
-import { join } from 'path';
-import { defaultLanguage } from '../config/languages';
+import { MailerService } from '@nestjs-modules/mailer'
+import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
+import fs from 'fs'
+import handlebars from 'handlebars'
+import htmlToText from 'html-to-text'
+import mjml2html from 'mjml'
+import { PinoLogger } from 'nestjs-pino/dist'
+import { join } from 'path'
+import { defaultLanguage } from '../config/languages'
 
 @Injectable()
 export class MailService {

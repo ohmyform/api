@@ -1,11 +1,11 @@
-import {Injectable} from '@nestjs/common'
-import {Args, ID, Query} from '@nestjs/graphql'
-import {Roles} from '../../decorator/roles.decorator'
-import {User} from '../../decorator/user.decorator'
-import {PagerSettingModel} from '../../dto/setting/pager.setting.model'
-import {SettingModel} from '../../dto/setting/setting.model'
-import {UserDocument} from '../../schema/user.schema'
-import {SettingService} from '../../service/setting.service'
+import { Injectable } from '@nestjs/common'
+import { Args, ID, Query } from '@nestjs/graphql'
+import { Roles } from '../../decorator/roles.decorator'
+import { User } from '../../decorator/user.decorator'
+import { SettingModel } from '../../dto/setting/setting.model'
+import { SettingPagerModel } from '../../dto/setting/setting.pager.model'
+import { UserEntity } from '../../entity/user.entity'
+import { SettingService } from '../../service/setting.service'
 
 @Injectable()
 export class SettingResolver {
@@ -14,11 +14,11 @@ export class SettingResolver {
   ) {
   }
 
-  @Query(() => PagerSettingModel)
+  @Query(() => SettingPagerModel)
   @Roles('superuser')
-  async getSettings(): Promise<PagerSettingModel> {
+  async getSettings(): Promise<SettingPagerModel> {
     // TODO https://github.com/ohmyform/api/issues/3
-    return new PagerSettingModel(
+    return new SettingPagerModel(
       [],
       0,
       0,
@@ -29,7 +29,7 @@ export class SettingResolver {
   @Query(() => SettingModel)
   async getSetting(
     @Args('key', {type: () => ID}) key: string,
-    @User() user: UserDocument,
+    @User() user: UserEntity,
   ): Promise<SettingModel> {
     if (!this.settingService.isPublicKey(key) && !user.roles.includes('superuser')) {
       throw new Error(`no access to key ${key}`)

@@ -1,14 +1,15 @@
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { UserDocument, UserSchemaName } from '../../schema/user.schema';
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { UserEntity } from '../../entity/user.entity'
 
 export class UserStatisticService {
   constructor(
-    @InjectModel(UserSchemaName) private userModel: Model<UserDocument>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {
   }
 
   async getTotal(): Promise<number> {
-    return await this.userModel.estimatedDocumentCount();
+    return await this.userRepository.count();
   }
 }

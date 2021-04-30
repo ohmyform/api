@@ -1,18 +1,19 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { PinoLogger } from 'nestjs-pino/dist';
-import {rolesType} from '../../config/roles'
-import { UserCreateInput } from '../../dto/user/user.create.input';
-import { UserDocument, UserSchemaName } from '../../schema/user.schema';
-import { PasswordService } from '../auth/password.service';
-import { MailService } from '../mail.service';
-import {SettingService} from '../setting.service'
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { PinoLogger } from 'nestjs-pino/dist'
+import { Repository } from 'typeorm'
+import { rolesType } from '../../config/roles'
+import { UserCreateInput } from '../../dto/user/user.create.input'
+import { UserEntity } from '../../entity/user.entity'
+import { PasswordService } from '../auth/password.service'
+import { MailService } from '../mail.service'
+import { SettingService } from '../setting.service'
 
 @Injectable()
 export class UserCreateService {
   constructor(
-    @InjectModel(UserSchemaName) private userModel: Model<UserDocument>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
     private readonly mailerService: MailService,
     private readonly logger: PinoLogger,
     private readonly passwordService: PasswordService,
@@ -33,25 +34,33 @@ export class UserCreateService {
     return ['user']
   }
 
-  async create(user: UserCreateInput): Promise<UserDocument> {
-    // TODO check for uniqueness of email & username!
+  async create(input: UserCreateInput, roles?: rolesType): Promise<UserEntity> {
+    if (undefined !== await this.userRepository.findOne({ username: input.username })) {
+      throw new Error('username already in use')
+    }
 
+    if (undefined !== await this.userRepository.findOne({ email: input.email })) {
+      throw new Error('email already in use')
+    }
 
-    const entry = new this.userModel({
-      ...user,
-      roles: await this.getDefaultRoles(),
-      passwordHash: await this.passwordService.hash(user.password),
-    })
+    let user = new UserEntity()
 
-    await entry.save({
-      validateBeforeSave: true,
-    })
+    user.provider = 'local'
+    user.username = input.username
+    user.email = input.email
+    user.firstName = input.firstName
+    user.lastName = input.lastName
+    user.language = input.language ?? 'en'
+    user.roles = roles ? roles : await this.getDefaultRoles()
+    user.passwordHash = await this.passwordService.hash(input.password)
+
+    user = await this.userRepository.save(user)
 
     const sent = await this.mailerService.send(
-      entry.email,
+      user.email,
       'user/created',
       {
-        username: entry.username,
+        username: user.username,
         confirm: 'https://www.google.com', // TODO confirm url
       }
     )
@@ -61,6 +70,6 @@ export class UserCreateService {
       this.logger.warn('failed to send email for user creation')
     }
 
-    return entry
+    return user
   }
 }

@@ -1,32 +1,32 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { Colors } from '../../schema/form.schema';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { ColorsEmbedded } from '../../entity/embedded/colors.embedded'
 
 @ObjectType('Colors')
 export class ColorsModel {
   @Field()
-  readonly backgroundColor: string
+  readonly background: string
 
   @Field()
-  readonly questionColor: string
+  readonly question: string
 
   @Field()
-  readonly answerColor: string
+  readonly answer: string
 
   @Field()
-  readonly buttonColor: string
+  readonly button: string
 
   @Field()
-  readonly buttonActiveColor: string
+  readonly buttonActive: string
 
   @Field()
-  readonly buttonTextColor: string
+  readonly buttonText: string
 
-  constructor(partial: Partial<Colors>) {
-    this.backgroundColor = partial.backgroundColor
-    this.questionColor = partial.questionColor
-    this.answerColor = partial.answerColor
-    this.buttonColor = partial.buttonColor
-    this.buttonActiveColor = partial.buttonActiveColor
-    this.buttonTextColor = partial.buttonTextColor
+  constructor(partial: Partial<ColorsEmbedded>) {
+    this.background = partial.background
+    this.question = partial.question
+    this.answer = partial.answer
+    this.button = partial.button
+    this.buttonActive = partial.buttonActive
+    this.buttonText = partial.buttonText
   }
 }

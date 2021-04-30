@@ -1,9 +1,9 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { GraphQLInt } from 'graphql';
-import {SettingModel} from './setting.model'
+import { Field, ObjectType } from '@nestjs/graphql'
+import { GraphQLInt } from 'graphql'
+import { SettingModel } from './setting.model'
 
-@ObjectType('PagerSetting')
-export class PagerSettingModel {
+@ObjectType('SettingPager')
+export class SettingPagerModel {
   @Field(() => [SettingModel])
   entries: SettingModel[]
 

@@ -1,6 +1,6 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { GraphQLInt } from 'graphql';
-import { RatingFieldDocument } from '../../schema/embedded/rating.field';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { GraphQLInt } from 'graphql'
+import { RatingEmbedded } from '../../entity/embedded/rating.embedded'
 
 @ObjectType('FormFieldRating')
 export class FormFieldRatingModel {
@@ -10,7 +10,7 @@ export class FormFieldRatingModel {
   @Field({ nullable: true })
   readonly shape: string
 
-  constructor(option: RatingFieldDocument) {
+  constructor(option: RatingEmbedded) {
     this.steps = option.steps
     this.shape = option.shape
   }

@@ -1,8 +1,8 @@
-import { Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { GraphQLInt } from 'graphql';
-import { Roles } from '../../decorator/roles.decorator';
-import { FormStatisticModel } from '../../dto/form/form.statistic.model';
-import { FormStatisticService } from '../../service/form/form.statistic.service';
+import { Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { GraphQLInt } from 'graphql'
+import { Roles } from '../../decorator/roles.decorator'
+import { FormStatisticModel } from '../../dto/form/form.statistic.model'
+import { FormStatisticService } from '../../service/form/form.statistic.service'
 
 @Resolver(() => FormStatisticModel)
 export class FormStatisticResolver {

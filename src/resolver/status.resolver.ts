@@ -1,5 +1,5 @@
-import { Query, Resolver } from '@nestjs/graphql';
-import { StatusModel } from '../dto/status.model';
+import { Query, Resolver } from '@nestjs/graphql'
+import { StatusModel } from '../dto/status.model'
 
 @Resolver(() => StatusModel)
 export class StatusResolver {

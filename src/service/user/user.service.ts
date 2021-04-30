@@ -1,33 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { UserDocument, UserSchemaName } from '../../schema/user.schema';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { UserEntity } from '../../entity/user.entity'
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(UserSchemaName) private userModel: Model<UserDocument>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {
   }
 
-  async isSuperuser(user: UserDocument): Promise<boolean> {
+  async isSuperuser(user: UserEntity): Promise<boolean> {
     return user.roles.includes('superuser')
   }
 
-  async find(start: number, limit: number, sort: any = {}): Promise<[UserDocument[], number]> {
-    return [
-      await this.userModel
-        .find()
-        .sort(sort)
-        .skip(start)
-        .limit(limit),
-      await this.userModel
-        .countDocuments()
-    ]
+  async find(start: number, limit: number, sort: any = {}): Promise<[UserEntity[], number]> {
+    const qb = this.userRepository.createQueryBuilder('u')
+
+    // TODO readd sort
+
+    qb.skip(start)
+    qb.take(limit)
+
+    return await qb.getManyAndCount()
   }
 
-  async findById(id: string): Promise<UserDocument> {
-    const user = await this.userModel.findById(id);
+  async findById(id: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne(id);
 
     if (!user) {
       throw new Error('no user found')
@@ -36,10 +36,10 @@ export class UserService {
     return user
   }
 
-  async findByUsername(username: string): Promise<UserDocument> {
-    const user = await this.userModel.findOne({
+  async findByUsername(username: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
       username,
-    }).exec()
+    })
 
     if (!user) {
       throw new Error('no user found')
@@ -48,10 +48,10 @@ export class UserService {
     return user
   }
 
-  async findByEmail(email: string): Promise<UserDocument> {
-    const user = await this.userModel.findOne({
+  async findByEmail(email: string): Promise<UserEntity> {
+    const user = await this.userRepository.findOne({
       email,
-    }).exec()
+    })
 
     if (!user) {
       throw new Error('no user found')

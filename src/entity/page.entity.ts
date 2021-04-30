@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { ButtonEntity } from './button.entity'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { PageButtonEntity } from './page.button.entity'
 
 @Entity({ name: 'page' })
 export class PageEntity {
@@ -18,5 +18,6 @@ export class PageEntity {
   @Column({ nullable: true })
   readonly buttonText?: string
 
-  readonly buttons: ButtonEntity[]
+  @OneToMany(() => PageButtonEntity, button => button.page)
+  readonly buttons: PageButtonEntity[]
 }

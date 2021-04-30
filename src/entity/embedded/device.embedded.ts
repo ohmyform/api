@@ -1,4 +1,12 @@
+import { Column } from 'typeorm'
+
 export class DeviceEmbedded {
-  readonly type?: string
-  readonly name?: string
+  @Column({ nullable: true })
+  public language?: string
+
+  @Column({ nullable: true })
+  public type?: string
+
+  @Column({ nullable: true })
+  public name?: string
 }

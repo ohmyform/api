@@ -1,7 +1,7 @@
-import { APP_GUARD } from '@nestjs/core';
-import { GqlAuthGuard } from './gql.auth.guard';
-import { LocalAuthGuard } from './local.auth.guard';
-import { RolesGuard } from './roles.guard';
+import { APP_GUARD } from '@nestjs/core'
+import { GqlAuthGuard } from './gql.auth.guard'
+import { LocalAuthGuard } from './local.auth.guard'
+import { RolesGuard } from './roles.guard'
 
 export const guards = [
   {

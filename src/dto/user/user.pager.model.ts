@@ -1,9 +1,9 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { GraphQLInt } from 'graphql';
-import { UserModel } from './user.model';
+import { Field, ObjectType } from '@nestjs/graphql'
+import { GraphQLInt } from 'graphql'
+import { UserModel } from './user.model'
 
-@ObjectType('PagerUser')
-export class PagerUserModel {
+@ObjectType('UserPager')
+export class UserPagerModel {
   @Field(() => [UserModel])
   entries: UserModel[]
 

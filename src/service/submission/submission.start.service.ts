@@ -1,35 +1,37 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { SubmissionStartInput } from '../../dto/submission/submission.start.input';
-import { FormDocument } from '../../schema/form.schema';
-import { SubmissionDocument, SubmissionSchemaName } from '../../schema/submission.schema';
-import { UserDocument } from '../../schema/user.schema';
-import { SubmissionTokenService } from './submission.token.service';
+import { Injectable } from '@nestjs/common'
+import { InjectRepository } from '@nestjs/typeorm'
+import { Repository } from 'typeorm'
+import { SubmissionStartInput } from '../../dto/submission/submission.start.input'
+import { FormEntity } from '../../entity/form.entity'
+import { SubmissionEntity } from '../../entity/submission.entity'
+import { UserEntity } from '../../entity/user.entity'
+import { SubmissionTokenService } from './submission.token.service'
 
 @Injectable()
 export class SubmissionStartService {
   constructor(
-    @InjectModel(SubmissionSchemaName) private submissionModel: Model<SubmissionDocument>,
+    @InjectRepository(SubmissionEntity)
+    private readonly submissionRepository: Repository<SubmissionEntity>,
     private readonly tokenService: SubmissionTokenService
   ) {
   }
 
   async start(
-    form: FormDocument,
+    form: FormEntity,
     input: SubmissionStartInput,
-    user?: UserDocument,
-  ): Promise<SubmissionDocument> {
-    const data: any = {
-      form,
-      device: input.device,
-      tokenHash: await this.tokenService.hash(input.token)
-    }
+    user?: UserEntity,
+  ): Promise<SubmissionEntity> {
+    const submission = new SubmissionEntity()
 
-    if (user) {
-      data.user = user
-    }
+    submission.form = form
+    submission.user = user
 
-    return await this.submissionModel.create(data)
+    submission.device.language = input.device.language
+    submission.device.name = input.device.name
+    submission.device.type = input.device.type
+
+    submission.tokenHash = await this.tokenService.hash(input.token)
+
+    return await this.submissionRepository.save(submission)
   }
 }
