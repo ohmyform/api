@@ -2,6 +2,9 @@ import { Field, ID, InputType } from '@nestjs/graphql'
 
 @InputType()
 export class FormFieldLogicInput {
+  @Field(() => ID, { nullable: true })
+  readonly id?: string
+
   @Field({ nullable: true })
   readonly formula: string
 

@@ -7,17 +7,17 @@ export class PageEntity {
   public id: number
 
   @Column()
-  readonly show: boolean
+  public show: boolean
 
   @Column({ nullable: true })
-  readonly title?: string
+  public title?: string
 
   @Column({ type: 'text', nullable: true })
-  readonly paragraph?: string
+  public paragraph?: string
 
   @Column({ nullable: true })
-  readonly buttonText?: string
+  public buttonText?: string
 
-  @OneToMany(() => PageButtonEntity, button => button.page)
-  readonly buttons: PageButtonEntity[]
+  @OneToMany(() => PageButtonEntity, button => button.page, { eager: true, orphanedRowAction: 'delete', cascade: true })
+  public buttons: PageButtonEntity[]
 }

@@ -1,7 +1,10 @@
-import { Field, InputType } from '@nestjs/graphql'
+import { Field, ID, InputType } from '@nestjs/graphql'
 
 @InputType()
 export class ButtonInput {
+  @Field(() => ID, { nullable: true })
+  readonly id?: string
+
   @Field({ nullable: true })
   readonly url?: string
 

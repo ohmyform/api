@@ -10,20 +10,20 @@ export class PageButtonEntity {
   public page: PageEntity
 
   @Column({ nullable: true })
-  readonly url?: string
+  public url?: string
 
   @Column({ nullable: true })
-  readonly action?: string
+  public action?: string
 
   @Column()
-  readonly text: string
+  public text: string
 
   @Column({ nullable: true })
-  readonly bgColor?: string
+  public bgColor?: string
 
   @Column({ nullable: true })
-  readonly activeColor?: string
+  public activeColor?: string
 
   @Column({ nullable: true })
-  readonly color?: string
+  public color?: string
 }

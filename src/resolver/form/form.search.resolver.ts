@@ -1,5 +1,6 @@
 import { Args, Context, Query, Resolver } from '@nestjs/graphql'
 import { GraphQLInt } from 'graphql'
+import { Roles } from '../../decorator/roles.decorator'
 import { User } from '../../decorator/user.decorator'
 import { FormModel } from '../../dto/form/form.model'
 import { FormPagerModel } from '../../dto/form/form.pager.model'
@@ -16,12 +17,13 @@ export class FormSearchResolver {
   }
 
   @Query(() => FormPagerModel)
+  @Roles('user')
   async listForms(
     @User() user: UserEntity,
     @Args('start', {type: () => GraphQLInt, defaultValue: 0, nullable: true}) start: number,
     @Args('limit', {type: () => GraphQLInt, defaultValue: 50, nullable: true}) limit: number,
     @Context('cache') cache: ContextCache,
-  ) {
+  ): Promise<FormPagerModel> {
     const [forms, total] = await this.formService.find(
       start,
       limit,

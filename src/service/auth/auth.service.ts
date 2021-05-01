@@ -36,6 +36,8 @@ export class AuthService {
         username: user.username,
         roles: user.roles,
         sub: user.id,
+      }, {
+        expiresIn: '4h',
       }),
       refreshToken: this.jwtService.sign({
         sub: user.id,

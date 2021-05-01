@@ -33,8 +33,8 @@ export class FormFieldEntity {
   @Column()
   public required: boolean
 
-  @Column()
-  public disabled: boolean
+  @Column({ type: 'boolean' })
+  public disabled = false
 
   @Column()
   public type: string

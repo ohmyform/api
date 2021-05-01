@@ -1,8 +1,11 @@
-import { Field, InterfaceType } from '@nestjs/graphql'
+import { Field, ID, InterfaceType, ObjectType } from '@nestjs/graphql'
 import { FormNotificationEntity } from '../../entity/form.notification.entity'
 
-@InterfaceType('FormNotification')
+@ObjectType('FormNotification')
 export class FormNotificationModel {
+  @Field(() => ID)
+  readonly id: string
+
   @Field({ nullable: true })
   readonly subject?: string
 
@@ -25,6 +28,7 @@ export class FormNotificationModel {
   readonly enabled: boolean
 
   constructor(partial: Partial<FormNotificationEntity>) {
+    this.id = partial.id.toString()
     this.subject = partial.subject
     this.htmlTemplate = partial.htmlTemplate
     this.enabled = partial.enabled

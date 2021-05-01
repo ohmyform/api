@@ -113,11 +113,6 @@ export class FormResolver {
   ): Promise<UserModel> {
     const form = await cache.get(cache.getCacheKey(FormEntity.name, parent.id))
 
-    if (!form.populated('admin')) {
-      form.populate('admin')
-      await form.execPopulate()
-    }
-
     if (!form.admin) {
       return null
     }

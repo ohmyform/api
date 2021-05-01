@@ -1,8 +1,11 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { PageButtonEntity } from '../../entity/page.button.entity'
 
 @ObjectType('Button')
 export class ButtonModel {
+  @Field(() => ID)
+  readonly id: string
+
   @Field({ nullable: true })
   readonly url?: string
 
@@ -22,6 +25,7 @@ export class ButtonModel {
   readonly color?: string
 
   constructor(button: Partial<PageButtonEntity>) {
+    this.id = button.id.toString()
     this.url = button.url
     this.action = button.action
     this.text = button.text

@@ -1,7 +1,10 @@
-import { Field, InputType } from '@nestjs/graphql'
+import { Field, ID, InputType } from '@nestjs/graphql'
 
 @InputType('FormNotificationInput')
 export class FormNotificationInput {
+  @Field(() => ID, { nullable: true })
+  readonly id?: string
+
   @Field({ nullable: true })
   readonly subject?: string
 

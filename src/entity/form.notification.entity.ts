@@ -11,23 +11,23 @@ export class FormNotificationEntity {
   public form: FormEntity
 
   @Column({ nullable: true })
-  readonly subject?: string
+  public subject?: string
 
   @Column({ nullable: true })
-  readonly htmlTemplate?: string
+  public htmlTemplate?: string
 
   @Column()
-  readonly enabled: boolean
+  public enabled: boolean
 
   @ManyToOne(() => FormFieldEntity)
-  readonly fromField?: FormFieldEntity
+  public fromField?: FormFieldEntity
 
   @ManyToOne(() => FormFieldEntity)
-  readonly toField?: FormFieldEntity
+  public toField?: FormFieldEntity
 
   @Column({ nullable: true })
-  readonly toEmail?: string
+  public toEmail?: string
 
   @Column({ nullable: true })
-  readonly fromEmail?: string
+  public fromEmail?: string
 }

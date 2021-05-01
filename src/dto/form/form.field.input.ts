@@ -27,6 +27,9 @@ export class FormFieldInput {
   @Field()
   readonly value: string
 
+  @Field({ nullable: true })
+  readonly disabled?: boolean
+
   @Field(() => [FormFieldOptionInput], { nullable: true })
   readonly options: FormFieldOptionInput[]
 

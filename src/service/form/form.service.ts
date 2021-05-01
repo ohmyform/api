@@ -13,6 +13,10 @@ export class FormService {
   }
 
   async isAdmin(form: FormEntity, user: UserEntity): Promise<boolean> {
+    if (!user) {
+      return false
+    }
+
     if (user.roles.includes('superuser')) {
       return true
     }
@@ -22,6 +26,8 @@ export class FormService {
 
   async find(start: number, limit: number, sort: any = {}, user?: UserEntity): Promise<[FormEntity[], number]> {
     const qb = this.formRepository.createQueryBuilder('f')
+
+    qb.leftJoinAndSelect('f.admin', 'a')
 
     if (user) {
       qb.where('f.admin = :user', { user: user.id })

@@ -37,22 +37,22 @@ export class FormEntity {
   @OneToMany(() => SubmissionEntity, submission => submission.form)
   public submissions: SubmissionEntity[]
 
-  @OneToMany(() => FormFieldEntity, field => field.form, { eager: true, orphanedRowAction: 'delete' })
+  @OneToMany(() => FormFieldEntity, field => field.form, { eager: true, orphanedRowAction: 'delete', cascade: true })
   public fields: FormFieldEntity[]
 
-  @OneToMany(() => FormHookEntity, field => field.form, { eager: true, orphanedRowAction: 'delete' })
+  @OneToMany(() => FormHookEntity, field => field.form, { eager: true, orphanedRowAction: 'delete', cascade: true })
   public hooks: FormHookEntity[]
 
   @ManyToOne(() => UserEntity, { eager: true })
   public admin: UserEntity
 
-  @ManyToOne(() => PageEntity, { eager: true })
+  @ManyToOne(() => PageEntity, { eager: true, cascade: true })
   public startPage: PageEntity;
 
-  @ManyToOne(() => PageEntity, { eager: true })
+  @ManyToOne(() => PageEntity, { eager: true, cascade: true })
   public endPage: PageEntity;
 
-  @OneToMany(() => FormNotificationEntity, notification => notification.form, { eager: true, orphanedRowAction: 'delete' })
+  @OneToMany(() => FormNotificationEntity, notification => notification.form, { eager: true, orphanedRowAction: 'delete', cascade: true })
   public notifications: FormNotificationEntity[]
 
   @Column()

@@ -6,6 +6,9 @@
 | SECRET_KEY | `changeMe` | JWT Secret for authentication |
 | CLI | *automatically* | activates pretty print for log output |
 | NODE_ENV | `production` | |
+| HIDE_CONTRIB | `false` | decide if backlings to ohmyform should be added |
+| SIGNUP_DISABLED | `false` | if users can sign up |
+| LOGIN_NOTE | *not set* | Info box on top of login screen | 
 
 ## Mailing
 

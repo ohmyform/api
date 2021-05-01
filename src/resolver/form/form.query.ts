@@ -14,7 +14,7 @@ import { FormService } from '../../service/form/form.service'
 import { ContextCache } from '../context.cache'
 
 @Resolver(() => FormModel)
-export class FormResolver {
+export class FormQuery {
   constructor(
     private readonly formService: FormService,
   ) {

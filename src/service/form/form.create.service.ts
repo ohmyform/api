@@ -17,9 +17,9 @@ export class FormCreateService {
     const form = new FormEntity()
 
     form.title = input.title
-    form.isLive = input.isLive
-    form.showFooter = input.showFooter
-    form.language = input.language
+    form.isLive = Boolean(input.isLive)
+    form.showFooter = Boolean(input.showFooter)
+    form.language = input.language || 'en'
 
     form.admin = admin
 
