@@ -21,13 +21,13 @@ export class FormFieldEntity {
   @Column({ nullable: true })
   public slug?: string
 
-  @OneToMany(() => FormFieldLogicEntity, logic => logic.field, { eager: true })
+  @OneToMany(() => FormFieldLogicEntity, logic => logic.field, { eager: true, orphanedRowAction: 'delete', cascade: true })
   public logic: FormFieldLogicEntity[]
 
   @Column(() => RatingEmbedded)
   public rating: RatingEmbedded = new RatingEmbedded()
 
-  @OneToMany(() => FormFieldOptionEntity, option => option.field, { eager: true })
+  @OneToMany(() => FormFieldOptionEntity, option => option.field, { eager: true, orphanedRowAction: 'delete', cascade: true })
   public options?: FormFieldOptionEntity[]
 
   @Column()
