@@ -110,6 +110,7 @@ export const imports = [
         synchronize: false,
         type: configService.get<string>('DATABASE_DRIVER', 'sqlite') as any,
         url: configService.get<string>('DATABASE_URL', 'sqlite://data.sqlite'),
+        ssl: configService.get<string>('DATABASE_SSL', 'false') === 'true',
         entityPrefix: configService.get<string>('DATABASE_TABLE_PREFIX', ''),
         logging: configService.get<string>('DATABASE_LOGGING', 'false') === 'true',
         entities,

@@ -26,4 +26,5 @@
 | DATABASE_TABLE_PREFIX | *empty* | prefix all tables if used within same database as other applications. |
 | DATABASE_LOGGING | `false` | if `true` all db interactions will be logged to stdout |
 | DATABASE_MIGRATE | `true` | can be used in load balanced environments to only allow one container to perform migrations / manually execute migrations
+| DATABASE_SSL | `false` | if `true` will require ssl database connection |
 
