@@ -21,8 +21,9 @@
 
 | Name | Default Value | Description |
 | ---- | ------------- | ----------- |
-| DB_URI | `sqlite://data.sqlite` | url in the format `TYPE://USER:PASS@HOST:PORT/NAME?EXTRA` ([read more](https://typeorm.io/#/connection-options/common-connection-options)) |
-| DB_TABLE_PREFIX | *empty* | prefix all tables if used within same database as other applications. |
-| DB_LOGGING | `false` | if `true` all db interactions will be logged to stdout |
-| DB_MIGRATE | `true` | can be used in load balanced environments to only allow one container to perform migrations / manually execute migrations
+| DATABASE_DRIVER | `sqlite` | database driver, either `sqlite` or `postgres` |
+| DATABASE_URL | `sqlite://data.sqlite` | url in the format `TYPE://USER:PASS@HOST:PORT/NAME?EXTRA` ([read more](https://typeorm.io/#/connection-options/common-connection-options)) |
+| DATABASE_TABLE_PREFIX | *empty* | prefix all tables if used within same database as other applications. |
+| DATABASE_LOGGING | `false` | if `true` all db interactions will be logged to stdout |
+| DATABASE_MIGRATE | `true` | can be used in load balanced environments to only allow one container to perform migrations / manually execute migrations
 
