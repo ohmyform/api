@@ -105,11 +105,15 @@ export const imports = [
   TypeOrmModule.forRootAsync({
     imports: [ConfigModule],
     inject: [ConfigService],
-    useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
+    useFactory: (configService: ConfigService): TypeOrmModuleOptions => {
+      const type: any = configService.get<string>('DATABASE_DRIVER', 'sqlite')
+
+      return ({
         name: 'ohmyform',
         synchronize: false,
-        type: configService.get<string>('DATABASE_DRIVER', 'sqlite') as any,
-        url: configService.get<string>('DATABASE_URL', 'sqlite://data.sqlite'),
+        type,
+        url: configService.get<string>('DATABASE_URL'),
+        database: type === 'sqlite' ? configService.get<string>('DATABASE_URL', 'data.sqlite').replace('sqlite://', '') : undefined,
         ssl: configService.get<string>('DATABASE_SSL', 'false') === 'true' ? { rejectUnauthorized: false } : false,
         entityPrefix: configService.get<string>('DATABASE_TABLE_PREFIX', ''),
         logging: configService.get<string>('DATABASE_LOGGING', 'false') === 'true',
@@ -118,7 +122,8 @@ export const imports = [
           `${__dirname}/**/migrations/**/*{.ts,.js}`,
         ],
         migrationsRun: configService.get<boolean>('DATABASE_MIGRATE', true),
-      }),
+      })
+    },
   }),
   TypeOrmModule.forFeature(entities),
   MailerModule.forRootAsync({
