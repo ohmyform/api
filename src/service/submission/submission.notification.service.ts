@@ -2,9 +2,9 @@ import { MailerService } from '@nestjs-modules/mailer'
 import { Injectable } from '@nestjs/common'
 import handlebars from 'handlebars'
 import htmlToText from 'html-to-text'
+import mjml2html from 'mjml'
 import { PinoLogger } from 'nestjs-pino/dist'
 import { SubmissionEntity } from '../../entity/submission.entity'
-import mjml2html from 'mjml'
 
 @Injectable()
 export class SubmissionNotificationService {
@@ -28,7 +28,7 @@ export class SubmissionNotificationService {
           handlebars.compile(
             notification.htmlTemplate
           )({
-            // TODO add varialbes
+            // TODO add variables
           }),
           {
             minify: true

@@ -9,11 +9,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+- logic backend components
+- forms now have multiple notification
+
 ### Changed
+
+- switched from mongoose to typeorm, with support right now for postgres and sqlite
+- colors object removed the "colors" postfix
 
 ### Fixed
 
+- env list in doc
+
 ### Security
+
+- upgraded all packages
 
 ## [0.9.9] - 2021-02-14
 
