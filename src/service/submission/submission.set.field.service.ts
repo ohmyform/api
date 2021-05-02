@@ -7,6 +7,7 @@ import { SubmissionSetFieldInput } from '../../dto/submission/submission.set.fie
 import { SubmissionEntity } from '../../entity/submission.entity'
 import { SubmissionFieldEntity } from '../../entity/submission.field.entity'
 import { SubmissionHookService } from './submission.hook.service'
+import { SubmissionNotificationService } from './submission.notification.service'
 
 @Injectable()
 export class SubmissionSetFieldService {
@@ -16,6 +17,7 @@ export class SubmissionSetFieldService {
     @InjectRepository(SubmissionFieldEntity)
     private readonly submissionFieldRepository: Repository<SubmissionFieldEntity>,
     private readonly webHook: SubmissionHookService,
+    private readonly notifications: SubmissionNotificationService,
     private readonly logger: PinoLogger,
   ) {
   }
@@ -24,7 +26,7 @@ export class SubmissionSetFieldService {
     let field = submission.fields.find(field => field.field.id.toString() === input.field)
 
     if (field) {
-      field.fieldValue = input.data
+      field.fieldValue = JSON.parse(input.data)
 
       await this.submissionFieldRepository.save(field)
     } else {
@@ -33,7 +35,7 @@ export class SubmissionSetFieldService {
       field.submission = submission
       field.field = submission.form.fields.find(field => field.id.toString() === input.field)
       field.fieldType = field.field.type
-      field.fieldValue = input.data
+      field.fieldValue = JSON.parse(input.data)
 
       field = await this.submissionFieldRepository.save(field)
 
@@ -49,6 +51,9 @@ export class SubmissionSetFieldService {
     if (submission.percentageComplete === 1) {
       this.webHook.process(submission).catch(e => {
         this.logger.error(`failed to send webhooks: ${e.message}`)
+      })
+      this.notifications.process(submission).catch(e => {
+        this.logger.error(`failed to send notifications: ${e.message}`)
       })
     }
   }

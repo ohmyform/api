@@ -19,6 +19,8 @@ export class SubmissionService {
   async find(form: FormEntity, start: number, limit: number, sort: any = {}): Promise<[SubmissionEntity[], number]> {
     const qb = this.submissionRepository.createQueryBuilder('s')
 
+    qb.leftJoinAndSelect('s.fields', 'fields')
+
     qb.where('s.form = :form', { form: form.id })
 
     // TODO readd sort

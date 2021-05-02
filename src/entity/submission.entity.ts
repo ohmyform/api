@@ -4,7 +4,7 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
+  PrimaryGeneratedColumn, RelationId,
   UpdateDateColumn
 } from 'typeorm'
 import { DeviceEmbedded } from './embedded/device.embedded'
@@ -25,7 +25,10 @@ export class SubmissionEntity {
   @ManyToOne(() => FormEntity, form => form.submissions, { eager: true })
   public form: FormEntity
 
-  @ManyToOne(() => VisitorEntity, visitor => visitor.submissions)
+  @RelationId('form')
+  readonly formId: number
+
+  @ManyToOne(() => VisitorEntity, visitor => visitor.submissions, { eager: true })
   public visitor: VisitorEntity
 
   @Column()
@@ -40,10 +43,10 @@ export class SubmissionEntity {
   @Column(() => DeviceEmbedded)
   public device: DeviceEmbedded = new DeviceEmbedded()
 
-  @Column()
+  @Column({ type: 'numeric' })
   public timeElapsed: number
 
-  @Column()
+  @Column({ type: 'numeric' })
   public percentageComplete: number
 
   @ManyToOne(() => UserEntity, { eager: true })

@@ -107,6 +107,7 @@ export const imports = [
     inject: [ConfigService],
     useFactory: (configService: ConfigService): TypeOrmModuleOptions => ({
         name: 'ohmyform',
+        synchronize: false,
         type: configService.get<string>('DB_TYPE', 'sqlite') as any,
         url: configService.get<string>('DB_URI', 'sqlite://data.sqlite'),
         entityPrefix: configService.get<string>('DB_TABLE_PREFIX', ''),

@@ -23,7 +23,7 @@ export class SubmissionHookService {
           await this.format(submission, hook.format)
         ).toPromise()
 
-        console.log('sent', response.data)
+        console.log('sent hook', response.data)
       } catch (e) {
         this.logger.error(`failed to post to "${hook.url}: ${e.message}`)
         this.logger.error(e.stack)

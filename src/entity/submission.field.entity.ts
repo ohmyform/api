@@ -1,4 +1,5 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm'
+import { FormEntity } from './form.entity'
 import { FormFieldEntity } from './form.field.entity'
 import { SubmissionEntity } from './submission.entity'
 
@@ -12,6 +13,9 @@ export class SubmissionFieldEntity {
 
   @ManyToOne(() => FormFieldEntity, { eager: true })
   public field: FormFieldEntity
+
+  @RelationId('field')
+  readonly fieldId: number
 
   @Column()
   public fieldType: string

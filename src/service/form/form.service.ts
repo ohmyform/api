@@ -41,7 +41,9 @@ export class FormService {
     return await qb.getManyAndCount()
   }
 
-  async findById(id: string): Promise<FormEntity> {
+  async findById(id: number | string, existing?: FormEntity): Promise<FormEntity> {
+    if (existing) return existing
+
     const form = await this.formRepository.findOne(id);
 
     if (!form) {

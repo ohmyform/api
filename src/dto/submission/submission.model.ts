@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql'
+import { Field, Float, ID, ObjectType } from '@nestjs/graphql'
 import { SubmissionEntity } from '../../entity/submission.entity'
 import { DeviceModel } from './device.model'
 import { GeoLocationModel } from './geo.location.model'
