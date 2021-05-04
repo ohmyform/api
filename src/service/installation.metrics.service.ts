@@ -27,7 +27,7 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
 
     this.logger.info('try to add startup metric')
     tracker.track({
-      url: `http://localhost/version/${process.env.npm_package_version}`,
+      url: `http://localhost/version/${process.env.version}`,
       action_name: 'startup',
       ua: process.arch
     })
@@ -35,7 +35,7 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
     setInterval(() => {
       this.logger.info('try to add running metric')
       tracker.track({
-        url: `http://localhost/version/${process.env.npm_package_version}`,
+        url: `http://localhost/version/${process.env.version}`,
         action_name: 'running',
         ua: process.arch
       })
