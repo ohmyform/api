@@ -6,7 +6,7 @@ export class StatusResolver {
   @Query(() => StatusModel)
   async status(): Promise<StatusModel> {
     return new StatusModel({
-      version: process.env.npm_package_version,
+      version: process.env.version || 'dev',
     })
   }
 }
