@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - env list in doc
+- version env variable for yarn
 
 ### Security
 
