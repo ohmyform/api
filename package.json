@@ -47,7 +47,7 @@
     "graphql-redis-subscriptions": "^2.3.1",
     "graphql-subscriptions": "^1.2.1",
     "graphql-tools": "^7.0.4",
-    "handlebars": "^4.7.6",
+    "handlebars": "^4.7.7",
     "html-to-text": "^7.1.1",
     "inquirer": "^8.0.0",
     "ioredis": "^4.27.1",
