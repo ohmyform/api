@@ -13,4 +13,7 @@ export class FormCreateInput {
 
   @Field({ nullable: true })
   readonly isLive: boolean
+
+  @Field({ nullable: true })
+  readonly layout: string
 }

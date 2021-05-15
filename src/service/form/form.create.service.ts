@@ -20,6 +20,7 @@ export class FormCreateService {
     form.isLive = Boolean(input.isLive)
     form.showFooter = Boolean(input.showFooter)
     form.language = input.language || 'en'
+    form.design.layout = input.layout
 
     form.admin = admin
 

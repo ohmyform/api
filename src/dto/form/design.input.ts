@@ -8,4 +8,7 @@ export class DesignInput {
 
   @Field({ nullable: true })
   readonly font?: string
+
+  @Field({ nullable: true })
+  readonly layout?: string
 }

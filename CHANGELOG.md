@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - logic backend components
 - forms now have multiple notification
+- layout for forms
 
 ### Changed
 

@@ -150,6 +150,10 @@ export class FormUpdateService {
         form.design.font = input.design.font
       }
 
+      if (input.design.layout !== undefined) {
+        form.design.layout = input.design.layout
+      }
+
       if (input.design.colors !== undefined) {
         if (input.design.colors.answer !== undefined) {
           form.design.colors.answer = input.design.colors.answer

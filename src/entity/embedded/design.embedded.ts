@@ -7,4 +7,7 @@ export class DesignEmbedded {
 
   @Column({ nullable: true })
   font?: string
+
+  @Column({ nullable: true })
+  layout?: string
 }

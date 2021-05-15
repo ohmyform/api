@@ -10,8 +10,12 @@ export class DesignModel {
   @Field({ nullable: true })
   readonly font?: string
 
+  @Field({ nullable: true })
+  readonly layout?: string
+
   constructor(partial: Partial<DesignEmbedded>) {
     this.colors = new ColorsModel(partial.colors)
     this.font = partial.font
+    this.layout = partial.layout
   }
 }
