@@ -40,8 +40,12 @@ export class UserResolver {
     )
   }
 
-  async returnFieldForSuperuser<T>(parent: UserEntity, user: UserEntity, callback: (user: UserEntity) => T): Promise<T> {
-    if (user.id !== parent.id && !await this.userService.isSuperuser(user)) {
+  async returnFieldForSuperuser<T>(
+    parent: UserEntity,
+    user: UserEntity,
+    callback: (user: UserEntity) => T
+  ): Promise<T> {
+    if (user.id !== parent.id && !this.userService.isSuperuser(user)) {
       throw new Error('No access to roles')
     }
 

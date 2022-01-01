@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import dayjs from 'dayjs'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 import { Repository } from 'typeorm'
 import { SubmissionSetFieldInput } from '../../dto/submission/submission.set.field.input'
 import { SubmissionEntity } from '../../entity/submission.entity'
@@ -20,6 +20,7 @@ export class SubmissionSetFieldService {
     private readonly notifications: SubmissionNotificationService,
     private readonly logger: PinoLogger,
   ) {
+    logger.setContext(this.constructor.name)
   }
 
   async saveField(submission: SubmissionEntity, input: SubmissionSetFieldInput): Promise<void> {

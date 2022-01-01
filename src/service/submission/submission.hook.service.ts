@@ -1,6 +1,7 @@
-import { HttpService, Injectable } from '@nestjs/common'
+import { HttpService } from '@nestjs/axios'
+import { Injectable } from '@nestjs/common'
 import handlebars from 'handlebars'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 import { SubmissionEntity } from '../../entity/submission.entity'
 
 @Injectable()
@@ -9,6 +10,7 @@ export class SubmissionHookService {
     private httpService: HttpService,
     private readonly logger: PinoLogger,
   ) {
+    logger.setContext(this.constructor.name)
   }
 
   public async process(submission: SubmissionEntity): Promise<void> {
@@ -20,7 +22,7 @@ export class SubmissionHookService {
       try {
         const response = await this.httpService.post(
           hook.url,
-          await this.format(submission, hook.format)
+          this.format(submission, hook.format)
         ).toPromise()
 
         console.log('sent hook', response.data)
@@ -32,7 +34,7 @@ export class SubmissionHookService {
     }))
   }
 
-  private async format(submission: SubmissionEntity, format?: string): Promise<any> {
+  private format(submission: SubmissionEntity, format?: string): any {
     const fields = {}
     submission.form.fields.forEach((field) => {
       fields[field.id] = field
@@ -47,9 +49,9 @@ export class SubmissionHookService {
         return {
           field: submissionField.field.id,
           slug: submissionField.field.slug || null,
-          value: submissionField.field.value
+          value: submissionField.field.value,
         }
-      })
+      }),
     }
 
     if (!format) {

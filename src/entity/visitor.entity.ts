@@ -5,7 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm'
 import { DeviceEmbedded } from './embedded/device.embedded'
 import { GeoLocationEmbedded } from './embedded/geo.location.embedded'

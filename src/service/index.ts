@@ -2,7 +2,7 @@ import { ConfigService } from '@nestjs/config'
 import { RedisPubSub } from 'graphql-redis-subscriptions'
 import { PubSub, PubSubEngine } from 'graphql-subscriptions'
 import Redis from 'ioredis'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 import { authServices } from './auth'
 import { formServices } from './form'
 import { InstallationMetricsService } from './installation.metrics.service'
@@ -42,6 +42,6 @@ export const services = [
         publisher: new Redis(options),
         subscriber: new Redis(options),
       })
-    }
+    },
   },
 ]

@@ -1,5 +1,4 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm'
-import { FormEntity } from './form.entity'
 import { FormFieldEntity } from './form.field.entity'
 import { SubmissionEntity } from './submission.entity'
 

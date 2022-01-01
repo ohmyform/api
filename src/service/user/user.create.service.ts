@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 import { Repository } from 'typeorm'
 import { rolesType } from '../../config/roles'
 import { UserCreateInput } from '../../dto/user/user.create.input'
@@ -18,14 +18,20 @@ export class UserCreateService {
     private readonly logger: PinoLogger,
     private readonly passwordService: PasswordService,
     private readonly settingService: SettingService,
-  ) {}
+  ) {
+    logger.setContext(this.constructor.name)
+  }
 
   private async getDefaultRoles(): Promise<rolesType> {
     const roleSetting = await this.settingService.getByKey('DEFAULT_ROLE')
 
     switch (roleSetting.value) {
       case 'superuser':
-        return ['superuser', 'admin', 'user']
+        return [
+          'superuser',
+          'admin',
+          'user',
+        ]
 
       case 'admin':
         return ['admin', 'user']

@@ -5,7 +5,7 @@ import fs from 'fs'
 import handlebars from 'handlebars'
 import htmlToText from 'html-to-text'
 import mjml2html from 'mjml'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 import { join } from 'path'
 import { defaultLanguage } from '../config/languages'
 
@@ -31,7 +31,7 @@ export class MailService {
           fs.readFileSync(path).toString('utf-8')
         )(context),
         {
-          minify: true
+          minify: true,
         }
       ).html
 

@@ -1,6 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql'
 import { FormFieldLogicInput } from './form.field.logic.input'
-import { FormFieldLogicModel } from './form.field.logic.model'
 import { FormFieldOptionInput } from './form.field.option.input'
 import { FormFieldRatingInput } from './form.field.rating.input'
 

@@ -6,23 +6,23 @@ export class UserCreateInput {
   @Field()
   @MinLength(2)
   @MaxLength(50)
-  username: string
+    username: string
 
   @Field()
   @IsEmail()
   @IsNotEmpty()
-  email: string
+    email: string
 
   @Field()
   @MinLength(5)
-  password: string
+    password: string
 
   @Field({ nullable: true })
-  firstName?: string
+    firstName?: string
 
   @Field({ nullable: true })
-  lastName?: string
+    lastName?: string
 
   @Field({ nullable: true })
-  language?: string
+    language?: string
 }

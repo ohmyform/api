@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Args, Mutation } from '@nestjs/graphql'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 import { AuthJwtModel } from '../../dto/auth/auth.jwt.model'
 import { UserCreateInput } from '../../dto/user/user.create.input'
 import { AuthService } from '../../service/auth/auth.service'
@@ -15,6 +15,7 @@ export class AuthRegisterResolver {
     private readonly auth: AuthService,
     private readonly logger: PinoLogger,
   ) {
+    logger.setContext(this.constructor.name)
   }
 
   @Mutation(() => AuthJwtModel)

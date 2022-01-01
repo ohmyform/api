@@ -4,7 +4,7 @@ import * as crypto from 'crypto'
 
 @Injectable()
 export class PasswordService {
-  async verify (password: string, hash: string, salt?: string): Promise<boolean> {
+  async verify(password: string, hash: string, salt?: string): Promise<boolean> {
     if (hash[0] === '$') {
       return await bcrypt.compare(password, hash)
     }
@@ -23,7 +23,7 @@ export class PasswordService {
     ).toString('base64');
   }
 
-  hash (password): Promise<string> {
+  public hash(password: string): Promise<string> {
     return bcrypt.hash(password, 4)
   }
 }

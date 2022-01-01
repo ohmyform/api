@@ -1,5 +1,6 @@
 import { MailerModule } from '@nestjs-modules/mailer'
-import { HttpModule, RequestMethod } from '@nestjs/common'
+import { HttpModule } from '@nestjs/axios'
+import { RequestMethod } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt'
@@ -9,18 +10,24 @@ import crypto from 'crypto'
 import { Request } from 'express-serve-static-core'
 import { IncomingHttpHeaders } from 'http'
 import { ConsoleModule } from 'nestjs-console'
-import { LoggerModule, Params as LoggerModuleParams } from 'nestjs-pino/dist'
+import { LoggerModule, Params as LoggerModuleParams } from 'nestjs-pino'
 import { join } from 'path'
+import { serializeError } from 'serialize-error'
 import { entities } from './entity'
 
 export const LoggerConfig: LoggerModuleParams = {
   pinoHttp: {
     level: process.env.CLI ? 'warn' : process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
-    prettyPrint: process.env.NODE_ENV !== 'production' || process.env.CLI  ? {
-      translateTime: true,
-      colorize: true,
-      ignore: 'pid,hostname,req,res',
-    } : false,
+    serializers: {
+      error: serializeError,
+    },
+    transport: {
+      options: {
+        ignore: 'req,res,pid,hostname',
+        translateTime: true,
+      },
+      target: process.env.NODE_ENV !== 'production' || process.env.CLI  ? 'pino-pretty' : undefined,
+    },
   },
   exclude: [
     {
@@ -30,7 +37,7 @@ export const LoggerConfig: LoggerModuleParams = {
     {
       method: RequestMethod.ALL,
       path: 'favicon.ico',
-    }
+    },
   ],
 }
 
@@ -42,9 +49,7 @@ export const imports = [
   }),
   ServeStaticModule.forRoot({
     rootPath: join(__dirname, '..', 'public'),
-    exclude: [
-
-    ]
+    exclude: [],
   }),
   ConfigModule.forRoot({
     load: [
@@ -53,7 +58,7 @@ export const imports = [
           LOCALES_PATH: join(process.cwd(), 'locales'),
           SECRET_KEY: process.env.SECRET_KEY || crypto.randomBytes(20).toString('hex'),
         }
-      }
+      },
     ],
   }),
   JwtModule.registerAsync({
@@ -64,7 +69,7 @@ export const imports = [
       signOptions: {
         expiresIn: '4h',
       },
-    })
+    }),
   }),
   LoggerModule.forRoot(LoggerConfig),
   GraphQLModule.forRoot({
@@ -72,8 +77,9 @@ export const imports = [
     definitions: {
       outputAs: 'class',
     },
-    introspection: true,
-    playground: true,
+    sortSchema: true,
+    introspection: process.env.NODE_ENV !== 'production',
+    playground: process.env.NODE_ENV !== 'production',
     installSubscriptionHandlers: true,
     autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
     // to allow guards on resolver props https://github.com/nestjs/graphql/issues/295
@@ -94,8 +100,8 @@ export const imports = [
 
         return {
           req: {
-            headers
-          } as Request
+            headers,
+          } as Request,
         }
       }
 
@@ -107,7 +113,7 @@ export const imports = [
     inject: [ConfigService],
     useFactory: (configService: ConfigService): TypeOrmModuleOptions => {
       const type: any = configService.get<string>('DATABASE_DRIVER', 'sqlite')
-      let migrationFolder
+      let migrationFolder: string
 
       switch (type) {
         case 'cockroachdb':
@@ -138,9 +144,7 @@ export const imports = [
         entityPrefix: configService.get<string>('DATABASE_TABLE_PREFIX', ''),
         logging: configService.get<string>('DATABASE_LOGGING', 'false') === 'true',
         entities,
-        migrations: [
-          `${__dirname}/**/migrations/${migrationFolder}/**/*{.ts,.js}`,
-        ],
+        migrations: [`${__dirname}/**/migrations/${migrationFolder}/**/*{.ts,.js}`],
         migrationsRun: configService.get<boolean>('DATABASE_MIGRATE', true),
       })
     },

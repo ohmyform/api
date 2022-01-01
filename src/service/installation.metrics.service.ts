@@ -1,7 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import MatomoTracker from 'matomo-tracker'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 
 @Injectable()
 export class InstallationMetricsService implements OnApplicationBootstrap {
@@ -11,6 +11,7 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
     private readonly logger: PinoLogger,
     private readonly configService: ConfigService,
   ) {
+    logger.setContext(this.constructor.name)
   }
 
   async onApplicationBootstrap(): Promise<void> {
@@ -29,7 +30,7 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
     tracker.track({
       url: `http://localhost/version/${process.env.version}`,
       action_name: 'startup',
-      ua: process.arch
+      ua: process.arch,
     })
 
     setInterval(() => {
@@ -37,7 +38,7 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
       tracker.track({
         url: `http://localhost/version/${process.env.version}`,
         action_name: 'running',
-        ua: process.arch
+        ua: process.arch,
       })
     }, 24 * 60 * 60 * 1000)
   }

@@ -5,16 +5,16 @@ import { SubmissionModel } from './submission.model'
 @ObjectType('SubmissionPager')
 export class SubmissionPagerModel {
   @Field(() => [SubmissionModel])
-  entries: SubmissionModel[]
+    entries: SubmissionModel[]
 
   @Field(() => GraphQLInt)
-  total: number
+    total: number
 
   @Field(() => GraphQLInt)
-  limit: number
+    limit: number
 
   @Field(() => GraphQLInt)
-  start: number
+    start: number
 
   constructor(entries: SubmissionModel[], total: number, limit: number, start: number) {
     this.entries = entries

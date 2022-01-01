@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { FormEntity } from '../../entity/form.entity'
 import { FormFieldEntity } from '../../entity/form.field.entity'
-import { UserEntity } from '../../entity/user.entity'
 
 @Injectable()
 export class FormFieldService {

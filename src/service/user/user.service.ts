@@ -11,7 +11,7 @@ export class UserService {
   ) {
   }
 
-  async isSuperuser(user: UserEntity): Promise<boolean> {
+  isSuperuser(user: UserEntity): boolean {
     return user.roles.includes('superuser')
   }
 

@@ -4,8 +4,9 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn, RelationId,
-  UpdateDateColumn
+  PrimaryGeneratedColumn,
+  RelationId,
+  UpdateDateColumn,
 } from 'typeorm'
 import { DeviceEmbedded } from './embedded/device.embedded'
 import { GeoLocationEmbedded } from './embedded/geo.location.embedded'

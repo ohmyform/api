@@ -1,4 +1,4 @@
-import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { Context, Parent, ResolveField, Resolver } from '@nestjs/graphql'
 import { Roles } from '../../decorator/roles.decorator'
 import { User } from '../../decorator/user.decorator'
 import { DesignModel } from '../../dto/form/design.model'
@@ -39,7 +39,7 @@ export class FormResolver {
   ): Promise<FormHookModel[]> {
     const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
 
-      return form.hooks?.map(hook => new FormHookModel(hook)) || []
+    return form.hooks?.map(hook => new FormHookModel(hook)) || []
   }
 
   @ResolveField('isLive', () => Boolean)

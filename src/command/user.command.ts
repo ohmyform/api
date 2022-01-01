@@ -1,11 +1,12 @@
 import inquirer from 'inquirer'
 import { Command, Console } from 'nestjs-console'
 import { matchType, validatePassword } from '../config/fields'
+import { UserCreateInput } from '../dto/user/user.create.input'
 import { UserCreateService } from '../service/user/user.create.service'
 
 @Console({
-  name: 'user',
-  description: 'handle instance users'
+  command: 'user',
+  description: 'handle instance users',
 })
 export class UserCommand {
   constructor(
@@ -17,7 +18,7 @@ export class UserCommand {
     command: 'create',
   })
   async create(): Promise<void> {
-    const answers = await inquirer.prompt([
+    const answers = await inquirer.prompt<UserCreateInput>([
       {
         type: 'input',
         name: 'username',
@@ -46,8 +47,8 @@ export class UserCommand {
         name: 'create',
         message: current => {
           return `create user ${current.username} with email ${current.email}`
-        }
-      }
+        },
+      },
     ])
 
     await this.createUser.create(answers)

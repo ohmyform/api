@@ -1,6 +1,6 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 import { UserCreateService } from './user.create.service'
 import { UserService } from './user.service'
 
@@ -12,12 +12,15 @@ export class BootService implements OnApplicationBootstrap {
     private readonly configService: ConfigService,
     private readonly logger: PinoLogger,
   ) {
+    logger.setContext(this.constructor.name)
   }
 
   async onApplicationBootstrap(): Promise<void> {
     const create = this.configService.get<string>('CREATE_ADMIN', 'false')
 
-    if (!create || ['false', '0', 'no', ''].includes(create.toLowerCase())) {
+    if (!create || [
+      'false', '0', 'no', '',
+    ].includes(create.toLowerCase())) {
       return
     }
 
@@ -46,7 +49,9 @@ export class BootService implements OnApplicationBootstrap {
         username,
         email,
         password,
-      }, ['user', 'admin', 'superuser'])
+      }, [
+        'user', 'admin', 'superuser',
+      ])
     } catch (e) {
       this.logger.error({
         error: e,

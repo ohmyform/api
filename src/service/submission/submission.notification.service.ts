@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common'
 import handlebars from 'handlebars'
 import htmlToText from 'html-to-text'
 import mjml2html from 'mjml'
-import { PinoLogger } from 'nestjs-pino/dist'
+import { PinoLogger } from 'nestjs-pino'
 import { SubmissionEntity } from '../../entity/submission.entity'
 
 @Injectable()
@@ -12,6 +12,7 @@ export class SubmissionNotificationService {
     private readonly nestMailer: MailerService,
     private readonly logger: PinoLogger,
   ) {
+    logger.setContext(this.constructor.name)
   }
 
   public async process(submission: SubmissionEntity): Promise<void> {
@@ -31,7 +32,7 @@ export class SubmissionNotificationService {
             // TODO add variables
           }),
           {
-            minify: true
+            minify: true,
           }
         ).html
 
@@ -40,7 +41,7 @@ export class SubmissionNotificationService {
           replyTo: from,
           subject: notification.subject,
           html,
-          text: htmlToText.fromString(html)
+          text: htmlToText.fromString(html),
         })
         console.log('sent notification to', to)
       } catch (e) {

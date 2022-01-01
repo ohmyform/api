@@ -5,16 +5,16 @@ import { SettingModel } from './setting.model'
 @ObjectType('SettingPager')
 export class SettingPagerModel {
   @Field(() => [SettingModel])
-  entries: SettingModel[]
+    entries: SettingModel[]
 
   @Field(() => GraphQLInt)
-  total: number
+    total: number
 
   @Field(() => GraphQLInt)
-  limit: number
+    limit: number
 
   @Field(() => GraphQLInt)
-  start: number
+    start: number
 
   constructor(entries: SettingModel[], total: number, limit: number, start: number) {
     this.entries = entries

@@ -38,3 +38,6 @@ lerna-debug.log*
 /data
 /.env
 /src/schema.gql
+/data.sqlite
+/maria_data
+/pg_data

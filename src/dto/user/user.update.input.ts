@@ -20,6 +20,7 @@ export class UserUpdateInput {
   @Field({ nullable: true })
   readonly password: string
 
+  // TODO validate
   @Field(() => [String], { nullable: true })
   readonly roles: string[]
 

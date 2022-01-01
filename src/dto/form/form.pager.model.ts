@@ -5,16 +5,16 @@ import { FormModel } from './form.model'
 @ObjectType('FormPager')
 export class FormPagerModel {
   @Field(() => [FormModel])
-  entries: FormModel[]
+    entries: FormModel[]
 
   @Field(() => GraphQLInt)
-  total: number
+    total: number
 
   @Field(() => GraphQLInt)
-  limit: number
+    limit: number
 
   @Field(() => GraphQLInt)
-  start: number
+    start: number
 
   constructor(entries: FormModel[], total: number, limit: number, start: number) {
     this.entries = entries

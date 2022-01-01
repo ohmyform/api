@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
+import { rolesType } from '../../config/roles'
 import { UserUpdateInput } from '../../dto/user/user.update.input'
 import { UserEntity } from '../../entity/user.entity'
 import { PasswordService } from '../auth/password.service'
@@ -32,7 +33,7 @@ export class UserUpdateService {
     }
 
     if (input.roles !== undefined) {
-      user.roles = input.roles as any
+      user.roles = input.roles as rolesType
     }
 
     if (input.language !== undefined) {

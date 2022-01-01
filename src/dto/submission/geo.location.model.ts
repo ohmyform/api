@@ -4,10 +4,10 @@ import { GeoLocationEmbedded } from '../../entity/embedded/geo.location.embedded
 @ObjectType('GeoLocation')
 export class GeoLocationModel {
   @Field({ nullable: true })
-  country?: string
+    country?: string
 
   @Field({ nullable: true })
-  city?: string
+    city?: string
 
   constructor(geo: GeoLocationEmbedded) {
     this.country = geo.country

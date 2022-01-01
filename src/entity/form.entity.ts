@@ -5,7 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm'
 import { AnalyticsEmbedded } from './embedded/analytics.embedded'
 import { DesignEmbedded } from './embedded/design.embedded'

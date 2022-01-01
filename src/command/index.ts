@@ -1,5 +1,3 @@
 import { UserCommand } from './user.command'
 
-export const commands = [
-  UserCommand,
-]
+export const commands = [UserCommand]

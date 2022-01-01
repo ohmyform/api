@@ -1,4 +1,4 @@
-import { Field, ID, InterfaceType, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { FormNotificationEntity } from '../../entity/form.notification.entity'
 
 @ObjectType('FormNotification')
