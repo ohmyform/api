@@ -12,11 +12,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - logic backend components
 - forms now have multiple notification
 - layout for forms
+- mariadb / mysql support
 
 ### Changed
 
 - switched from mongoose to typeorm, with support right now for postgres and sqlite
 - colors object removed the "colors" postfix
+- if unsupported database engine is used error is thrown during startup
+- improved eslint checks
 
 ### Fixed
 

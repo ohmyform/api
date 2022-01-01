@@ -10,12 +10,12 @@
     "src/entity/**/*.ts"
   ],
   "migrations": [
-    "src/migrations/**/*.ts"
+    "src/migrations/postgres/**/*.ts"
   ],
   "subscribers": [
     "src/subscriber/**/*.ts"
   ],
   "cli": {
-    "migrationsDir": "src/migrations"
+    "migrationsDir": "src/migrations/postgres"
   }
 }

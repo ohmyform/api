@@ -7,7 +7,17 @@ services:
   #  volumes:
   #    - "./data/mongo:/data/db"
 
-  db:
+  maria:
+    image: mariadb
+    volumes:
+      - ./maria_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ohmyform
+    ports:
+      - "3306:3306"
+
+  postgres:
     image: postgres:10-alpine
     volumes:
       - ./pg_data:/var/lib/postgresql/data
@@ -17,6 +27,7 @@ services:
       POSTGRES_DB: ohmyform
     ports:
       - "5432:5432"
+
   redis:
     image: redis
     ports:

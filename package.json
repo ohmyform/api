@@ -21,7 +21,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm:sqlite": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig_sqlite.json",
-    "typeorm:pg": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig_pg.json"
+    "typeorm:postgres": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig_postgres.json",
+    "typeorm:maria": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig_maria.json"
   },
   "dependencies": {
     "@apollo/gateway": "^0.27.1",
@@ -89,6 +90,8 @@
     "eslint": "^7.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-nestjs": "^1.2.3",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
     "supertest": "^6.1.3",

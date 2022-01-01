@@ -107,6 +107,26 @@ export const imports = [
     inject: [ConfigService],
     useFactory: (configService: ConfigService): TypeOrmModuleOptions => {
       const type: any = configService.get<string>('DATABASE_DRIVER', 'sqlite')
+      let migrationFolder
+
+      switch (type) {
+        case 'cockroachdb':
+        case 'postgres':
+          migrationFolder = 'postgres'
+          break
+
+        case 'mysql':
+        case 'maria':
+          migrationFolder = 'maria'
+          break
+
+        case 'sqlite':
+          migrationFolder = 'sqlite'
+          break
+
+        default:
+          throw new Error('unsupported driver')
+      }
 
       return ({
         name: 'ohmyform',
@@ -119,7 +139,7 @@ export const imports = [
         logging: configService.get<string>('DATABASE_LOGGING', 'false') === 'true',
         entities,
         migrations: [
-          `${__dirname}/**/migrations/**/*{.ts,.js}`,
+          `${__dirname}/**/migrations/${migrationFolder}/**/*{.ts,.js}`,
         ],
         migrationsRun: configService.get<boolean>('DATABASE_MIGRATE', true),
       })

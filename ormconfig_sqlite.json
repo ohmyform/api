@@ -7,9 +7,9 @@
     "src/entity/**/*.ts"
   ],
   "migrations": [
-    "src/migrations/**/*.ts"
+    "src/migrations/sqlite/**/*.ts"
   ],
   "cli": {
-    "migrationsDir": "src/migrations"
+    "migrationsDir": "src/migrations/sqlite"
   }
 }
