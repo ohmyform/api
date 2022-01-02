@@ -1,8 +1,9 @@
 import { FormCreateMutation } from './form.create.mutation'
 import { FormDeleteMutation } from './form.delete.mutation'
+import { FormListQuery } from './form.list.query'
 import { FormQuery } from './form.query'
 import { FormResolver } from './form.resolver'
-import { FormSearchResolver } from './form.search.resolver'
+import { FormStatisticQuery } from './form.statistic.query'
 import { FormStatisticResolver } from './form.statistic.resolver'
 import { FormUpdateMutation } from './form.update.mutation'
 
@@ -11,7 +12,8 @@ export const formResolvers = [
   FormDeleteMutation,
   FormQuery,
   FormResolver,
-  FormSearchResolver,
+  FormListQuery,
+  FormStatisticQuery,
   FormStatisticResolver,
   FormUpdateMutation,
 ]

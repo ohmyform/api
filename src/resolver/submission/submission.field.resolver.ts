@@ -13,8 +13,8 @@ export class SubmissionFieldResolver {
   ) {
   }
 
-  @ResolveField('field', () => FormFieldModel, { nullable: true })
-  async getFields(
+  @ResolveField(() => FormFieldModel, { nullable: true })
+  async field(
     @Parent() parent: SubmissionFieldModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormFieldModel> {

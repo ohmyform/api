@@ -1,4 +1,5 @@
-import { Args, Context, ID, Query, Resolver } from '@nestjs/graphql'
+import { Injectable } from '@nestjs/common'
+import { Args, Context, ID, Query } from '@nestjs/graphql'
 import { User } from '../../decorator/user.decorator'
 import { FormModel } from '../../dto/form/form.model'
 import { FormEntity } from '../../entity/form.entity'
@@ -6,7 +7,7 @@ import { UserEntity } from '../../entity/user.entity'
 import { FormService } from '../../service/form/form.service'
 import { ContextCache } from '../context.cache'
 
-@Resolver(() => FormModel)
+@Injectable()
 export class FormQuery {
   constructor(
     private readonly formService: FormService,

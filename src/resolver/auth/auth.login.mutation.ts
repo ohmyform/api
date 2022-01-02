@@ -4,7 +4,7 @@ import { AuthJwtModel } from '../../dto/auth/auth.jwt.model'
 import { AuthService } from '../../service/auth/auth.service'
 
 @Injectable()
-export class AuthLoginResolver {
+export class AuthLoginMutation {
   constructor(
     private readonly auth: AuthService
   ) {

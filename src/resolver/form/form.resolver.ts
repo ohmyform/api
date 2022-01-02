@@ -20,19 +20,19 @@ export class FormResolver {
   ) {
   }
 
-  @ResolveField('fields', () => [FormFieldModel])
-  async getFields(
+  @ResolveField(() => [FormFieldModel])
+  async fields(
     @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormFieldModel[]> {
     const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
 
-    return form.fields?.map(field => new FormFieldModel(field)) || []
+    return form.fields?.map(field => new FormFieldModel(field)).sort((a,b) => a.idx - b.idx) || []
   }
 
-  @ResolveField('hooks', () => [FormHookModel])
-  async getHooks(
+  @ResolveField(() => [FormHookModel])
+  async hooks(
     @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
@@ -42,9 +42,9 @@ export class FormResolver {
     return form.hooks?.map(hook => new FormHookModel(hook)) || []
   }
 
-  @ResolveField('isLive', () => Boolean)
+  @ResolveField(() => Boolean)
   @Roles('admin')
-  async getRoles(
+  async isLive(
     @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
@@ -58,9 +58,9 @@ export class FormResolver {
     return form.isLive
   }
 
-  @ResolveField('notifications', () => [FormNotificationModel])
+  @ResolveField(() => [FormNotificationModel])
   @Roles('admin')
-  async getNotifications(
+  async notifications(
     @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
@@ -74,8 +74,8 @@ export class FormResolver {
     return form.notifications?.map(notification => new FormNotificationModel(notification)) || []
   }
 
-  @ResolveField('design', () => DesignModel)
-  async getDesign(
+  @ResolveField(() => DesignModel)
+  async design(
     @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
@@ -85,8 +85,8 @@ export class FormResolver {
     return new DesignModel(form.design)
   }
 
-  @ResolveField('startPage', () => PageModel)
-  async getStartPage(
+  @ResolveField(() => PageModel)
+  async startPage(
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<PageModel> {
@@ -95,8 +95,8 @@ export class FormResolver {
     return new PageModel(form.startPage)
   }
 
-  @ResolveField('endPage', () => PageModel)
-  async getEndPage(
+  @ResolveField(() => PageModel)
+  async endPage(
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<PageModel> {
@@ -105,9 +105,9 @@ export class FormResolver {
     return new PageModel(form.endPage)
   }
 
-  @ResolveField('admin', () => UserModel, { nullable: true })
+  @ResolveField(() => UserModel, { nullable: true })
   @Roles('admin')
-  async getAdmin(
+  async admin(
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<UserModel> {

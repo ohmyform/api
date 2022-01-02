@@ -1,7 +1,7 @@
 import { SettingMutation } from './setting.mutation'
-import { SettingResolver } from './setting.resolver'
+import { SettingQuery } from './setting.query'
 
 export const settingsResolvers = [
-  SettingResolver,
+  SettingQuery,
   SettingMutation,
 ]

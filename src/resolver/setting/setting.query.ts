@@ -8,7 +8,7 @@ import { UserEntity } from '../../entity/user.entity'
 import { SettingService } from '../../service/setting.service'
 
 @Injectable()
-export class SettingResolver {
+export class SettingQuery {
   constructor(
     private readonly settingService: SettingService,
   ) {

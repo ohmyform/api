@@ -1,7 +1,7 @@
-import { AuthLoginResolver } from './auth.login.resolver'
-import { AuthRegisterResolver } from './auth.register.resolver'
+import { AuthLoginMutation } from './auth.login.mutation'
+import { AuthRegisterMutation } from './auth.register.mutation'
 
 export const authServices = [
-  AuthRegisterResolver,
-  AuthLoginResolver,
+  AuthRegisterMutation,
+  AuthLoginMutation,
 ]

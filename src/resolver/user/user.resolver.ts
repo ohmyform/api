@@ -1,4 +1,4 @@
-import { Args, Context, ID, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { Context, Parent, ResolveField, Resolver } from '@nestjs/graphql'
 import { Roles } from '../../decorator/roles.decorator'
 import { User } from '../../decorator/user.decorator'
 import { UserModel } from '../../dto/user/user.model'
@@ -13,22 +13,9 @@ export class UserResolver {
   ) {
   }
 
-  @Query(() => UserModel)
-  @Roles('admin')
-  public async getUserById(
-    @Args('id', {type: () => ID}) id: string,
-    @Context('cache') cache: ContextCache,
-  ): Promise<UserModel> {
-    const user = await this.userService.findById(id)
-
-    cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
-
-    return new UserModel(user)
-  }
-
-  @ResolveField('roles', () => [String])
+  @ResolveField(() => [String])
   @Roles('user')
-  async getRoles(
+  async roles(
     @User() user: UserEntity,
     @Parent() parent: UserModel,
     @Context('cache') cache: ContextCache,
@@ -40,7 +27,7 @@ export class UserResolver {
     )
   }
 
-  returnFieldForSuperuser<T>(
+  private returnFieldForSuperuser<T>(
     parent: UserEntity,
     user: UserEntity,
     callback: (user: UserEntity) => T

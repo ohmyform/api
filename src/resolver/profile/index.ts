@@ -1,7 +1,7 @@
-import { ProfileResolver } from './profile.resolver'
+import { ProfileQuery } from './profile.query'
 import { ProfileUpdateMutation } from './profile.update.mutation'
 
 export const profileResolvers = [
-  ProfileResolver,
+  ProfileQuery,
   ProfileUpdateMutation,
 ]

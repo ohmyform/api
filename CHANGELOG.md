@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - user confirmation tokens
 - email verification
 - idx for fields and logic to have stable order
+- ability to load submission by id if token is present
 
 ### Changed
 

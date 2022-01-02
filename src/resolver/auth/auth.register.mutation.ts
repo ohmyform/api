@@ -8,7 +8,7 @@ import { SettingService } from '../../service/setting.service'
 import { UserCreateService } from '../../service/user/user.create.service'
 
 @Injectable()
-export class AuthRegisterResolver {
+export class AuthRegisterMutation {
   constructor(
     private readonly createUser: UserCreateService,
     private readonly settingService: SettingService,

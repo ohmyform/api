@@ -1,5 +1,4 @@
-import { Args, Context, Query, Resolver } from '@nestjs/graphql'
-import { GraphQLInt } from 'graphql'
+import { Args, Context, Int, Query, Resolver } from '@nestjs/graphql'
 import { Roles } from '../../decorator/roles.decorator'
 import { UserModel } from '../../dto/user/user.model'
 import { UserPagerModel } from '../../dto/user/user.pager.model'
@@ -8,7 +7,7 @@ import { UserService } from '../../service/user/user.service'
 import { ContextCache } from '../context.cache'
 
 @Resolver(() => UserPagerModel)
-export class UserSearchResolver {
+export class UserListQuery {
   constructor(
     private readonly userService: UserService,
   ) {
@@ -17,8 +16,8 @@ export class UserSearchResolver {
   @Query(() => UserPagerModel)
   @Roles('superuser')
   async listUsers(
-    @Args('start', {type: () => GraphQLInt, defaultValue: 0, nullable: true}) start: number,
-    @Args('limit', {type: () => GraphQLInt, defaultValue: 50, nullable: true}) limit: number,
+    @Args('start', {type: () => Int, defaultValue: 0, nullable: true}) start: number,
+    @Args('limit', {type: () => Int, defaultValue: 50, nullable: true}) limit: number,
     @Context('cache') cache: ContextCache,
   ): Promise<UserPagerModel> {
     const [entities, total] = await this.userService.find(start, limit)

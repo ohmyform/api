@@ -1,4 +1,4 @@
-import { Query, ResolveField, Resolver } from '@nestjs/graphql'
+import { ResolveField, Resolver } from '@nestjs/graphql'
 import { GraphQLInt } from 'graphql'
 import { Roles } from '../../decorator/roles.decorator'
 import { SubmissionStatisticModel } from '../../dto/submission/submission.statistic.model'
@@ -11,15 +11,9 @@ export class SubmissionStatisticResolver {
   ) {
   }
 
-
-  @Query(() => SubmissionStatisticModel)
-  getSubmissionStatistic(): SubmissionStatisticModel {
-    return new SubmissionStatisticModel()
-  }
-
-  @ResolveField('total', () => GraphQLInt)
+  @ResolveField(() => GraphQLInt)
   @Roles('admin')
-  getTotal(): Promise<number> {
+  total(): Promise<number> {
     return this.statisticService.getTotal()
   }
 }

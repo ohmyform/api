@@ -1,5 +1,5 @@
-import { Args, Context, ID, Query, Resolver } from '@nestjs/graphql'
-import { GraphQLInt } from 'graphql'
+import { Injectable } from '@nestjs/common'
+import { Args, Context, ID, Int, Query } from '@nestjs/graphql'
 import { User } from '../../decorator/user.decorator'
 import { SubmissionModel } from '../../dto/submission/submission.model'
 import { SubmissionPagerModel } from '../../dto/submission/submission.pager.model'
@@ -9,8 +9,8 @@ import { FormService } from '../../service/form/form.service'
 import { SubmissionService } from '../../service/submission/submission.service'
 import { ContextCache } from '../context.cache'
 
-@Resolver(() => SubmissionPagerModel)
-export class SubmissionSearchResolver {
+@Injectable()
+export class SubmissionListQuery {
   constructor(
     private readonly formService: FormService,
     private readonly submissionService: SubmissionService,
@@ -21,8 +21,8 @@ export class SubmissionSearchResolver {
   async listSubmissions(
     @User() user: UserEntity,
     @Args('form', {type: () => ID}) id: string,
-    @Args('start', {type: () => GraphQLInt, defaultValue: 0, nullable: true}) start: number,
-    @Args('limit', {type: () => GraphQLInt, defaultValue: 50, nullable: true}) limit: number,
+    @Args('start', {type: () => Int, defaultValue: 0, nullable: true}) start: number,
+    @Args('limit', {type: () => Int, defaultValue: 50, nullable: true}) limit: number,
     @Context('cache') cache: ContextCache,
   ): Promise<SubmissionPagerModel> {
     const form = await this.formService.findById(id)

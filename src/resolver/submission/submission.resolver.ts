@@ -9,8 +9,8 @@ import { ContextCache } from '../context.cache'
 
 @Resolver(() => SubmissionModel)
 export class SubmissionResolver {
-  @ResolveField('fields', () => [SubmissionFieldModel])
-  async getFields(
+  @ResolveField(() => [SubmissionFieldModel])
+  async fields(
     @User() user: UserEntity,
     @Parent() parent: SubmissionModel,
     @Context('cache') cache: ContextCache,
