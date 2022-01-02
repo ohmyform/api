@@ -49,7 +49,7 @@ export const imports = [
   }),
   ServeStaticModule.forRoot({
     rootPath: join(__dirname, '..', 'public'),
-    exclude: [],
+    exclude: ['/graphql'],
   }),
   ConfigModule.forRoot({
     load: [
@@ -122,8 +122,8 @@ export const imports = [
           break
 
         case 'mysql':
-        case 'maria':
-          migrationFolder = 'maria'
+        case 'mariadb':
+          migrationFolder = 'mariadb'
           break
 
         case 'sqlite':
@@ -146,6 +146,7 @@ export const imports = [
         entities,
         migrations: [`${__dirname}/**/migrations/${migrationFolder}/**/*{.ts,.js}`],
         migrationsRun: configService.get<boolean>('DATABASE_MIGRATE', true),
+        migrationsTransactionMode: 'each',
       })
     },
   }),

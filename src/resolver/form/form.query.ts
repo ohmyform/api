@@ -21,7 +21,7 @@ export class FormQuery {
   ): Promise<FormModel> {
     const form = await this.formService.findById(id)
 
-    if (!form.isLive && !await this.formService.isAdmin(form, user)) {
+    if (!form.isLive && !this.formService.isAdmin(form, user)) {
       throw new Error('invalid form')
     }
 

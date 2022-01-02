@@ -2,6 +2,8 @@ import { HttpService } from '@nestjs/axios'
 import { Injectable } from '@nestjs/common'
 import handlebars from 'handlebars'
 import { PinoLogger } from 'nestjs-pino'
+import { lastValueFrom } from 'rxjs'
+import { serializeError } from 'serialize-error'
 import { SubmissionEntity } from '../../entity/submission.entity'
 
 @Injectable()
@@ -20,15 +22,19 @@ export class SubmissionHookService {
       }
 
       try {
-        const response = await this.httpService.post(
+        const response = await lastValueFrom(this.httpService.post(
           hook.url,
           this.format(submission, hook.format)
-        ).toPromise()
+        ))
 
         console.log('sent hook', response.data)
       } catch (e) {
-        this.logger.error(`failed to post to "${hook.url}: ${e.message}`)
-        this.logger.error(e.stack)
+        this.logger.error({
+          submission: submission.id,
+          form: submission.formId,
+          webhook: hook.url,
+          error: serializeError(e),
+        }, 'failed to post webhook')
         throw e
       }
     }))

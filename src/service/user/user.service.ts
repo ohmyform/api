@@ -59,4 +59,16 @@ export class UserService {
 
     return user
   }
+
+  async usernameInUse(username: string): Promise<boolean> {
+    return 0 !== await this.userRepository.count({
+      username,
+    })
+  }
+
+  async emailInUse(email: string): Promise<boolean> {
+    return 0 !== await this.userRepository.count({
+      email,
+    })
+  }
 }

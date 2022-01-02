@@ -1,13 +1,11 @@
 import { NestApplicationOptions, ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import cors from 'cors'
-import { Logger, PinoLogger } from 'nestjs-pino'
-import { LoggerConfig } from './app.imports'
+import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module'
 
 (async () => {
   const options: NestApplicationOptions =  {
-    logger: new Logger(new PinoLogger(LoggerConfig), {}),
     bufferLogs: true,
   }
 

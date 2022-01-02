@@ -26,6 +26,12 @@ export class UserUpdateService {
 
     if (input.email !== undefined) {
       user.email = input.email
+      user.emailVerified = false
+      // TODO request email verification
+
+      if (undefined !== await this.userRepository.findOne({ email: input.email })) {
+        throw new Error('email already in use')
+      }
     }
 
     if (input.username !== undefined) {

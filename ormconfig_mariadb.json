@@ -10,12 +10,13 @@
     "src/entity/**/*.ts"
   ],
   "migrations": [
-    "src/migrations/maria/**/*.ts"
+    "src/migrations/mariadb/**/*.ts"
   ],
+  "migrationsTransactionMode": "each",
   "subscribers": [
     "src/subscriber/**/*.ts"
   ],
   "cli": {
-    "migrationsDir": "src/migrations/maria"
+    "migrationsDir": "src/migrations/mariadb"
   }
 }

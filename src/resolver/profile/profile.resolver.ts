@@ -8,10 +8,10 @@ import { ContextCache } from '../context.cache'
 export class ProfileResolver {
   @Query(() => ProfileModel)
   @Roles('user')
-  async me(
+  public me(
     @User() user: UserEntity,
     @Context('cache') cache: ContextCache,
-  ): Promise<ProfileModel> {
+  ): ProfileModel {
     cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
 
     return new ProfileModel(user)

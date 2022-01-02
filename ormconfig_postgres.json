@@ -12,6 +12,7 @@
   "migrations": [
     "src/migrations/postgres/**/*.ts"
   ],
+  "migrationsTransactionMode": "each",
   "subscribers": [
     "src/subscriber/**/*.ts"
   ],

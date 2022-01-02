@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import { FormFieldEntity } from './form.field.entity'
 
-type LogicAction = 'visible' | 'require' | 'disable' | 'jumpTo'
+export type FormFieldLogicAction = 'visible' | 'require' | 'disable' | 'jumpTo'
 
 @Entity({ name: 'form_field_logic' })
 export class FormFieldLogicEntity {
@@ -15,7 +15,7 @@ export class FormFieldLogicEntity {
   public formula: string
 
   @Column({ type: 'varchar', length: 10 })
-  public action: LogicAction
+  public action: FormFieldLogicAction
 
   @Column({ nullable: true })
   public visible?: boolean

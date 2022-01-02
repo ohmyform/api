@@ -15,6 +15,9 @@ export class UserEntity {
   @Column({ length: 255, unique: true })
   public email: string
 
+  @Column('boolean', { default: false })
+  public emailVerified = false
+
   @Column({ length: 255, unique: true })
   public username: string
 

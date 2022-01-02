@@ -6,8 +6,14 @@ export class UserModel {
   @Field(() => ID)
   readonly id: string
 
-  @Field()
+  /**
+   * @deprecated use emailVerified instead
+   */
+  @Field({ deprecationReason: 'use emailVerified instead' })
   readonly verifiedEmail: boolean
+
+  @Field()
+  readonly emailVerified: boolean
 
   @Field()
   readonly username: string
@@ -39,7 +45,8 @@ export class UserModel {
     this.firstName = user.firstName
     this.lastName = user.lastName
 
-    this.verifiedEmail = !user.token
+    this.verifiedEmail = user.emailVerified
+    this.emailVerified = user.emailVerified
 
     this.created = user.created
     this.lastModified = user.lastModified

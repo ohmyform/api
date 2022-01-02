@@ -1,6 +1,7 @@
 import { Injectable, OnApplicationBootstrap } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PinoLogger } from 'nestjs-pino'
+import { serializeError } from 'serialize-error'
 import { UserCreateService } from './user.create.service'
 import { UserService } from './user.service'
 
@@ -30,19 +31,15 @@ export class BootService implements OnApplicationBootstrap {
     const email = this.configService.get<string>('ADMIN_EMAIL', 'admin@ohmyform.com')
     const password = this.configService.get<string>('ADMIN_PASSWORD', 'root')
 
-    try {
-      await this.userService.findByUsername(username)
-
+    if (await this.userService.usernameInUse(username)) {
       this.logger.info('username already exists, skip creating')
       return
-    } catch (e) {}
+    }
 
-    try {
-      await this.userService.findByEmail(email)
-
+    if (await this.userService.emailInUse(email)) {
       this.logger.info('email already exists, skip creating')
       return
-    } catch (e) {}
+    }
 
     try {
       await this.createService.create({
@@ -54,7 +51,7 @@ export class BootService implements OnApplicationBootstrap {
       ])
     } catch (e) {
       this.logger.error({
-        error: e,
+        error: serializeError(e),
       }, 'could not create admin user')
       return
     }

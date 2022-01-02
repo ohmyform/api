@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common'
+import { ConfigService } from '@nestjs/config'
 import { InjectRepository } from '@nestjs/typeorm'
+import crypto from 'crypto'
 import { PinoLogger } from 'nestjs-pino'
 import { Repository } from 'typeorm'
 import { rolesType } from '../../config/roles'
@@ -8,6 +10,7 @@ import { UserEntity } from '../../entity/user.entity'
 import { PasswordService } from '../auth/password.service'
 import { MailService } from '../mail.service'
 import { SettingService } from '../setting.service'
+import { UserTokenService } from './user.token.service'
 
 @Injectable()
 export class UserCreateService {
@@ -18,12 +21,14 @@ export class UserCreateService {
     private readonly logger: PinoLogger,
     private readonly passwordService: PasswordService,
     private readonly settingService: SettingService,
+    private readonly configService: ConfigService,
+    private readonly userTokenService: UserTokenService,
   ) {
     logger.setContext(this.constructor.name)
   }
 
-  private async getDefaultRoles(): Promise<rolesType> {
-    const roleSetting = await this.settingService.getByKey('DEFAULT_ROLE')
+  private getDefaultRoles(): rolesType {
+    const roleSetting = this.settingService.getByKey('DEFAULT_ROLE')
 
     switch (roleSetting.value) {
       case 'superuser':
@@ -49,6 +54,8 @@ export class UserCreateService {
       throw new Error('email already in use')
     }
 
+    const confirmToken = crypto.randomBytes(30).toString('base64')
+
     let user = new UserEntity()
 
     user.provider = 'local'
@@ -57,17 +64,25 @@ export class UserCreateService {
     user.firstName = input.firstName
     user.lastName = input.lastName
     user.language = input.language ?? 'en'
-    user.roles = roles ? roles : await this.getDefaultRoles()
+    user.roles = roles ? roles : this.getDefaultRoles()
     user.passwordHash = await this.passwordService.hash(input.password)
+    user.token = await this.userTokenService.hash(confirmToken)
 
     user = await this.userRepository.save(user)
+
+    const confirmUrl = [
+      this.configService.get('BASE_URL', 'http://localhost'),
+      this.configService.get('USER_CONFIRM_PATH', '/confirm?token={{token}}'),
+    ]
+      .join('')
+      .replace('{{token}}', confirmToken)
 
     const sent = await this.mailerService.send(
       user.email,
       'user/created',
       {
         username: user.username,
-        confirm: 'https://www.google.com', // TODO confirm url
+        confirm: confirmUrl,
       }
     )
 

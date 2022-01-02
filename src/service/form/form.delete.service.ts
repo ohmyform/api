@@ -18,9 +18,11 @@ export class FormDeleteService {
     await this.submissionRepository.createQueryBuilder('s')
       .delete()
       .where('s.form = :form', { form: id })
+      .execute()
 
     await this.formRepository.createQueryBuilder('f')
       .delete()
       .where('f.id = :form', { form: id })
+      .execute()
   }
 }

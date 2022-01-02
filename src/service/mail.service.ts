@@ -7,6 +7,7 @@ import htmlToText from 'html-to-text'
 import mjml2html from 'mjml'
 import { PinoLogger } from 'nestjs-pino'
 import { join } from 'path'
+import { serializeError } from 'serialize-error'
 import { defaultLanguage } from '../config/languages'
 
 @Injectable()
@@ -19,10 +20,19 @@ export class MailService {
     logger.setContext(this.constructor.name)
   }
 
-  async send(to: string, template: string, context: { [key: string]: any }, language: string = defaultLanguage): Promise<boolean> {
-    this.logger.info({
+  async send(
+    to: string,
+    template: string,
+    context: { [key: string]: any },
+    forceLanguage?: string
+  ): Promise<boolean> {
+    const language = forceLanguage || this.configService.get('LOCALE', defaultLanguage)
+
+    this.logger.debug({
       email: to,
-    }, `send email ${template}`)
+      template,
+    }, 'try to send email')
+
     try {
       const path = this.getTemplatePath(template, language)
 
@@ -35,21 +45,34 @@ export class MailService {
         }
       ).html
 
-      const text = htmlToText.fromString(html)
+      const text = htmlToText.htmlToText(html)
 
-      const subject = /<title>(.*?)<\/title>/gi.test(html) ? /<title>(.*?)<\/title>/gi.exec(html)[1] : template
+      const subject = this.extractSubject(html, template)
 
       await this.nestMailer.sendMail({ to, subject, html, text })
-      this.logger.info('sent email')
+      this.logger.info({
+        email: to,
+        template,
+        language,
+      }, 'sent email')
     } catch (error) {
       this.logger.error({
-        error: error.message,
+        error: serializeError(error),
         email: to,
-      }, `failed to send email ${template}`)
+        template,
+      }, 'failed to send email')
       return false
     }
 
     return true
+  }
+
+  private extractSubject(html: string, template: string): string {
+    if (/<title>(.*?)<\/title>/gi.test(html)) {
+      return /<title>(.*?)<\/title>/gi.exec(html)[1]
+    }
+
+    return template
   }
 
   private getTemplatePath(template: string, language: string): string {

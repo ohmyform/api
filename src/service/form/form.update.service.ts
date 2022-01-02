@@ -41,8 +41,12 @@ export class FormUpdateService {
     }
 
     if (input.fields !== undefined) {
-      form.fields = await Promise.all(input.fields.map(async (nextField) => {
-        let field = form.fields.find(field => field.id?.toString() === nextField.id)
+      form.fields = input.fields.map((nextField) => {
+        let field = this.findByIdInList(
+          form.fields,
+          nextField.id,
+          null
+        )
 
         if (!field) {
           field = new FormFieldEntity()
@@ -75,7 +79,11 @@ export class FormUpdateService {
 
         if (nextField.logic !== undefined) {
           field.logic = nextField.logic.map(nextLogic => {
-            const logic = field.logic?.find(logic => logic.id?.toString() === nextLogic.id) || new FormFieldLogicEntity()
+            const logic = this.findByIdInList(
+              field.logic,
+              nextLogic.id,
+              new FormFieldLogicEntity()
+            )
 
             logic.field = field
 
@@ -83,7 +91,7 @@ export class FormUpdateService {
               logic.formula = nextLogic.formula
             }
             if (nextLogic.action !== undefined) {
-              logic.action = nextLogic.action as any
+              logic.action = nextLogic.action
             }
             if (nextLogic.visible !== undefined) {
               logic.visible = nextLogic.visible
@@ -95,7 +103,11 @@ export class FormUpdateService {
               logic.disable = nextLogic.disable
             }
             if (nextLogic.jumpTo !== undefined) {
-              logic.jumpTo = form.fields.find(value => value.id?.toString() === nextLogic.jumpTo)
+              logic.jumpTo = this.findByIdInList(
+                form.fields,
+                nextLogic.jumpTo,
+                null
+              )
             }
             if (nextLogic.enabled !== undefined) {
               logic.enabled = nextLogic.enabled
@@ -107,7 +119,11 @@ export class FormUpdateService {
 
         if (nextField.options !== undefined) {
           field.options = nextField.options.map(nextOption => {
-            const option = field.options?.find(option => option.id?.toString() === nextOption.id) || new FormFieldOptionEntity()
+            const option = this.findByIdInList(
+              field.options,
+              nextOption.id,
+              new FormFieldOptionEntity()
+            )
 
             option.field = field
 
@@ -124,13 +140,16 @@ export class FormUpdateService {
         }
 
         return field
-      }))
-
+      })
     }
 
     if (input.hooks !== undefined) {
       form.hooks = input.hooks.map((nextHook) => {
-        const hook = form.hooks?.find(hook => hook.id?.toString() === nextHook.id) || new FormHookEntity()
+        const hook = this.findByIdInList(
+          form.hooks,
+          nextHook.id,
+          new FormHookEntity()
+        )
 
         // ability for other fields to apply mapping
         hook.url = nextHook.url
@@ -179,7 +198,11 @@ export class FormUpdateService {
 
     if (input.notifications !== undefined) {
       form.notifications = input.notifications.map(notificationInput => {
-        const notification = form.notifications?.find(value => value.id?.toString() === notificationInput.id) || new FormNotificationEntity()
+        const notification = this.findByIdInList(
+          form.notifications,
+          notificationInput.id,
+          new FormNotificationEntity()
+        )
 
         notification.form = form
         notification.enabled = notificationInput.enabled
@@ -188,7 +211,11 @@ export class FormUpdateService {
           notification.fromEmail = notificationInput.fromEmail
         }
         if (notificationInput.fromField !== undefined) {
-          notification.fromField = form.fields.find(value => value.id?.toString() === notificationInput.fromField)
+          notification.fromField = this.findByIdInList(
+            form.fields,
+            notificationInput.fromField,
+            null
+          )
         }
         if (notificationInput.subject !== undefined) {
           notification.subject = notificationInput.subject
@@ -200,7 +227,11 @@ export class FormUpdateService {
           notification.toEmail = notificationInput.toEmail
         }
         if (notificationInput.toField !== undefined) {
-          notification.toField = form.fields.find(value => value.id?.toString() === notificationInput.toField)
+          notification.toField = this.findByIdInList(
+            form.fields,
+            notificationInput.toField,
+            null
+          )
         }
 
         return notification
@@ -240,7 +271,11 @@ export class FormUpdateService {
 
       if (input.startPage.buttons !== undefined) {
         form.startPage.buttons = input.startPage.buttons.map(buttonInput => {
-          const entity = form.startPage?.buttons?.find(value => value.id?.toString() === buttonInput.id) || new PageButtonEntity()
+          const entity = this.findByIdInList(
+            form.startPage?.buttons,
+            buttonInput.id,
+            new PageButtonEntity()
+          )
           entity.page = form.startPage
           entity.url = buttonInput.url
           entity.action = buttonInput.action
@@ -278,7 +313,11 @@ export class FormUpdateService {
 
       if (input.endPage.buttons !== undefined) {
         form.endPage.buttons = input.endPage.buttons.map(buttonInput => {
-          const entity = form.endPage?.buttons?.find(value => value.id?.toString() === buttonInput.id) || new PageButtonEntity()
+          const entity = this.findByIdInList(
+            form.endPage?.buttons,
+            buttonInput.id,
+            new PageButtonEntity()
+          )
           entity.page = form.endPage
           entity.url = buttonInput.url
           entity.action = buttonInput.action
@@ -295,5 +334,19 @@ export class FormUpdateService {
     await this.formRepository.save(form)
 
     return form
+  }
+
+  private findByIdInList<T>(list: T[], id: string, fallback: T): T {
+    if (!list) {
+      return fallback
+    }
+
+    const found = list.find((value: any) => String(value.id) === String(id))
+
+    if (found) {
+      return found
+    }
+
+    return fallback
   }
 }

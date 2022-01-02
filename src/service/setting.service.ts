@@ -17,7 +17,7 @@ export class SettingService {
     ].includes(key)
   }
 
-  async getByKey(key: string): Promise<SettingModel> {
+  getByKey(key: string): SettingModel {
     switch (key) {
       case 'SIGNUP_DISABLED':
       case 'LOGIN_NOTE':
@@ -29,11 +29,11 @@ export class SettingService {
     throw new Error(`no config stored for key ${key}`)
   }
 
-  async isTrue(key: string): Promise<boolean> {
-    return (await this.getByKey(key)).isTrue
+  isTrue(key: string): boolean {
+    return this.getByKey(key).isTrue
   }
 
-  async isFalse(key: string): Promise<boolean> {
-    return (await this.getByKey(key)).isFalse
+  isFalse(key: string): boolean {
+    return this.getByKey(key).isFalse
   }
 }

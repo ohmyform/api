@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { PinoLogger } from 'nestjs-pino'
 import { Repository } from 'typeorm'
 import { FormEntity } from '../../entity/form.entity'
 import { UserEntity } from '../../entity/user.entity'
@@ -9,10 +10,12 @@ export class FormService {
   constructor(
     @InjectRepository(FormEntity)
     private readonly formRepository: Repository<FormEntity>,
+    private readonly logger: PinoLogger,
   ) {
+    logger.setContext(this.constructor.name)
   }
 
-  async isAdmin(form: FormEntity, user: UserEntity): Promise<boolean> {
+  isAdmin(form: FormEntity, user: UserEntity): boolean {
     if (!user) {
       return false
     }
@@ -24,7 +27,12 @@ export class FormService {
     return form.admin.id === user.id
   }
 
-  async find(start: number, limit: number, sort: any = {}, user?: UserEntity): Promise<[FormEntity[], number]> {
+  async find(
+    start: number,
+    limit: number,
+    sort: any = {},
+    user?: UserEntity
+  ): Promise<[FormEntity[], number]> {
     const qb = this.formRepository.createQueryBuilder('f')
 
     qb.leftJoinAndSelect('f.admin', 'a')
@@ -34,6 +42,9 @@ export class FormService {
     }
 
     // TODO readd sort
+    this.logger.debug({
+      sort,
+    }, 'ignored sorting for submissions')
 
     qb.skip(start)
     qb.take(limit)

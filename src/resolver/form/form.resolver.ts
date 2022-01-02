@@ -51,7 +51,7 @@ export class FormResolver {
   ): Promise<boolean> {
     const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
 
-    if (!await this.formService.isAdmin(form, user)) {
+    if (!this.formService.isAdmin(form, user)) {
       throw new Error('no access to field')
     }
 
@@ -67,7 +67,7 @@ export class FormResolver {
   ): Promise<FormNotificationModel[]> {
     const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
 
-    if (!await this.formService.isAdmin(form, user)) {
+    if (!this.formService.isAdmin(form, user)) {
       throw new Error('no access to field')
     }
 

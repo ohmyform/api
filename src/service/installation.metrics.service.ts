@@ -14,7 +14,7 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
     logger.setContext(this.constructor.name)
   }
 
-  async onApplicationBootstrap(): Promise<void> {
+  onApplicationBootstrap(): void {
     if (this.configService.get<boolean>('DISABLE_INSTALLATION_METRICS')) {
       this.logger.info('installation metrics are disabled')
       return
@@ -42,6 +42,4 @@ export class InstallationMetricsService implements OnApplicationBootstrap {
       })
     }, 24 * 60 * 60 * 1000)
   }
-
-
 }

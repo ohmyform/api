@@ -4,6 +4,7 @@ import { Repository } from 'typeorm'
 import { ProfileUpdateInput } from '../../dto/profile/profile.update.input'
 import { UserEntity } from '../../entity/user.entity'
 import { PasswordService } from '../auth/password.service'
+import { UserTokenService } from '../user/user.token.service'
 
 @Injectable()
 export class ProfileUpdateService {
@@ -11,7 +12,16 @@ export class ProfileUpdateService {
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
     private readonly passwordService: PasswordService,
+    private readonly userTokenService: UserTokenService,
   ) {
+  }
+
+  async verifyEmail(user: UserEntity, token: string): Promise<UserEntity> {
+    if (!await this.userTokenService.verify(token, user.token)) {
+      throw new Error('invalid token')
+    }
+
+    return await this.userRepository.save(user)
   }
 
   async update(user: UserEntity, input: ProfileUpdateInput): Promise<UserEntity> {
@@ -25,6 +35,7 @@ export class ProfileUpdateService {
 
     if (input.email !== undefined && user.email !== input.email) {
       user.email = input.email
+      user.emailVerified = false
       // TODO request email verification
 
       if (undefined !== await this.userRepository.findOne({ email: input.email })) {

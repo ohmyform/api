@@ -9,6 +9,7 @@
   "migrations": [
     "src/migrations/sqlite/**/*.ts"
   ],
+  "migrationsTransactionMode": "each",
   "cli": {
     "migrationsDir": "src/migrations/sqlite"
   }

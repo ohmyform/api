@@ -2,6 +2,10 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 't
 import { FormFieldEntity } from './form.field.entity'
 import { SubmissionEntity } from './submission.entity'
 
+export interface SubmissionFieldContent {
+  [key: string]: string | string[] | number | number[] | boolean | boolean[]
+}
+
 @Entity({ name: 'submission_field' })
 export class SubmissionFieldEntity {
   @PrimaryGeneratedColumn()
@@ -17,8 +21,8 @@ export class SubmissionFieldEntity {
   readonly fieldId: number
 
   @Column()
-  public fieldType: string
+  public type: string
 
-  @Column()
-  public fieldValue: string
+  @Column('simple-json')
+  public content: SubmissionFieldContent
 }

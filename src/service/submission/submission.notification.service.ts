@@ -4,6 +4,7 @@ import handlebars from 'handlebars'
 import htmlToText from 'html-to-text'
 import mjml2html from 'mjml'
 import { PinoLogger } from 'nestjs-pino'
+import { serializeError } from 'serialize-error'
 import { SubmissionEntity } from '../../entity/submission.entity'
 
 @Injectable()
@@ -22,15 +23,25 @@ export class SubmissionNotificationService {
       }
 
       try {
-        const to = this.getEmail(submission.fields.find(field => field.fieldId === notification.toField.id )?.fieldValue, notification.toEmail)
-        const from = this.getEmail(submission.fields.find(field => field.fieldId === notification.fromField.id )?.fieldValue, notification.fromEmail)
+        const to = this.getEmail(
+          submission,
+          notification.toField.id,
+          notification.toEmail
+        )
+        const from = this.getEmail(
+          submission,
+          notification.fromField.id,
+          notification.fromEmail
+        )
 
-        const html = mjml2html(
-          handlebars.compile(
-            notification.htmlTemplate
-          )({
+        const template = handlebars.compile(
+          notification.htmlTemplate
+        )
+
+        const html: string = mjml2html(
+          template({
             // TODO add variables
-          }),
+          }) ,
           {
             minify: true,
           }
@@ -41,29 +52,30 @@ export class SubmissionNotificationService {
           replyTo: from,
           subject: notification.subject,
           html,
-          text: htmlToText.fromString(html),
+          text: htmlToText.htmlToText(html),
         })
         console.log('sent notification to', to)
       } catch (e) {
-        this.logger.error(e.stack)
+        this.logger.error({
+          form: submission.formId,
+          submission: submission.id,
+          notification: notification.id,
+          error: serializeError(e),
+        }, 'failed to process notification')
         throw e
       }
     }))
   }
 
-  private getEmail(raw: string, fallback: string): string {
-    if (!raw) {
+  private getEmail(submission: SubmissionEntity, fieldId: number, fallback: string): string {
+    const data = submission.fields.find(field => field.fieldId === fieldId)?.content
+
+    if (!data) {
       return fallback
     }
 
-    try {
-      const data = JSON.parse(raw)
-
-      if (data.value) {
-        return data.value
-      }
-    } catch (e) {
-      this.logger.error('could not decode field value', raw)
+    if (typeof data.value === 'string') {
+      return data.value
     }
 
     return fallback

@@ -14,7 +14,7 @@ export class SubmissionFieldModel {
 
   constructor(field: SubmissionFieldEntity) {
     this.id = field.id.toString()
-    this.value = field.fieldValue
-    this.type = field.fieldType
+    this.value = JSON.stringify(field.content)
+    this.type = field.type
   }
 }

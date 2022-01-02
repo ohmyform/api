@@ -30,6 +30,8 @@ export class SubmissionStartService {
     submission.timeElapsed = 0
     submission.percentageComplete = 0
 
+    // TODO set country!
+
     submission.device.language = input.device.language
     submission.device.name = input.device.name
     submission.device.type = input.device.type

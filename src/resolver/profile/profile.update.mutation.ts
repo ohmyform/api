@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Args, Context, Mutation } from '@nestjs/graphql'
+import { Roles } from '../../decorator/roles.decorator'
 import { User } from '../../decorator/user.decorator'
 import { ProfileModel } from '../../dto/profile/profile.model'
 import { ProfileUpdateInput } from '../../dto/profile/profile.update.input'
@@ -15,12 +16,27 @@ export class ProfileUpdateMutation {
   }
 
   @Mutation(() => ProfileModel)
+  @Roles('user')
   async updateProfile(
     @User() user: UserEntity,
     @Args({ name: 'user', type: () => ProfileUpdateInput }) input: ProfileUpdateInput,
     @Context('cache') cache: ContextCache,
   ): Promise<ProfileModel> {
     await this.updateService.update(user, input)
+
+    cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
+
+    return new ProfileModel(user)
+  }
+
+  @Mutation(() => ProfileModel)
+  @Roles('user')
+  async verifyEmail(
+    @User() user: UserEntity,
+    @Args({ name: 'token' }) token: string,
+    @Context('cache') cache: ContextCache,
+  ): Promise<ProfileModel> {
+    await this.updateService.verifyEmail(user, token)
 
     cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
 

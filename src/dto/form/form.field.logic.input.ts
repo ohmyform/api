@@ -1,4 +1,5 @@
 import { Field, ID, InputType } from '@nestjs/graphql'
+import { FormFieldLogicAction } from '../../entity/form.field.logic.entity'
 
 @InputType()
 export class FormFieldLogicInput {
@@ -8,8 +9,9 @@ export class FormFieldLogicInput {
   @Field({ nullable: true })
   readonly formula: string
 
-  @Field({ nullable: true })
-  readonly action: string
+  // TODO verify action value
+  @Field(() => String, { nullable: true })
+  readonly action: FormFieldLogicAction
 
   @Field(() => ID, { nullable: true })
   readonly jumpTo?: string

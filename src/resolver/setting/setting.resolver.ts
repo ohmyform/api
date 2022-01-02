@@ -27,14 +27,14 @@ export class SettingResolver {
   }
 
   @Query(() => SettingModel)
-  async getSetting(
+  getSetting(
     @Args('key', {type: () => ID}) key: string,
     @User() user: UserEntity,
-  ): Promise<SettingModel> {
+  ): SettingModel {
     if (!this.settingService.isPublicKey(key) && !user.roles.includes('superuser')) {
       throw new Error(`no access to key ${key}`)
     }
 
-    return await this.settingService.getByKey(key)
+    return this.settingService.getByKey(key)
   }
 }

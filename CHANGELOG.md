@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - forms now have multiple notification
 - layout for forms
 - mariadb / mysql support
+- user confirmation tokens
+- email verification
 
 ### Changed
 
@@ -20,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - colors object removed the "colors" postfix
 - if unsupported database engine is used error is thrown during startup
 - improved eslint checks
+- validate submission field data and store it json encoded
 
 ### Fixed
 
