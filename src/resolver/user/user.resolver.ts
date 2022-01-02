@@ -16,7 +16,7 @@ export class UserResolver {
   @Query(() => UserModel)
   @Roles('admin')
   public async getUserById(
-    @Args('id', {type: () => ID}) id,
+    @Args('id', {type: () => ID}) id: string,
     @Context('cache') cache: ContextCache,
   ): Promise<UserModel> {
     const user = await this.userService.findById(id)
@@ -33,18 +33,18 @@ export class UserResolver {
     @Parent() parent: UserModel,
     @Context('cache') cache: ContextCache,
   ): Promise<string[]> {
-    return await this.returnFieldForSuperuser(
+    return this.returnFieldForSuperuser(
       await cache.get<UserEntity>(cache.getCacheKey(UserEntity.name, parent.id)),
       user,
       c => c.roles
     )
   }
 
-  async returnFieldForSuperuser<T>(
+  returnFieldForSuperuser<T>(
     parent: UserEntity,
     user: UserEntity,
     callback: (user: UserEntity) => T
-  ): Promise<T> {
+  ): T {
     if (user.id !== parent.id && !this.userService.isSuperuser(user)) {
       throw new Error('No access to roles')
     }

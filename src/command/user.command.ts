@@ -59,7 +59,7 @@ export class UserCommand {
   @Command({
     command: 'activate <username>',
   })
-  async activate(username: string): Promise<void> {
+  activate(username: string): void {
     console.log(`activate user ${username}`)
   }
 }

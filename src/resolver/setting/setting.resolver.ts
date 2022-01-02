@@ -16,7 +16,7 @@ export class SettingResolver {
 
   @Query(() => SettingPagerModel)
   @Roles('superuser')
-  async getSettings(): Promise<SettingPagerModel> {
+  getSettings(): SettingPagerModel {
     // TODO https://github.com/ohmyform/api/issues/3
     return new SettingPagerModel(
       [],

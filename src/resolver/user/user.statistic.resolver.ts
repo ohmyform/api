@@ -1,5 +1,4 @@
-import { Query, ResolveField, Resolver } from '@nestjs/graphql'
-import { GraphQLInt } from 'graphql'
+import { Int, Query, ResolveField, Resolver } from '@nestjs/graphql'
 import { Roles } from '../../decorator/roles.decorator'
 import { UserStatisticModel } from '../../dto/user/user.statistic.model'
 import { UserStatisticService } from '../../service/user/user.statistic.service'
@@ -12,11 +11,11 @@ export class UserStatisticResolver {
   }
 
   @Query(() => UserStatisticModel)
-  async getUserStatistic(): Promise<UserStatisticModel> {
+  getUserStatistic(): UserStatisticModel {
     return new UserStatisticModel()
   }
 
-  @ResolveField('total', () => GraphQLInt)
+  @ResolveField('total', () => Int)
   @Roles('admin')
   getTotal(): Promise<number> {
     return this.statisticService.getTotal()

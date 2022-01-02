@@ -44,8 +44,8 @@ export class FormFieldModel {
     this.description = document.description
     this.required = document.required
     this.value = document.value
-    this.options = document.options ? document.options.map(option => new FormFieldOptionModel(option)) : []
-    this.logic = document.logic ? document.logic.map(logic => new FormFieldLogicModel(logic)) : []
+    this.options = document.options?.map(option => new FormFieldOptionModel(option)) || []
+    this.logic = document.logic?.map(logic => new FormFieldLogicModel(logic)) || []
     this.rating = document.rating ? new FormFieldRatingModel(document.rating) : null
   }
 }

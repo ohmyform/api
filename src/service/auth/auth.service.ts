@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
 import { PinoLogger } from 'nestjs-pino'
+import { serializeError } from 'serialize-error'
 import { AuthJwtModel } from '../../dto/auth/auth.jwt.model'
 import { UserEntity } from '../../entity/user.entity'
 import { UserService } from '../user/user.service'
@@ -26,7 +27,10 @@ export class AuthService {
         return user;
       }
     } catch (e) {
-      this.logger.error(`failed to verify user? ${e.message}`)
+      this.logger.error({
+        error: serializeError(e),
+        username,
+      },'failed to verify user')
     }
 
     return null;

@@ -13,7 +13,7 @@ export class SubmissionStatisticResolver {
 
 
   @Query(() => SubmissionStatisticModel)
-  async getSubmissionStatistic(): Promise<SubmissionStatisticModel> {
+  getSubmissionStatistic(): SubmissionStatisticModel {
     return new SubmissionStatisticModel()
   }
 

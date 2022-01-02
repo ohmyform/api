@@ -15,7 +15,9 @@ export class SubmissionResolver {
     @Parent() parent: SubmissionModel,
     @Context('cache') cache: ContextCache,
   ): Promise<SubmissionFieldModel[]> {
-    const submission = await cache.get<SubmissionEntity>(cache.getCacheKey(SubmissionEntity.name, parent.id))
+    const submission = await cache.get<SubmissionEntity>(
+      cache.getCacheKey(SubmissionEntity.name, parent.id)
+    )
 
     return submission.fields.map(field => {
       cache.add(cache.getCacheKey(SubmissionFieldEntity.name, field.id), field)

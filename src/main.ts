@@ -4,7 +4,7 @@ import cors from 'cors'
 import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module'
 
-(async () => {
+void (async () => {
   const options: NestApplicationOptions =  {
     bufferLogs: true,
   }

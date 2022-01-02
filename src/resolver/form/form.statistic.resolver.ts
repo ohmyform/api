@@ -12,7 +12,7 @@ export class FormStatisticResolver {
   }
 
   @Query(() => FormStatisticModel)
-  async getFormStatistic(): Promise<FormStatisticModel> {
+  getFormStatistic(): FormStatisticModel {
     return new FormStatisticModel()
   }
 

@@ -34,7 +34,9 @@ export class SubmissionSearchResolver {
       {},
     )
 
-    submissions.forEach(submission => cache.add(cache.getCacheKey(SubmissionEntity.name, submission.id), submission))
+    submissions.forEach(submission => {
+      cache.add(cache.getCacheKey(SubmissionEntity.name, submission.id), submission)
+    })
 
     return new SubmissionPagerModel(
       submissions.map(submission => new SubmissionModel(submission)),

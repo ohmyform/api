@@ -22,7 +22,7 @@ export class AuthRegisterResolver {
   async authRegister(
     @Args({ name: 'user' }) data: UserCreateInput,
   ): Promise<AuthJwtModel> {
-    if (await this.settingService.isTrue('SIGNUP_DISABLED')) {
+    if (this.settingService.isTrue('SIGNUP_DISABLED')) {
       throw new Error('signup disabled')
     }
 

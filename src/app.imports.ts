@@ -64,7 +64,7 @@ export const imports = [
   JwtModule.registerAsync({
     imports: [ConfigModule],
     inject: [ConfigService],
-    useFactory: async (configService: ConfigService): Promise<JwtModuleOptions> => ({
+    useFactory: (configService: ConfigService): JwtModuleOptions => ({
       secret: configService.get<string>('SECRET_KEY'),
       signOptions: {
         expiresIn: '4h',
@@ -154,7 +154,7 @@ export const imports = [
   MailerModule.forRootAsync({
     imports: [ConfigModule],
     inject: [ConfigService],
-    useFactory: async (configService: ConfigService) => ({
+    useFactory: (configService: ConfigService) => ({
       transport: configService.get<string>('MAILER_URI', 'smtp://localhost:1025'),
       defaults: {
         from: configService.get<string>('MAILER_FROM', 'OhMyForm <no-reply@localhost>'),

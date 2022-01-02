@@ -18,9 +18,16 @@ export class SubmissionFieldResolver {
     @Parent() parent: SubmissionFieldModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormFieldModel> {
-    const submissionField = await cache.get<SubmissionFieldEntity>(cache.getCacheKey(SubmissionFieldEntity.name, parent.id))
+    const submissionField = await cache.get<SubmissionFieldEntity>(
+      cache.getCacheKey(SubmissionFieldEntity.name, parent.id)
+    )
 
-    const field = await cache.get<FormFieldEntity>(cache.getCacheKey(FormFieldEntity.name, submissionField.fieldId), () => this.formFieldService.findById(submissionField.fieldId, submissionField.field))
+    const field = await cache.get<FormFieldEntity>(
+      cache.getCacheKey(
+        FormFieldEntity.name,
+        submissionField.fieldId),
+      () => this.formFieldService.findById(submissionField.fieldId, submissionField.field)
+    )
 
     if (!field) {
       return null
