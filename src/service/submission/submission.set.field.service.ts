@@ -27,9 +27,12 @@ export class SubmissionSetFieldService {
   async saveField(submission: SubmissionEntity, input: SubmissionSetFieldInput): Promise<void> {
     let field = submission.fields.find(field => field.field.id.toString() === input.field)
 
+    submission.timeElapsed = dayjs().diff(dayjs(submission.created), 'second')
+
     if (field) {
       field.content = this.parseData(field, input.data)
 
+      await this.submissionRepository.save(submission)
       await this.submissionFieldRepository.save(field)
     } else {
       field = new SubmissionFieldEntity()
@@ -39,16 +42,13 @@ export class SubmissionSetFieldService {
       field.type = field.field.type
       field.content = this.parseData(field, input.data)
 
-      field = await this.submissionFieldRepository.save(field)
-
       submission.fields.push(field)
-
       submission.percentageComplete = (submission.fields.length) / submission.form.fields.length
+
+      // figure out why this cannot be after field save...
+      await this.submissionRepository.save(submission)
+      await this.submissionFieldRepository.save(field)
     }
-
-    submission.timeElapsed = dayjs().diff(dayjs(submission.created), 'second')
-
-    await this.submissionRepository.save(submission)
 
     if (submission.percentageComplete === 1) {
       this.webHook.process(submission).catch(e => {

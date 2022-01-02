@@ -43,15 +43,7 @@ export class SubmissionService {
   }
 
   async findById(id: string): Promise<SubmissionEntity> {
-    const submission = await this.submissionRepository.findOne(
-      id,
-      {
-        relations: [
-          'form',
-          'form.admin',
-        ],
-      }
-    );
+    const submission = await this.submissionRepository.findOne(id);
 
     if (!submission) {
       throw new Error('no form found')

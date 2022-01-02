@@ -28,6 +28,12 @@ export class SubmissionStartMutation {
   ): Promise<SubmissionProgressModel> {
     const form = await this.formService.findById(id)
 
+    if (!form.isLive && !this.formService.isAdmin(form, user)) {
+      throw new Error('invalid form')
+    }
+
+    console.log('user', user)
+
     const submission = await this.startService.start(form, input, user, ipAddr)
 
     cache.add(cache.getCacheKey(SubmissionEntity.name, submission.id), submission)
