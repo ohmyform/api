@@ -21,6 +21,9 @@ export class FormFieldEntity {
   @Column({ nullable: true })
   public slug?: string
 
+  @Column({ nullable: true })
+  public idx?: number
+
   @OneToMany(() => FormFieldLogicEntity, logic => logic.field, { eager: true, orphanedRowAction: 'delete', cascade: true })
   public logic: FormFieldLogicEntity[]
 

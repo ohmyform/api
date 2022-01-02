@@ -14,6 +14,9 @@ export class FormFieldLogicEntity {
   @Column()
   public formula: string
 
+  @Column({ nullable: true })
+  public idx?: number
+
   @Column({ type: 'varchar', length: 10 })
   public action: FormFieldLogicAction
 

@@ -61,6 +61,10 @@ export class FormUpdateService {
           field.description = nextField.description
         }
 
+        if (nextField.idx !== undefined) {
+          field.idx = nextField.idx
+        }
+
         if (nextField.disabled !== undefined) {
           field.disabled = nextField.disabled
         }
@@ -89,6 +93,9 @@ export class FormUpdateService {
 
             if (nextLogic.formula !== undefined) {
               logic.formula = nextLogic.formula
+            }
+            if (nextLogic.idx !== undefined) {
+              logic.idx = nextLogic.idx
             }
             if (nextLogic.action !== undefined) {
               logic.action = nextLogic.action

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - mariadb / mysql support (fixes https://github.com/ohmyform/ohmyform/issues/143)
 - user confirmation tokens
 - email verification
+- idx for fields and logic to have stable order
 
 ### Changed
 

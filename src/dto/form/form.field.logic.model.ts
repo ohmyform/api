@@ -12,6 +12,9 @@ export class FormFieldLogicModel {
   @Field()
   readonly action: string
 
+  @Field({ nullable: true })
+  readonly idx?: number
+
   @Field(() => ID, { nullable: true })
   readonly jumpTo?: string
 
@@ -34,6 +37,7 @@ export class FormFieldLogicModel {
     this.formula = document.formula
     this.jumpTo = document.jumpTo?.id.toString()
 
+    this.idx = document.idx
     this.action = document.action
     this.visible = document.visible
     this.disable = document.disable

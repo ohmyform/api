@@ -13,6 +13,9 @@
           Your Username is {{username}}
         </mj-text>
 
+        <mj-text font-size="14px" color="#444" font-family="helvetica">
+          <a href="{{confirm}}">Click here to verify your Account</a>
+        </mj-text>
       </mj-column>
     </mj-section>
   </mj-body>

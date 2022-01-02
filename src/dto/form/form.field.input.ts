@@ -17,6 +17,9 @@ export class FormFieldInput {
   @Field({ nullable: true })
   readonly slug?: string
 
+  @Field({ nullable: true })
+  readonly idx?: number
+
   @Field()
   readonly description: string
 

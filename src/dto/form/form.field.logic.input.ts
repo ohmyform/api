@@ -13,6 +13,9 @@ export class FormFieldLogicInput {
   @Field(() => String, { nullable: true })
   readonly action: FormFieldLogicAction
 
+  @Field({ nullable: true })
+  readonly idx?: number
+
   @Field(() => ID, { nullable: true })
   readonly jumpTo?: string
 

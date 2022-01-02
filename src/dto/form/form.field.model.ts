@@ -15,6 +15,9 @@ export class FormFieldModel {
   @Field({ nullable: true })
   readonly slug?: string
 
+  @Field({ nullable: true })
+  readonly idx: number
+
   @Field()
   readonly type: string
 
@@ -38,6 +41,7 @@ export class FormFieldModel {
 
   constructor(document: FormFieldEntity) {
     this.id = document.id.toString()
+    this.idx = document.idx
     this.title = document.title
     this.slug = document.slug
     this.type = document.type
