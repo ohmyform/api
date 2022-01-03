@@ -54,7 +54,12 @@ export class SubmissionNotificationService {
           html,
           text: htmlToText.htmlToText(html),
         })
-        console.log('sent notification to', to)
+
+        this.logger.info({
+          form: submission.formId,
+          submission: submission.id,
+          notification: notification.id,
+        }, 'sent notification')
       } catch (e) {
         this.logger.error({
           form: submission.formId,

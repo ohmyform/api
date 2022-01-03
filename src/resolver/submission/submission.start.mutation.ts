@@ -32,8 +32,6 @@ export class SubmissionStartMutation {
       throw new Error('invalid form')
     }
 
-    console.log('user', user)
-
     const submission = await this.startService.start(form, input, user, ipAddr)
 
     cache.add(cache.getCacheKey(SubmissionEntity.name, submission.id), submission)

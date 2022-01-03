@@ -27,7 +27,11 @@ export class SubmissionHookService {
           this.format(submission, hook.format)
         ))
 
-        console.log('sent hook', response.data)
+        this.logger.info({
+          submission: submission.id,
+          form: submission.formId,
+          webhook: hook.url,
+        }, 'sent hook')
       } catch (e) {
         this.logger.error({
           submission: submission.id,
