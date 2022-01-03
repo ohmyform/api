@@ -83,12 +83,12 @@ export class SubmissionSetFieldService {
       raw = JSON.parse(data) as { [key: string]: unknown }
     } catch (e) {
       this.logger.warn(context, 'received invalid data for field')
-      return null
+      return { value: null }
     }
 
     if (typeof raw !== 'object' || Array.isArray(raw)) {
       this.logger.warn(context, 'only object supported for data')
-      return null
+      return { value: null }
     }
 
     // now ensure data structure
@@ -111,7 +111,7 @@ export class SubmissionSetFieldService {
 
       if (Array.isArray(value)) {
         result[String(key)] = value.map((row: unknown, index) => {
-          switch (typeof value) {
+          switch (typeof row) {
             case 'number':
             case 'string':
             case 'boolean':
@@ -119,7 +119,7 @@ export class SubmissionSetFieldService {
               return row
           }
 
-          if (value === null) {
+          if (row === null) {
             return row
           }
 
@@ -146,7 +146,7 @@ export class SubmissionSetFieldService {
 
     if (!valid) {
       this.logger.warn(context, 'invalid data in object entries')
-      return null
+      return { value: null }
     }
 
     return result
