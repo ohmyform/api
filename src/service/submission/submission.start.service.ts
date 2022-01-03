@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import anonymize from 'ip-anonymize'
 import { Repository } from 'typeorm'
 import { SubmissionStartInput } from '../../dto/submission/submission.start.input'
 import { FormEntity } from '../../entity/form.entity'
@@ -24,9 +25,12 @@ export class SubmissionStartService {
   ): Promise<SubmissionEntity> {
     const submission = new SubmissionEntity()
 
+    if (!form.anonymousSubmission) {
+      submission.user = user
+    }
+
     submission.form = form
-    submission.user = user
-    submission.ipAddr = ipAddr || '?'
+    submission.ipAddr = anonymize(ipAddr, 16, 16) || '?'
     submission.timeElapsed = 0
     submission.percentageComplete = 0
 

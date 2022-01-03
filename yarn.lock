@@ -4551,6 +4551,11 @@ ioredis@^4.17.3, ioredis@^4.28.2:
     redis-parser "^3.0.0"
     standard-as-callback "^2.1.0"
 
+ip-anonymize@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ip-anonymize/-/ip-anonymize-0.1.0.tgz#5ead504d01871c5c28189a25382f852036b57f7e"
+  integrity sha512-cZJu+N5JKKFGMK0eEQWNaQMn2EhCysciVM6eotCJwfqotj16BTfVchKsJCH6mQAT9N0GC7oWRcsZ6Lb8dDiwTA==
+
 ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"

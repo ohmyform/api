@@ -21,6 +21,9 @@ export class FormModel {
   @Field()
   readonly showFooter: boolean
 
+  @Field()
+  readonly anonymousSubmission: boolean
+
   constructor(form: FormEntity) {
     this.id = form.id.toString()
     this.title = form.title
@@ -28,5 +31,6 @@ export class FormModel {
     this.lastModified = form.lastModified
     this.language = form.language
     this.showFooter = form.showFooter
+    this.anonymousSubmission = form.anonymousSubmission
   }
 }

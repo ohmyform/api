@@ -61,6 +61,9 @@ export class FormEntity {
   @Column()
   public isLive: boolean;
 
+  @Column({ default: false })
+  public anonymousSubmission: boolean;
+
   @Column(() => DesignEmbedded)
   public design: DesignEmbedded = new DesignEmbedded();
 
@@ -69,5 +72,4 @@ export class FormEntity {
 
   @UpdateDateColumn()
   public lastModified: Date
-
 }

@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - email verification
 - idx for fields and logic to have stable order
 - ability to load submission by id if token is present
+- anonymous form submissions (fixes https://github.com/ohmyform/ohmyform/issues/108)
 
 ### Changed
 

@@ -12,6 +12,9 @@ export class FormCreateInput {
   readonly showFooter: boolean
 
   @Field({ nullable: true })
+  readonly anonymousSubmission: boolean
+
+  @Field({ nullable: true })
   readonly isLive: boolean
 
   @Field({ nullable: true })

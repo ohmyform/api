@@ -20,6 +20,9 @@ export class FormUpdateInput {
   readonly showFooter: boolean
 
   @Field({ nullable: true })
+  readonly anonymousSubmission: boolean
+
+  @Field({ nullable: true })
   readonly isLive: boolean
 
   @Field(() => [FormFieldInput], { nullable: true })
