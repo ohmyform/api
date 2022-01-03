@@ -36,6 +36,10 @@ export class FormUpdateService {
       form.showFooter = input.showFooter
     }
 
+    if (input.anonymousSubmission !== undefined) {
+      form.anonymousSubmission = input.anonymousSubmission
+    }
+
     if (input.isLive !== undefined) {
       form.isLive = input.isLive
     }

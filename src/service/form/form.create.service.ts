@@ -19,6 +19,7 @@ export class FormCreateService {
     form.title = input.title
     form.isLive = Boolean(input.isLive)
     form.showFooter = Boolean(input.showFooter)
+    form.anonymousSubmission = Boolean(input.anonymousSubmission)
     form.language = input.language || 'en'
     form.design.layout = input.layout
 
