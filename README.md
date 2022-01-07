@@ -15,7 +15,7 @@
 
 ## Description
 
-[OhMyForm](https://github.com/ohmyforn) api backend
+[OhMyForm](https://github.com/ohmyform) api backend
 
 All calls to the api are through GraphQL, with the endpoint 
 providing an introspectable schema at `GET /graphql`
