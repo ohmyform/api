@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - env list in doc
 - version env variable for yarn
+- path argument error (https://github.com/ohmyform/ohmyform/issues/149)
 
 ### Security
 

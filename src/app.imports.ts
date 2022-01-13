@@ -21,13 +21,13 @@ export const LoggerConfig: LoggerModuleParams = {
     serializers: {
       error: serializeError,
     },
-    transport: {
+    transport: process.env.NODE_ENV !== 'production' || process.env.CLI  ? {
       options: {
         ignore: 'req,res,pid,hostname',
         translateTime: true,
       },
-      target: process.env.NODE_ENV !== 'production' || process.env.CLI  ? 'pino-pretty' : undefined,
-    },
+      target: 'pino-pretty',
+    } : undefined,
   },
   exclude: [
     {
