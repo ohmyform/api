@@ -26,12 +26,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - if unsupported database engine is used error is thrown during startup
 - improved eslint checks
 - validate submission field data and store it json encoded
+- forms are no longer finished on 100% but instead on finish mutation
 
 ### Fixed
 
 - env list in doc
 - version env variable for yarn
 - path argument error (https://github.com/ohmyform/ohmyform/issues/149)
+- webhook and form submission (https://github.com/ohmyform/api/pull/37)
 
 ### Security
 
