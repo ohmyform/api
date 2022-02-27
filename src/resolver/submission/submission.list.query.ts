@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common'
 import { Args, Context, ID, Int, Query } from '@nestjs/graphql'
 import { User } from '../../decorator/user.decorator'
 import { SubmissionModel } from '../../dto/submission/submission.model'
+import { SubmissionPagerFilterInput } from '../../dto/submission/submission.pager.filter.input'
 import { SubmissionPagerModel } from '../../dto/submission/submission.pager.model'
 import { SubmissionEntity } from '../../entity/submission.entity'
 import { UserEntity } from '../../entity/user.entity'
@@ -23,6 +24,7 @@ export class SubmissionListQuery {
     @Args('form', {type: () => ID}) id: string,
     @Args('start', {type: () => Int, defaultValue: 0, nullable: true}) start: number,
     @Args('limit', {type: () => Int, defaultValue: 50, nullable: true}) limit: number,
+    @Args('filter', {type: () => SubmissionPagerFilterInput, defaultValue: new SubmissionPagerFilterInput()}) filter: SubmissionPagerFilterInput,
     @Context('cache') cache: ContextCache,
   ): Promise<SubmissionPagerModel> {
     const form = await this.formService.findById(id)
@@ -32,6 +34,7 @@ export class SubmissionListQuery {
       start,
       limit,
       {},
+      filter,
     )
 
     submissions.forEach(submission => {

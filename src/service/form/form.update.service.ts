@@ -77,8 +77,8 @@ export class FormUpdateService {
           field.required = nextField.required
         }
 
-        if (nextField.value !== undefined) {
-          field.value = nextField.value
+        if (nextField.defaultValue !== undefined) {
+          field.defaultValue = nextField.defaultValue
         }
 
         if (nextField.slug !== undefined) {

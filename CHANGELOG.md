@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - idx for fields and logic to have stable order
 - ability to load submission by id if token is present
 - anonymous form submissions (fixes https://github.com/ohmyform/ohmyform/issues/108)
+- ability to filter for partial / completed or empty submissions
 
 ### Changed
 
@@ -27,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - improved eslint checks
 - validate submission field data and store it json encoded
 - forms are no longer finished on 100% but instead on finish mutation
+- field default value renamed from value to defaultValue
 
 ### Fixed
 
@@ -34,6 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - version env variable for yarn
 - path argument error (https://github.com/ohmyform/ohmyform/issues/149)
 - webhook and form submission (https://github.com/ohmyform/api/pull/37)
+- sqlite migration fixes to allow changes to tables
 
 ### Security
 

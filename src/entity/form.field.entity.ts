@@ -42,6 +42,6 @@ export class FormFieldEntity {
   @Column()
   public type: string
 
-  @Column()
-  public value: string
+  @Column({ nullable: true })
+  public defaultValue: string
 }

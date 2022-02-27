@@ -1,4 +1,5 @@
 import { MailerModule } from '@nestjs-modules/mailer'
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
 import { HttpModule } from '@nestjs/axios'
 import { RequestMethod } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
@@ -72,11 +73,12 @@ export const imports = [
     }),
   }),
   LoggerModule.forRoot(LoggerConfig),
-  GraphQLModule.forRoot({
+  GraphQLModule.forRoot<ApolloDriverConfig>({
     debug: process.env.NODE_ENV !== 'production',
     definitions: {
       outputAs: 'class',
     },
+    driver: ApolloDriver,
     sortSchema: true,
     introspection: process.env.NODE_ENV !== 'production',
     playground: process.env.NODE_ENV !== 'production',
@@ -114,6 +116,7 @@ export const imports = [
     useFactory: (configService: ConfigService): TypeOrmModuleOptions => {
       const type: any = configService.get<string>('DATABASE_DRIVER', 'sqlite')
       let migrationFolder: string
+      let migrationsTransactionMode: 'each' | 'none' | 'all' = 'each'
 
       switch (type) {
         case 'cockroachdb':
@@ -128,6 +131,7 @@ export const imports = [
 
         case 'sqlite':
           migrationFolder = 'sqlite'
+          migrationsTransactionMode = 'none'
           break
 
         default:
@@ -146,7 +150,7 @@ export const imports = [
         entities,
         migrations: [`${__dirname}/**/migrations/${migrationFolder}/**/*{.ts,.js}`],
         migrationsRun: configService.get<boolean>('DATABASE_MIGRATE', true),
-        migrationsTransactionMode: 'each',
+        migrationsTransactionMode,
       })
     },
   }),

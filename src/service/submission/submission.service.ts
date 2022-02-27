@@ -23,13 +23,29 @@ export class SubmissionService {
     form: FormEntity,
     start: number,
     limit: number,
-    sort: any = {}
+    sort: any = {},
+    filter: {
+      finished?: boolean,
+      excludeEmpty?: boolean
+    } = {}
   ): Promise<[SubmissionEntity[], number]> {
     const qb = this.submissionRepository.createQueryBuilder('s')
 
     qb.leftJoinAndSelect('s.fields', 'fields')
 
     qb.where('s.form = :form', { form: form.id })
+
+    if (filter.finished === true) {
+      qb.andWhere('s.percentageComplete = 1')
+    }
+
+    if (filter.finished === false) {
+      qb.andWhere('s.percentageComplete < 1')
+    }
+
+    if (filter.excludeEmpty === true) {
+      qb.andWhere('s.percentageComplete > 0')
+    }
 
     // TODO readd sort
     this.logger.debug({

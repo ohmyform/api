@@ -27,8 +27,8 @@ export class FormFieldModel {
   @Field()
   readonly required: boolean
 
-  @Field()
-  readonly value: string
+  @Field({ nullable: true })
+  readonly defaultValue: string
 
   @Field(() => [FormFieldOptionModel])
   readonly options: FormFieldOptionModel[]
@@ -47,7 +47,7 @@ export class FormFieldModel {
     this.type = document.type
     this.description = document.description
     this.required = document.required
-    this.value = document.value
+    this.defaultValue = document.defaultValue
     this.options = document.options?.map(option => new FormFieldOptionModel(option)) || []
     this.logic = document.logic?.map(logic => new FormFieldLogicModel(logic)) || []
     this.rating = document.rating ? new FormFieldRatingModel(document.rating) : null

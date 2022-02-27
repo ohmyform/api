@@ -51,12 +51,18 @@ export class SubmissionSetFieldService {
     }
 
     if (submission.percentageComplete === 1) {
-      this.finishSubmission(submission)
+      await this.finishSubmission(submission)
     }
   }
 
-  async finishSubmission(submission: SubmissionEntity) {
+  async finishSubmission(submission: SubmissionEntity): Promise<void> {
     submission.percentageComplete = 1
+    await this.submissionRepository.update({
+      id: submission.id,
+    }, {
+      percentageComplete: 1,
+    })
+
     this.webHook.process(submission).catch(e => {
       this.logger.error({
         submission: submission.id,
@@ -64,6 +70,7 @@ export class SubmissionSetFieldService {
         error: serializeError(e),
       }, 'failed to send webhooks')
     })
+
     this.notifications.process(submission).catch(e => {
       this.logger.error({
         submission: submission.id,
