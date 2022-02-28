@@ -3,6 +3,8 @@ import { SubmissionEntity } from '../../entity/submission.entity'
 
 @ObjectType('SubmissionProgress')
 export class SubmissionProgressModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -18,8 +20,9 @@ export class SubmissionProgressModel {
   @Field({ nullable: true })
   readonly lastModified?: Date
 
-  constructor(submission: Partial<SubmissionEntity>) {
-    this.id = submission.id.toString()
+  constructor(id: string, submission: Partial<SubmissionEntity>) {
+    this._id = submission.id
+    this.id = id
 
     this.timeElapsed = submission.timeElapsed
     this.percentageComplete = submission.percentageComplete

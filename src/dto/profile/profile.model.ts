@@ -7,8 +7,8 @@ export class ProfileModel extends UserModel {
   @Field(() => [String])
   readonly roles: string[]
 
-  constructor(user: UserEntity) {
-    super(user)
+  constructor(id: string, user: UserEntity) {
+    super(id, user)
 
     this.roles = user.roles
   }

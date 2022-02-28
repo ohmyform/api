@@ -8,6 +8,7 @@ import { FormEntity } from '../../entity/form.entity'
 import { UserEntity } from '../../entity/user.entity'
 import { FormService } from '../../service/form/form.service'
 import { FormUpdateService } from '../../service/form/form.update.service'
+import { IdService } from '../../service/id.service'
 import { ContextCache } from '../context.cache'
 
 @Injectable()
@@ -15,6 +16,7 @@ export class FormUpdateMutation {
   constructor(
     private readonly updateService: FormUpdateService,
     private readonly formService: FormService,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -25,7 +27,7 @@ export class FormUpdateMutation {
     @Args({ name: 'form', type: () => FormUpdateInput }) input: FormUpdateInput,
     @Context('cache') cache: ContextCache,
   ): Promise<FormModel> {
-    const form = await this.formService.findById(input.id)
+    const form = await this.formService.findById(this.idService.decode(input.id))
 
     if (!form.isLive && !this.formService.isAdmin(form, user)) {
       throw new Error('invalid form')
@@ -35,6 +37,6 @@ export class FormUpdateMutation {
 
     cache.add(cache.getCacheKey(FormEntity.name, form.id), form)
 
-    return new FormModel(form)
+    return new FormModel(this.idService.encode(form.id), form)
   }
 }

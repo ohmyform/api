@@ -7,12 +7,14 @@ import { FormPagerModel } from '../../dto/form/form.pager.model'
 import { FormEntity } from '../../entity/form.entity'
 import { UserEntity } from '../../entity/user.entity'
 import { FormService } from '../../service/form/form.service'
+import { IdService } from '../../service/id.service'
 import { ContextCache } from '../context.cache'
 
 @Injectable()
 export class FormListQuery {
   constructor(
     private readonly formService: FormService,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -34,7 +36,7 @@ export class FormListQuery {
     forms.forEach(form => cache.add(cache.getCacheKey(FormEntity.name, form.id), form))
 
     return new FormPagerModel(
-      forms.map(form => new FormModel(form)),
+      forms.map(form => new FormModel(this.idService.encode(form.id), form)),
       total,
       limit,
       start,

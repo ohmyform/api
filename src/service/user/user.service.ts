@@ -26,7 +26,7 @@ export class UserService {
     return await qb.getManyAndCount()
   }
 
-  async findById(id: string): Promise<UserEntity> {
+  async findById(id: number): Promise<UserEntity> {
     const user = await this.userRepository.findOne(id);
 
     if (!user) {

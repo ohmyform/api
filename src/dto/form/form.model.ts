@@ -3,6 +3,8 @@ import { FormEntity } from '../../entity/form.entity'
 
 @ObjectType('Form')
 export class FormModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -24,8 +26,9 @@ export class FormModel {
   @Field()
   readonly anonymousSubmission: boolean
 
-  constructor(form: FormEntity) {
-    this.id = form.id.toString()
+  constructor(id: string, form: FormEntity) {
+    this._id = form.id
+    this.id = id
     this.title = form.title
     this.created = form.created
     this.lastModified = form.lastModified

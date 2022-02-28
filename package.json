@@ -51,6 +51,7 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^8.2.0",
     "handlebars": "^4.7.7",
+    "hashids": "^2.2.10",
     "html-to-text": "^8.1.0",
     "inquirer": "^8.2.0",
     "ioredis": "^4.28.5",

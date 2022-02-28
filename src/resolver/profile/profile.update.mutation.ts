@@ -5,6 +5,7 @@ import { User } from '../../decorator/user.decorator'
 import { ProfileModel } from '../../dto/profile/profile.model'
 import { ProfileUpdateInput } from '../../dto/profile/profile.update.input'
 import { UserEntity } from '../../entity/user.entity'
+import { IdService } from '../../service/id.service'
 import { ProfileUpdateService } from '../../service/profile/profile.update.service'
 import { ContextCache } from '../context.cache'
 
@@ -12,6 +13,7 @@ import { ContextCache } from '../context.cache'
 export class ProfileUpdateMutation {
   constructor(
     private readonly updateService: ProfileUpdateService,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -26,7 +28,7 @@ export class ProfileUpdateMutation {
 
     cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
 
-    return new ProfileModel(user)
+    return new ProfileModel(this.idService.encode(user.id), user)
   }
 
   @Mutation(() => ProfileModel)
@@ -40,6 +42,6 @@ export class ProfileUpdateMutation {
 
     cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
 
-    return new ProfileModel(user)
+    return new ProfileModel(this.idService.encode(user.id), user)
   }
 }

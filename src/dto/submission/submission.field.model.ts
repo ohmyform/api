@@ -3,6 +3,8 @@ import { SubmissionFieldEntity } from '../../entity/submission.field.entity'
 
 @ObjectType('SubmissionField')
 export class SubmissionFieldModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -12,8 +14,9 @@ export class SubmissionFieldModel {
   @Field()
   readonly type: string
 
-  constructor(field: SubmissionFieldEntity) {
-    this.id = field.id.toString()
+  constructor(id: string, field: SubmissionFieldEntity) {
+    this._id = field.id
+    this.id = id
     this.value = JSON.stringify(field.content)
     this.type = field.type
   }

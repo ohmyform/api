@@ -1,8 +1,8 @@
-import { Field, ObjectType } from '@nestjs/graphql'
+import { Field, ID, ObjectType } from '@nestjs/graphql'
 
 @ObjectType('Deleted')
 export class DeletedModel {
-  @Field()
+  @Field(() => ID)
     id: string
 
   constructor(id: string) {

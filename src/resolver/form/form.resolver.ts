@@ -11,12 +11,14 @@ import { UserModel } from '../../dto/user/user.model'
 import { FormEntity } from '../../entity/form.entity'
 import { UserEntity } from '../../entity/user.entity'
 import { FormService } from '../../service/form/form.service'
+import { IdService } from '../../service/id.service'
 import { ContextCache } from '../context.cache'
 
 @Resolver(() => FormModel)
 export class FormResolver {
   constructor(
     private readonly formService: FormService,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -26,7 +28,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormFieldModel[]> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
     return form.fields?.map(field => new FormFieldModel(field)).sort((a,b) => a.idx - b.idx) || []
   }
@@ -37,7 +39,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormHookModel[]> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
     return form.hooks?.map(hook => new FormHookModel(hook)) || []
   }
@@ -49,7 +51,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<boolean> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
     if (!this.formService.isAdmin(form, user)) {
       throw new Error('no access to field')
@@ -65,7 +67,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormNotificationModel[]> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
     if (!this.formService.isAdmin(form, user)) {
       throw new Error('no access to field')
@@ -80,7 +82,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<DesignModel> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
     return new DesignModel(form.design)
   }
@@ -90,7 +92,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<PageModel> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
     return new PageModel(form.startPage)
   }
@@ -100,7 +102,7 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<PageModel> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
     return new PageModel(form.endPage)
   }
@@ -111,12 +113,12 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<UserModel> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent.id))
+    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
     if (!form.admin) {
       return null
     }
 
-    return new UserModel(form.admin)
+    return new UserModel(this.idService.encode(form.admin.id), form.admin)
   }
 }

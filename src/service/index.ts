@@ -5,6 +5,7 @@ import Redis from 'ioredis'
 import { PinoLogger } from 'nestjs-pino'
 import { authServices } from './auth'
 import { formServices } from './form'
+import { IdService } from './id.service'
 import { InstallationMetricsService } from './installation.metrics.service'
 import { MailService } from './mail.service'
 import { profileServices } from './profile'
@@ -44,4 +45,5 @@ export const services = [
       })
     },
   },
+  IdService,
 ]

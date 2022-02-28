@@ -21,7 +21,7 @@ export class UserResolver {
     @Context('cache') cache: ContextCache,
   ): Promise<string[]> {
     return this.returnFieldForSuperuser(
-      await cache.get<UserEntity>(cache.getCacheKey(UserEntity.name, parent.id)),
+      await cache.get<UserEntity>(cache.getCacheKey(UserEntity.name, parent._id)),
       user,
       c => c.roles
     )

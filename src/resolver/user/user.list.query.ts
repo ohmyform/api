@@ -3,6 +3,7 @@ import { Roles } from '../../decorator/roles.decorator'
 import { UserModel } from '../../dto/user/user.model'
 import { UserPagerModel } from '../../dto/user/user.pager.model'
 import { UserEntity } from '../../entity/user.entity'
+import { IdService } from '../../service/id.service'
 import { UserService } from '../../service/user/user.service'
 import { ContextCache } from '../context.cache'
 
@@ -10,6 +11,7 @@ import { ContextCache } from '../context.cache'
 export class UserListQuery {
   constructor(
     private readonly userService: UserService,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -25,7 +27,7 @@ export class UserListQuery {
     return new UserPagerModel(
       entities.map(entity => {
         cache.add(cache.getCacheKey(UserEntity.name, entity.id), entity)
-        return new UserModel(entity)
+        return new UserModel(this.idService.encode(entity.id), entity)
       }),
       total,
       limit,

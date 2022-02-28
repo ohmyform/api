@@ -58,7 +58,7 @@ export class SubmissionService {
     return await qb.getManyAndCount()
   }
 
-  async findById(id: string): Promise<SubmissionEntity> {
+  async findById(id: number): Promise<SubmissionEntity> {
     const submission = await this.submissionRepository.findOne(id);
 
     if (!submission) {

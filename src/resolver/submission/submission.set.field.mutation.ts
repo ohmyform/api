@@ -5,6 +5,8 @@ import { SubmissionProgressModel } from '../../dto/submission/submission.progres
 import { SubmissionSetFieldInput } from '../../dto/submission/submission.set.field.input'
 import { SubmissionEntity } from '../../entity/submission.entity'
 import { UserEntity } from '../../entity/user.entity'
+import { SubmissionByIdPipe } from '../../pipe/submission/submission.by.id.pipe'
+import { IdService } from '../../service/id.service'
 import { SubmissionService } from '../../service/submission/submission.service'
 import { SubmissionSetFieldService } from '../../service/submission/submission.set.field.service'
 import { ContextCache } from '../context.cache'
@@ -14,18 +16,17 @@ export class SubmissionSetFieldMutation {
   constructor(
     private readonly submissionService: SubmissionService,
     private readonly setFieldService: SubmissionSetFieldService,
+    private readonly idService: IdService,
   ) {
   }
 
   @Mutation(() => SubmissionProgressModel)
   async submissionSetField(
     @User() user: UserEntity,
-    @Args({ name: 'submission', type: () => ID }) id: string,
+    @Args({ name: 'submission', type: () => ID }, SubmissionByIdPipe) submission: SubmissionEntity,
     @Args({ name: 'field', type: () => SubmissionSetFieldInput }) input: SubmissionSetFieldInput,
     @Context('cache') cache: ContextCache,
   ): Promise<SubmissionProgressModel> {
-    const submission = await this.submissionService.findById(id)
-
     if (!await this.submissionService.isOwner(submission, input.token)) {
       throw new Error('no access to submission')
     }
@@ -34,6 +35,6 @@ export class SubmissionSetFieldMutation {
 
     cache.add(cache.getCacheKey(SubmissionEntity.name, submission.id), submission)
 
-    return new SubmissionProgressModel(submission)
+    return new SubmissionProgressModel(this.idService.encode(submission.id), submission)
   }
 }

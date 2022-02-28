@@ -1,12 +1,10 @@
 
-type ID = string | number
-
 export class ContextCache<A = any> {
   private cache: {
     [key: string]: any
   } = {}
 
-  public getCacheKey(type: string, id: ID): string {
+  public getCacheKey(type: string, id: number): string {
     return `${type}:${id}`
   }
 

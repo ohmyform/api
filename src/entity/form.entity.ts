@@ -72,4 +72,10 @@ export class FormEntity {
 
   @UpdateDateColumn()
   public lastModified: Date
+
+  constructor(partial?: Partial<FormEntity>) {
+    if (partial) {
+      Object.assign(this, partial)
+    }
+  }
 }

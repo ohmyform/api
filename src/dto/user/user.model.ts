@@ -3,6 +3,8 @@ import { UserEntity } from '../../entity/user.entity'
 
 @ObjectType('User')
 export class UserModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -36,8 +38,9 @@ export class UserModel {
   @Field({ nullable: true })
   readonly lastModified: Date
 
-  constructor(user: UserEntity) {
-    this.id = user.id.toString()
+  constructor(id: string, user: UserEntity) {
+    this._id = user.id
+    this.id = id
     this.username = user.username
     this.email = user.email
 

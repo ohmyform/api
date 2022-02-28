@@ -5,8 +5,10 @@ import { GeoLocationModel } from './geo.location.model'
 
 @ObjectType('Submission')
 export class SubmissionModel {
+  readonly _id: number
+
   @Field(() => ID)
-  readonly id: number
+  readonly id: string
 
   @Field()
   readonly ipAddr: string
@@ -29,8 +31,9 @@ export class SubmissionModel {
   @Field({ nullable: true })
   readonly lastModified?: Date
 
-  constructor(submission: SubmissionEntity) {
-    this.id = submission.id
+  constructor(id: string, submission: SubmissionEntity) {
+    this._id = submission.id
+    this.id = id
 
     this.ipAddr = submission.ipAddr
     this.geoLocation = new GeoLocationModel(submission.geoLocation)

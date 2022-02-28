@@ -7,12 +7,14 @@ import { FormModel } from '../../dto/form/form.model'
 import { FormEntity } from '../../entity/form.entity'
 import { UserEntity } from '../../entity/user.entity'
 import { FormCreateService } from '../../service/form/form.create.service'
+import { IdService } from '../../service/id.service'
 import { ContextCache } from '../context.cache'
 
 @Injectable()
 export class FormCreateMutation {
   constructor(
-    private readonly createService: FormCreateService
+    private readonly createService: FormCreateService,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -27,6 +29,6 @@ export class FormCreateMutation {
 
     cache.add(cache.getCacheKey(FormEntity.name, form.id), form)
 
-    return new FormModel(form)
+    return new FormModel(this.idService.encode(form.id), form)
   }
 }

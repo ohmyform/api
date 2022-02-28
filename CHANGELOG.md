@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
+- start using hashids to prevent insights into form ids
+
 ## [1.0.0] - 2022-02-28
 
 ### Added

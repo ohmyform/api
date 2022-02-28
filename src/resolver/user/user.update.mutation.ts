@@ -5,6 +5,7 @@ import { User } from '../../decorator/user.decorator'
 import { UserModel } from '../../dto/user/user.model'
 import { UserUpdateInput } from '../../dto/user/user.update.input'
 import { UserEntity } from '../../entity/user.entity'
+import { IdService } from '../../service/id.service'
 import { UserService } from '../../service/user/user.service'
 import { UserUpdateService } from '../../service/user/user.update.service'
 import { ContextCache } from '../context.cache'
@@ -14,6 +15,7 @@ export class UserUpdateMutation {
   constructor(
     private readonly updateService: UserUpdateService,
     private readonly userService: UserService,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -28,12 +30,12 @@ export class UserUpdateMutation {
       throw new Error('cannot update your own user')
     }
 
-    const user = await this.userService.findById(input.id)
+    const user = await this.userService.findById(this.idService.decode(input.id))
 
     await this.updateService.update(user, input)
 
     cache.add(cache.getCacheKey(UserEntity.name, user.id), user)
 
-    return new UserModel(user)
+    return new UserModel(this.idService.encode(user.id), user)
   }
 }
