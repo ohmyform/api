@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+### Changed
+
+### Fixed
+
+### Security
+
+## [1.0.0] - 2022-02-28
+
+### Added
+
 - logic backend components
 - forms now have multiple notification
 - layout for forms
@@ -19,6 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - ability to load submission by id if token is present
 - anonymous form submissions (fixes https://github.com/ohmyform/ohmyform/issues/108)
 - ability to filter for partial / completed or empty submissions
+- migration tests for all commits
 
 ### Changed
 
