@@ -42,28 +42,19 @@ jobs:
       - name: Typecheck
         uses: andoshin11/typescript-error-reporter-action@v1.0.2
 
-  run-migrations:
-    name: Run Migrations
+  run-postgres:
+    name: Run Postgres
     runs-on: ubuntu-latest
 
     services:
-      mariadb:
-        image: mariadb
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: ohmyform
-        options: >-
-          --health-cmd "mysqladmin ping" 
-          --health-interval 10s 
-          --health-timeout 5s 
-          --health-retries 5
-
       postgres:
         image: postgres:10-alpine
         env:
           POSTGRES_USER: root
           POSTGRES_PASSWORD: root
           POSTGRES_DB: ohmyform
+        ports:
+          - 5432:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -83,12 +74,12 @@ jobs:
         run: yarn install --frozen-lockfile --silent
 
       - name: PostgreSQL Migrations
-        run: yarn typeorm:postgres migration:run
+        run: yarn typeorm migration:run
         env:
           DATABASE_DRIVER: postgres
 
           TYPEORM_CONNECTION: postgres
-          TYPEORM_HOST: postgres
+          TYPEORM_HOST: localhost
           TYPEORM_PORT: 5432
           TYPEORM_USERNAME: root
           TYPEORM_DATABASE: ohmyform
@@ -100,13 +91,43 @@ jobs:
           TYPEORM_MIGRATIONS_DIR: src/migrations/postgres
           TYPEORM_SUBSCRIBERS_DIR: src/subscriber
 
+  run-mariadb:
+    name: Run MariaDB
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: ohmyform
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile --silent
+
       - name: MariaDB Migrations
-        run: yarn typeorm:mariadb migration:run
+        run: yarn typeorm migration:run
         env:
           DATABASE_DRIVER: mariadb
 
           TYPEORM_CONNECTION: mariadb
-          TYPEORM_HOST: mariadb
+          TYPEORM_HOST: localhost
           TYPEORM_PORT: 3306
           TYPEORM_USERNAME: root
           TYPEORM_DATABASE: ohmyform
@@ -118,8 +139,24 @@ jobs:
           TYPEORM_MIGRATIONS_DIR: src/migrations/mariadb
           TYPEORM_SUBSCRIBERS_DIR: src/subscriber
 
+  run-sqlite:
+    name: Run SQLite
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile --silent
+
       - name: SQLite Migrations
-        run: yarn typeorm:sqlite migration:run
+        run: yarn typeorm migration:run
         env:
           DATABASE_DRIVER: sqlite
 
