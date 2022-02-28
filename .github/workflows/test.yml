@@ -89,7 +89,7 @@ jobs:
 
           TYPEORM_CONNECTION: postgres
           TYPEORM_HOST: postgres
-          TYPEORM_PORT: 3306
+          TYPEORM_PORT: 5432
           TYPEORM_USERNAME: root
           TYPEORM_DATABASE: ohmyform
           TYPEORM_AUTO_SCHEMA_SYNC: false
