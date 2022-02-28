@@ -20,6 +20,31 @@ jobs:
     name: Run linters
     runs-on: ubuntu-latest
 
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile --silent
+
+      - name: Lint
+        uses: reviewdog/action-eslint@v1
+        with:
+          reporter: github-pr-review # Change reporter.
+          eslint_flags: '{src,test}/**/*.ts'
+
+      - name: Typecheck
+        uses: andoshin11/typescript-error-reporter-action@v1.0.2
+
+  run-migrations:
+    name: Run Migrations
+    runs-on: ubuntu-latest
 
     services:
       maria:
@@ -46,41 +71,20 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: 16
-
-      # ESLint and Prettier must be in `package.json`
-      - name: Install Node.js dependencies
-        run: yarn install --frozen-lockfile --silent
-
-      - name: Lint
-        uses: reviewdog/action-eslint@v1
-        with:
-          reporter: github-pr-review # Change reporter.
-          eslint_flags: '{src,test}/**/*.ts'
-
-      - name: Typecheck
-        uses: andoshin11/typescript-error-reporter-action@v1.0.2
-
       - name: PostgreSQL Migrations
-        run: yarn typeorm migration:run
+        run: yarn typeorm:postgres migration:run
         env:
           DATABASE_DRIVER: postgres
           DATABASE_URL: postgresql://root@127.0.0.1:5432/ohmyform
 
       - name: MariaDB Migrations
-        run: yarn typeorm migration:run
+        run: yarn typeorm:mariadb migration:run
         env:
           DATABASE_DRIVER: mariadb
           DATABASE_URL: mysql://root@127.0.0.1:3306/ohmyform
 
       - name: SQLite Migrations
-        run: yarn typeorm migration:run
+        run: yarn typeorm:sqlite migration:run
         env:
           DATABASE_DRIVER: sqlite
           DATABASE_URL: sqlite://data.sqlite
