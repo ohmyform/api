@@ -160,7 +160,7 @@ jobs:
         run: yarn install --frozen-lockfile --silent
 
       - name: SQLite Migrations
-        run: yarn typeorm migration:run
+        run: yarn typeorm migration:run --transaction none
         env:
           DATABASE_DRIVER: sqlite
 
