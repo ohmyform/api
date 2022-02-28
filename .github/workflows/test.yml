@@ -82,6 +82,7 @@ jobs:
           TYPEORM_HOST: localhost
           TYPEORM_PORT: 5432
           TYPEORM_USERNAME: root
+          TYPEORM_PASSWORD: root
           TYPEORM_DATABASE: ohmyform
           TYPEORM_AUTO_SCHEMA_SYNC: false
           TYPEORM_ENTITIES: src/entity/**/*.ts
@@ -130,6 +131,7 @@ jobs:
           TYPEORM_HOST: localhost
           TYPEORM_PORT: 3306
           TYPEORM_USERNAME: root
+          TYPEORM_PASSWORD: root
           TYPEORM_DATABASE: ohmyform
           TYPEORM_AUTO_SCHEMA_SYNC: false
           TYPEORM_ENTITIES: src/entity/**/*.ts
