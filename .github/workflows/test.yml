@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      maria:
+      mariadb:
         image: mariadb
         env:
           MYSQL_ROOT_PASSWORD: root
@@ -86,16 +86,50 @@ jobs:
         run: yarn typeorm:postgres migration:run
         env:
           DATABASE_DRIVER: postgres
-          DATABASE_URL: postgresql://root@127.0.0.1:5432/ohmyform
+
+          TYPEORM_CONNECTION: postgresql
+          TYPEORM_HOST: postgres
+          TYPEORM_PORT: 3306
+          TYPEORM_USERNAME: root
+          TYPEORM_DATABASE: ohmyform
+          TYPEORM_AUTO_SCHEMA_SYNC: false
+          TYPEORM_ENTITIES: src/entity/**/*.ts
+          TYPEORM_SUBSCRIBERS: src/subscriber/**/*.ts
+          TYPEORM_MIGRATIONS: src/migrations/postgres/**/*.ts
+          TYPEORM_ENTITIES_DIR: src/entity
+          TYPEORM_MIGRATIONS_DIR: src/migrations/postgres
+          TYPEORM_SUBSCRIBERS_DIR: src/subscriber
 
       - name: MariaDB Migrations
         run: yarn typeorm:mariadb migration:run
         env:
           DATABASE_DRIVER: mariadb
-          DATABASE_URL: mysql://root@127.0.0.1:3306/ohmyform
+
+          TYPEORM_CONNECTION: mysql
+          TYPEORM_HOST: mariadb
+          TYPEORM_PORT: 3306
+          TYPEORM_USERNAME: root
+          TYPEORM_DATABASE: ohmyform
+          TYPEORM_AUTO_SCHEMA_SYNC: false
+          TYPEORM_ENTITIES: src/entity/**/*.ts
+          TYPEORM_SUBSCRIBERS: src/subscriber/**/*.ts
+          TYPEORM_MIGRATIONS: src/migrations/mariadb/**/*.ts
+          TYPEORM_ENTITIES_DIR: src/entity
+          TYPEORM_MIGRATIONS_DIR: src/migrations/mariadb
+          TYPEORM_SUBSCRIBERS_DIR: src/subscriber
 
       - name: SQLite Migrations
         run: yarn typeorm:sqlite migration:run
         env:
           DATABASE_DRIVER: sqlite
-          DATABASE_URL: sqlite://data.sqlite
+
+          TYPEORM_CONNECTION: sqlite
+          TYPEORM_USERNAME: root
+          TYPEORM_DATABASE: data.sqlite
+          TYPEORM_AUTO_SCHEMA_SYNC: false
+          TYPEORM_ENTITIES: src/entity/**/*.ts
+          TYPEORM_SUBSCRIBERS: src/subscriber/**/*.ts
+          TYPEORM_MIGRATIONS: src/migrations/sqlite/**/*.ts
+          TYPEORM_ENTITIES_DIR: src/entity
+          TYPEORM_MIGRATIONS_DIR: src/migrations/sqlite
+          TYPEORM_SUBSCRIBERS_DIR: src/subscriber
