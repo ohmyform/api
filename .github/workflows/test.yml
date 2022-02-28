@@ -8,10 +8,42 @@ on:
     branches:
       - master
 
+env:
+  CREATE_ADMIN: true
+  ADMIN_EMAIL: admin@localhost
+  ADMIN_USERNAME: admin
+  ADMIN_PASSWORD: admin
+  MAILER_URI: smtp://localhost:1025
+
 jobs:
   run-linters:
     name: Run linters
     runs-on: ubuntu-latest
+
+
+    services:
+      maria:
+        image: mariadb
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: ohmyform
+        options: >-
+          --health-cmd "mysqladmin ping" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+
+      postgres:
+        image: postgres:10-alpine
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: ohmyform
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Check out Git repository
@@ -35,3 +67,20 @@ jobs:
       - name: Typecheck
         uses: andoshin11/typescript-error-reporter-action@v1.0.2
 
+      - name: PostgreSQL Migrations
+        run: yarn typeorm migration:run
+        env:
+          DATABASE_DRIVER: postgres
+          DATABASE_URL: postgresql://root@127.0.0.1:5432/ohmyform
+
+      - name: MariaDB Migrations
+        run: yarn typeorm migration:run
+        env:
+          DATABASE_DRIVER: mariadb
+          DATABASE_URL: mysql://root@127.0.0.1:3306/ohmyform
+
+      - name: SQLite Migrations
+        run: yarn typeorm migration:run
+        env:
+          DATABASE_DRIVER: sqlite
+          DATABASE_URL: sqlite://data.sqlite
