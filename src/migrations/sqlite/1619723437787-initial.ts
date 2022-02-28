@@ -1,9 +1,10 @@
-import { MigrationInterface, QueryRunner } from 'typeorm'
+import { QueryRunner } from 'typeorm'
+import { SqliteMigration } from '../sqlite.migration'
 
-export class initial1619723437787 implements MigrationInterface {
+export class initial1619723437787 extends SqliteMigration {
   name = 'initial1619723437787'
 
-  public async up(queryRunner: QueryRunner): Promise<void> {
+  public async realUp(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query('CREATE TABLE "page" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "show" boolean NOT NULL, "title" varchar, "paragraph" text, "buttonText" varchar)');
     await queryRunner.query('CREATE TABLE "user" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "firstName" varchar, "lastName" varchar, "email" varchar(255) NOT NULL, "username" varchar(255) NOT NULL, "passwordHash" varchar NOT NULL, "salt" varchar, "provider" varchar NOT NULL, "roles" text NOT NULL, "language" varchar NOT NULL, "resetPasswordToken" varchar, "resetPasswordExpires" datetime, "token" varchar, "apiKey" varchar, "created" datetime NOT NULL DEFAULT (datetime(\'now\')), "lastModified" datetime NOT NULL DEFAULT (datetime(\'now\')), CONSTRAINT "UQ_e12875dfb3b1d92d7d7c5377e22" UNIQUE ("email"), CONSTRAINT "UQ_78a916df40e02a9deb1c4b75edb" UNIQUE ("username"))');
     await queryRunner.query('CREATE TABLE "form_field_logic" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "formula" varchar NOT NULL, "action" varchar(10) NOT NULL, "visible" boolean, "require" boolean, "disable" boolean, "enabled" boolean NOT NULL, "fieldId" integer, "jumpToId" integer, CONSTRAINT "FK_6098b83f6759445d8cfdd03d545" FOREIGN KEY ("fieldId") REFERENCES "form_field" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT "FK_4a8019f2b753cfb3216dc3001a6" FOREIGN KEY ("jumpToId") REFERENCES "form_field" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)');
@@ -16,13 +17,10 @@ export class initial1619723437787 implements MigrationInterface {
     await queryRunner.query('CREATE TABLE "form_visitor" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "referrer" varchar, "ipAddr" varchar NOT NULL, "created" datetime NOT NULL DEFAULT (datetime(\'now\')), "updated" datetime NOT NULL DEFAULT (datetime(\'now\')), "formId" integer, "geoLocationCountry" varchar, "geoLocationCity" varchar, "deviceLanguage" varchar, "deviceType" varchar, "deviceName" varchar, CONSTRAINT "FK_72ade6c3a3e55d1fce94300f8b6" FOREIGN KEY ("formId") REFERENCES "form" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)');
     await queryRunner.query('CREATE TABLE "submission" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "ipAddr" varchar NOT NULL, "tokenHash" varchar NOT NULL, "timeElapsed" numeric NOT NULL, "percentageComplete" numeric NOT NULL, "created" datetime NOT NULL DEFAULT (datetime(\'now\')), "lastModified" datetime NOT NULL DEFAULT (datetime(\'now\')), "formId" integer, "visitorId" integer, "userId" integer, "geoLocationCountry" varchar, "geoLocationCity" varchar, "deviceLanguage" varchar, "deviceType" varchar, "deviceName" varchar, CONSTRAINT "FK_6090e1d5cbf3433ffd14e3b53e7" FOREIGN KEY ("formId") REFERENCES "form" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT "FK_95b73c7faf2c199f005fda5e8c8" FOREIGN KEY ("visitorId") REFERENCES "form_visitor" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT "FK_7bd626272858ef6464aa2579094" FOREIGN KEY ("userId") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)');
 
-
-
-
     await queryRunner.query('CREATE TABLE "form" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar NOT NULL, "language" varchar(10) NOT NULL, "showFooter" boolean NOT NULL, "isLive" boolean NOT NULL, "created" datetime NOT NULL DEFAULT (datetime(\'now\')), "lastModified" datetime NOT NULL DEFAULT (datetime(\'now\')), "adminId" integer, "startPageId" integer, "endPageId" integer, "analyticsGacode" varchar, "designFont" varchar, "designColorsBackground" varchar, "designColorsQuestion" varchar, "designColorsAnswer" varchar, "designColorsButton" varchar, "designColorsButtonactive" varchar, "designColorsButtontext" varchar, CONSTRAINT "FK_a7cb33580bca2b362e5e34fdfcd" FOREIGN KEY ("adminId") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT "FK_023d9cf1d97e93facc96c86ca70" FOREIGN KEY ("startPageId") REFERENCES "page" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION, CONSTRAINT "FK_e5d158932e43cfbf9958931ee01" FOREIGN KEY ("endPageId") REFERENCES "page" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)');
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {
+  public async realDown(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query('DROP TABLE "form"');
     await queryRunner.query('DROP TABLE "submission"');
     await queryRunner.query('DROP TABLE "form_visitor"');

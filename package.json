@@ -22,7 +22,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "typeorm:sqlite": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig_sqlite.json",
     "typeorm:postgres": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig_postgres.json",
-    "typeorm:mariadb": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig_mariadb.json"
+    "typeorm:mariadb": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js -f ormconfig_mariadb.json",
+    "typeorm": "cross-env TS_NODE_TRANSPILE_ONLY=true ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "@ardatan/aggregate-error": "^0.0.6",
