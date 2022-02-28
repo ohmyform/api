@@ -14,15 +14,13 @@ export class FormDeleteService {
   ) {
   }
 
-  async delete(id: string): Promise<void> {
-    await this.submissionRepository.createQueryBuilder('s')
-      .delete()
-      .where('s.form = :form', { form: id })
-      .execute()
+  async delete(id: number): Promise<void> {
+    await this.submissionRepository.delete({
+      form: new FormEntity({ id }),
+    })
 
-    await this.formRepository.createQueryBuilder('f')
-      .delete()
-      .where('f.id = :form', { form: id })
-      .execute()
+    await this.formRepository.delete({
+      id,
+    })
   }
 }
