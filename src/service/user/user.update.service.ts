@@ -16,15 +16,15 @@ export class UserUpdateService {
   }
 
   async update(user: UserEntity, input: UserUpdateInput): Promise<UserEntity> {
-    if (input.firstName !== undefined) {
+    if (this.shouldUpdate(input, user, 'firstName')) {
       user.firstName = input.firstName
     }
 
-    if (input.lastName !== undefined) {
+    if (this.shouldUpdate(input, user, 'lastName')) {
       user.lastName = input.lastName
     }
 
-    if (input.email !== undefined) {
+    if (this.shouldUpdate(input, user, 'email')) {
       user.email = input.email
       user.emailVerified = false
       // TODO request email verification
@@ -34,15 +34,15 @@ export class UserUpdateService {
       }
     }
 
-    if (input.username !== undefined) {
+    if (this.shouldUpdate(input, user, 'username')) {
       user.username = input.username
     }
 
-    if (input.roles !== undefined) {
+    if (this.shouldUpdate(input, user, 'roles')) {
       user.roles = input.roles as rolesType
     }
 
-    if (input.language !== undefined) {
+    if (this.shouldUpdate(input, user, 'language')) {
       user.language = input.language
     }
 
@@ -53,5 +53,17 @@ export class UserUpdateService {
     await this.userRepository.save(user)
 
     return user
+  }
+
+  private shouldUpdate(
+    input: UserUpdateInput,
+    user: UserEntity,
+    property: keyof UserUpdateInput
+  ): boolean {
+    if (input[property] === undefined) {
+      return false
+    }
+
+    return input[property] == user[property]
   }
 }

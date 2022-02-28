@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- only update user fields in update mutation if they changed
+
 ### Security
 
 ## [1.0.0] - 2022-02-28
