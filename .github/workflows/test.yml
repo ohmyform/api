@@ -88,6 +88,7 @@ jobs:
           TYPEORM_ENTITIES: src/entity/**/*.ts
           TYPEORM_SUBSCRIBERS: src/subscriber/**/*.ts
           TYPEORM_MIGRATIONS: src/migrations/postgres/**/*.ts
+          TYPEORM_MIGRATIONS_TRANSACTION_MODE: 'each'
           TYPEORM_ENTITIES_DIR: src/entity
           TYPEORM_MIGRATIONS_DIR: src/migrations/postgres
           TYPEORM_SUBSCRIBERS_DIR: src/subscriber
@@ -137,6 +138,7 @@ jobs:
           TYPEORM_ENTITIES: src/entity/**/*.ts
           TYPEORM_SUBSCRIBERS: src/subscriber/**/*.ts
           TYPEORM_MIGRATIONS: src/migrations/mariadb/**/*.ts
+          TYPEORM_MIGRATIONS_TRANSACTION_MODE: 'each'
           TYPEORM_ENTITIES_DIR: src/entity
           TYPEORM_MIGRATIONS_DIR: src/migrations/mariadb
           TYPEORM_SUBSCRIBERS_DIR: src/subscriber
@@ -169,6 +171,7 @@ jobs:
           TYPEORM_ENTITIES: src/entity/**/*.ts
           TYPEORM_SUBSCRIBERS: src/subscriber/**/*.ts
           TYPEORM_MIGRATIONS: src/migrations/sqlite/**/*.ts
+          TYPEORM_MIGRATIONS_TRANSACTION_MODE: 'none'
           TYPEORM_ENTITIES_DIR: src/entity
           TYPEORM_MIGRATIONS_DIR: src/migrations/sqlite
           TYPEORM_SUBSCRIBERS_DIR: src/subscriber
