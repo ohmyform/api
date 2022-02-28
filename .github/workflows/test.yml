@@ -71,6 +71,17 @@ jobs:
           --health-retries 5
 
     steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+
+      - name: Install Node.js dependencies
+        run: yarn install --frozen-lockfile --silent
+
       - name: PostgreSQL Migrations
         run: yarn typeorm:postgres migration:run
         env:
