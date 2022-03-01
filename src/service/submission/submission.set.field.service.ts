@@ -84,7 +84,7 @@ export class SubmissionSetFieldService {
     field: SubmissionFieldEntity,
     data: string
   ): SubmissionFieldContent {
-    let raw: { [key: string]: unknown }
+    let raw: SubmissionFieldContent
 
     const context = {
       field: field.fieldId,
@@ -92,21 +92,49 @@ export class SubmissionSetFieldService {
     }
 
     try {
-      raw = JSON.parse(data) as { [key: string]: unknown }
+      raw = JSON.parse(data) as SubmissionFieldContent
     } catch (e) {
       this.logger.warn(context, 'received invalid data for field')
       return { value: null }
     }
 
-    if (typeof raw !== 'object' || Array.isArray(raw)) {
-      this.logger.warn(context, 'only object supported for data')
-      return { value: null }
+    if (Array.isArray(raw)) {
+      return raw.map((row: unknown, index) => {
+        switch (typeof row) {
+          case 'number':
+          case 'string':
+          case 'boolean':
+          case 'undefined':
+            return row
+        }
+
+        if (row === null) {
+          return row
+        }
+
+        this.logger.warn({
+          ...context,
+          path: `${index}`,
+        }, 'invalid data in array')
+        valid = false
+
+        return null
+      })
+    }
+
+    if (
+      [
+        'number',
+        'string',
+        'boolean',
+        'undefined',
+      ].includes(typeof raw)
+    ) {
+      return raw
     }
 
     // now ensure data structure
-    const result = {
-      value: null,
-    }
+    const result = {}
 
     let valid = true
 
@@ -145,6 +173,48 @@ export class SubmissionSetFieldService {
         })
 
         return
+      }
+
+      if (typeof value === 'object') {
+        result[String(key)] = {}
+
+        for (const subKey of Object.keys(value)) {
+          const subValue = raw[String(key)][String(subKey)]
+
+          switch (typeof subValue) {
+            case 'number':
+            case 'string':
+            case 'boolean':
+              result[String(key)][String(subKey)] = subValue
+              return
+          }
+
+          if (Array.isArray(subValue)) {
+            result[String(key)][String(subKey)] = subValue.map((row: unknown, index) => {
+              switch (typeof row) {
+                case 'number':
+                case 'string':
+                case 'boolean':
+                case 'undefined':
+                  return row
+              }
+
+              if (row === null) {
+                return row
+              }
+
+              this.logger.warn({
+                ...context,
+                path: `${key}/${subKey}/${index}`,
+              }, 'invalid data in array')
+              valid = false
+
+              return null
+            })
+
+            return
+          }
+        }
       }
 
       this.logger.warn({

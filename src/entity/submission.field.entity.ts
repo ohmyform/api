@@ -2,8 +2,12 @@ import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, RelationId } from 't
 import { FormFieldEntity } from './form.field.entity'
 import { SubmissionEntity } from './submission.entity'
 
-export interface SubmissionFieldContent {
-  [key: string]: string | string[] | number | number[] | boolean | boolean[]
+type Simple = string | number | boolean
+
+export type SubmissionFieldContent = Simple | Simple[] | {
+  [key: string]: Simple | Simple[] | {
+    [key: string]: Simple | Simple[]
+  }
 }
 
 @Entity({ name: 'submission_field' })

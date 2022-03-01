@@ -79,8 +79,8 @@ export class SubmissionNotificationService {
       return fallback
     }
 
-    if (typeof data.value === 'string') {
-      return data.value
+    if (typeof data === 'string') {
+      return data
     }
 
     return fallback

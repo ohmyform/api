@@ -9,12 +9,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
+- allow one field nested data to be submitted
+
 ### Changed
 
 ### Fixed
 
 - only update user fields in update mutation if they changed
 - form delete
+- field submission without value field
 
 ### Security
 
