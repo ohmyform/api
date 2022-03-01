@@ -18,7 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Security
 
-- start using hashids to prevent insights into form ids
+- start using hashids to prevent insights into form ids (https://hashids.org/javascript/)
 
 ## [1.0.0] - 2022-02-28
 

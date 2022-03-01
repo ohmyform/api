@@ -14,11 +14,6 @@ export class FormByIdPipe implements PipeTransform<string, Promise<FormEntity>> 
   async transform(value: string, metadata: ArgumentMetadata): Promise<FormEntity> {
     const id = this.idService.decode(value)
 
-    console.log({
-      id,
-      value,
-    })
-
     return await this.formService.findById(id)
   }
 }
