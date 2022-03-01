@@ -4,14 +4,35 @@ All notable changes to this project will be documented in this file.
  
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
- 
+
+<!--
+Template for next version
 ## [Unreleased]
 
 ### Added
 
-- allow one field nested data to be submitted
+### Changed
+
+### Fixed
+
+### Security
+-->
+
+## [Unreleased]
+
+### Added
 
 ### Changed
+
+### Fixed
+
+### Security
+
+## [1.0.1] - 2022-03-01
+
+### Added
+
+- allow one field nested data to be submitted
 
 ### Fixed
 
