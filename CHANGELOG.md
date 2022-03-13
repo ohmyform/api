@@ -26,9 +26,13 @@ Template for next version
 
 ### Fixed
 
-- error sending notification when field is not defined (https://github.com/ohmyform/ohmyform/issues/161)
-
 ### Security
+
+## [1.0.2] - 2022-03-13
+
+### Fixed
+
+- error sending notification when field is not defined (https://github.com/ohmyform/ohmyform/issues/161)
 
 ## [1.0.1] - 2022-03-01
 
