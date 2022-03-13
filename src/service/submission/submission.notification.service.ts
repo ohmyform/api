@@ -25,12 +25,12 @@ export class SubmissionNotificationService {
       try {
         const to = this.getEmail(
           submission,
-          notification.toField.id,
+          notification.toField?.id,
           notification.toEmail
         )
         const from = this.getEmail(
           submission,
-          notification.fromField.id,
+          notification.fromField?.id,
           notification.fromEmail
         )
 
@@ -73,6 +73,10 @@ export class SubmissionNotificationService {
   }
 
   private getEmail(submission: SubmissionEntity, fieldId: number, fallback: string): string {
+    if (!fieldId) {
+      return fallback
+    }
+
     const data = submission.fields.find(field => field.fieldId === fieldId)?.content
 
     if (!data) {
