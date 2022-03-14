@@ -3,6 +3,8 @@ import { FormFieldLogicEntity } from '../../entity/form.field.logic.entity'
 
 @ObjectType('FormFieldLogic')
 export class FormFieldLogicModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -30,8 +32,9 @@ export class FormFieldLogicModel {
   @Field()
   readonly enabled: boolean
 
-  constructor(document: FormFieldLogicEntity) {
-    this.id = document.id.toString()
+  constructor(id: string, document: FormFieldLogicEntity) {
+    this._id = document.id
+    this.id = id
     this.enabled = document.enabled
 
     this.formula = document.formula

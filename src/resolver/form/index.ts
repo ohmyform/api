@@ -6,6 +6,7 @@ import { FormResolver } from './form.resolver'
 import { FormStatisticQuery } from './form.statistic.query'
 import { FormStatisticResolver } from './form.statistic.resolver'
 import { FormUpdateMutation } from './form.update.mutation'
+import { PageResolver } from './page.resolver'
 
 export const formResolvers = [
   FormCreateMutation,
@@ -16,4 +17,5 @@ export const formResolvers = [
   FormStatisticQuery,
   FormStatisticResolver,
   FormUpdateMutation,
+  PageResolver,
 ]

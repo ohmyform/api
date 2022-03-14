@@ -1,9 +1,10 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql'
 import { PageEntity } from '../../entity/page.entity'
-import { ButtonModel } from './button.model'
 
 @ObjectType('Page')
 export class PageModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -19,22 +20,18 @@ export class PageModel {
   @Field({ nullable: true })
   readonly buttonText?: string
 
-  @Field(() => [ButtonModel])
-  readonly buttons: ButtonModel[]
-
-  constructor(page: Partial<PageEntity>) {
+  constructor(id: string, page?: Partial<PageEntity>) {
     if (!page) {
-      this.id = Math.random().toString()
+      this.id = id
       this.show = false
-      this.buttons = []
       return
     }
 
-    this.id = page.id.toString()
+    this._id = page.id
+    this.id = id
     this.show = page.show
     this.title = page.title
     this.paragraph = page.paragraph
     this.buttonText = page.buttonText
-    this.buttons = (page.buttons || []).map(button => new ButtonModel(button))
   }
 }

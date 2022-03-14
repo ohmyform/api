@@ -9,6 +9,7 @@ import { FormNotificationModel } from '../../dto/form/form.notification.model'
 import { PageModel } from '../../dto/form/page.model'
 import { UserModel } from '../../dto/user/user.model'
 import { FormEntity } from '../../entity/form.entity'
+import { PageEntity } from '../../entity/page.entity'
 import { UserEntity } from '../../entity/user.entity'
 import { FormService } from '../../service/form/form.service'
 import { IdService } from '../../service/id.service'
@@ -55,7 +56,14 @@ export class FormResolver {
       throw new Error('no access to field')
     }
 
-    return form.hooks?.map(hook => new FormHookModel(hook)) || []
+    if (!form.hooks) {
+      return []
+    }
+
+    return form.hooks.map(hook => new FormHookModel(
+      this.idService.encode(hook.id),
+      hook
+    ))
   }
 
   @ResolveField(() => Boolean)
@@ -87,7 +95,14 @@ export class FormResolver {
       throw new Error('no access to field')
     }
 
-    return form.notifications?.map(notification => new FormNotificationModel(notification)) || []
+    if (!form.notifications) {
+      return []
+    }
+
+    return form.notifications.map(notification => new FormNotificationModel(
+      this.idService.encode(notification.id),
+      notification
+    ))
   }
 
   @ResolveField(() => DesignModel)
@@ -106,9 +121,21 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<PageModel> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
+    const { startPage } = await cache.get<FormEntity>(cache.getCacheKey(
+      FormEntity.name,
+      parent._id
+    ))
 
-    return new PageModel(form.startPage)
+    if (startPage) {
+      cache.add(cache.getCacheKey(PageEntity.name, startPage.id), startPage)
+
+      return new PageModel(
+        this.idService.encode(startPage.id),
+        startPage
+      )
+    }
+
+    return new PageModel(Math.random().toString())
   }
 
   @ResolveField(() => PageModel)
@@ -116,9 +143,18 @@ export class FormResolver {
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<PageModel> {
-    const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
+    const { endPage } = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
-    return new PageModel(form.endPage)
+    if (endPage) {
+      cache.add(cache.getCacheKey(PageEntity.name, endPage.id), endPage)
+
+      return new PageModel(
+        this.idService.encode(endPage.id),
+        endPage
+      )
+    }
+
+    return new PageModel(Math.random().toString())
   }
 
   @ResolveField(() => UserModel, { nullable: true })

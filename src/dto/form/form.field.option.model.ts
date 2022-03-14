@@ -3,6 +3,8 @@ import { FormFieldOptionEntity } from '../../entity/form.field.option.entity'
 
 @ObjectType('FormFieldOption')
 export class FormFieldOptionModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -15,8 +17,9 @@ export class FormFieldOptionModel {
   @Field()
   readonly value: string
 
-  constructor(option: FormFieldOptionEntity) {
-    this.id = option.id.toString()
+  constructor(id: string, option: FormFieldOptionEntity) {
+    this._id = option.id
+    this.id = id
     this.key = option.key
     this.title = option.title
     this.value = option.value

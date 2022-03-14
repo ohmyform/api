@@ -3,6 +3,8 @@ import { FormNotificationEntity } from '../../entity/form.notification.entity'
 
 @ObjectType('FormNotification')
 export class FormNotificationModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -27,8 +29,9 @@ export class FormNotificationModel {
   @Field()
   readonly enabled: boolean
 
-  constructor(partial: Partial<FormNotificationEntity>) {
-    this.id = partial.id.toString()
+  constructor(id: string, partial: Partial<FormNotificationEntity>) {
+    this._id = partial.id
+    this.id = id
     this.subject = partial.subject
     this.htmlTemplate = partial.htmlTemplate
     this.enabled = partial.enabled

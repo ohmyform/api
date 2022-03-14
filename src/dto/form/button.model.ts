@@ -3,6 +3,8 @@ import { PageButtonEntity } from '../../entity/page.button.entity'
 
 @ObjectType('Button')
 export class ButtonModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -24,8 +26,9 @@ export class ButtonModel {
   @Field({ nullable: true })
   readonly color?: string
 
-  constructor(button: Partial<PageButtonEntity>) {
-    this.id = button.id.toString()
+  constructor(id: string, button: Partial<PageButtonEntity>) {
+    this._id = button.id
+    this.id = id
     this.url = button.url
     this.action = button.action
     this.text = button.text

@@ -24,6 +24,8 @@ Template for next version
 
 ### Changed
 
+- notifications / hooks / pages and buttons encode and decode their ids
+
 ### Fixed
 
 - missing encode / decode for form fields within submissions (https://github.com/ohmyform/ui/commit/30ff2c96bca20c1641d9cbb96c34cce934e1afea#r68602651)

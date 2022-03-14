@@ -10,6 +10,7 @@ import { FormHookEntity } from '../../entity/form.hook.entity'
 import { FormNotificationEntity } from '../../entity/form.notification.entity'
 import { PageButtonEntity } from '../../entity/page.button.entity'
 import { PageEntity } from '../../entity/page.entity'
+import { IdService } from '../id.service'
 
 @Injectable()
 export class FormUpdateService {
@@ -20,6 +21,7 @@ export class FormUpdateService {
     private readonly formFieldRepository: Repository<FormFieldEntity>,
     @InjectRepository(FormHookEntity)
     private readonly formHookRepository: Repository<FormHookEntity>,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -347,12 +349,12 @@ export class FormUpdateService {
     return form
   }
 
-  private findByIdInList<T>(list: T[], id: string, fallback: T): T {
+  private findByIdInList<T extends { id: number }>(list: T[], id: string, fallback: T): T {
     if (!list) {
       return fallback
     }
 
-    const found = list.find((value: any) => String(value.id) === String(id))
+    const found = list.find((value) => value.id === this.idService.decode(id))
 
     if (found) {
       return found
