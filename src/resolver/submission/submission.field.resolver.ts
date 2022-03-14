@@ -4,12 +4,14 @@ import { SubmissionFieldModel } from '../../dto/submission/submission.field.mode
 import { FormFieldEntity } from '../../entity/form.field.entity'
 import { SubmissionFieldEntity } from '../../entity/submission.field.entity'
 import { FormFieldService } from '../../service/form/form.field.service'
+import { IdService } from '../../service/id.service'
 import { ContextCache } from '../context.cache'
 
 @Resolver(() => SubmissionFieldModel)
 export class SubmissionFieldResolver {
   constructor(
     private readonly formFieldService: FormFieldService,
+    private readonly idService: IdService,
   ) {
   }
 
@@ -33,6 +35,9 @@ export class SubmissionFieldResolver {
       return null
     }
 
-    return new FormFieldModel(field)
+    return new FormFieldModel(
+      this.idService.encode(field.id),
+      field,
+    )
   }
 }

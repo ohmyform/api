@@ -7,6 +7,7 @@ import { Repository } from 'typeorm'
 import { SubmissionSetFieldInput } from '../../dto/submission/submission.set.field.input'
 import { SubmissionEntity } from '../../entity/submission.entity'
 import { SubmissionFieldContent, SubmissionFieldEntity } from '../../entity/submission.field.entity'
+import { IdService } from '../id.service'
 import { SubmissionHookService } from './submission.hook.service'
 import { SubmissionNotificationService } from './submission.notification.service'
 
@@ -19,13 +20,16 @@ export class SubmissionSetFieldService {
     private readonly submissionFieldRepository: Repository<SubmissionFieldEntity>,
     private readonly webHook: SubmissionHookService,
     private readonly notifications: SubmissionNotificationService,
+    private readonly idService: IdService,
     private readonly logger: PinoLogger,
   ) {
     logger.setContext(this.constructor.name)
   }
 
   async saveField(submission: SubmissionEntity, input: SubmissionSetFieldInput): Promise<void> {
-    let field = submission.fields.find(field => field.field.id.toString() === input.field)
+    const formFieldId = this.idService.decode(input.field)
+
+    let field = submission.fields.find(field => field.field.id === formFieldId)
 
     submission.timeElapsed = dayjs().diff(dayjs(submission.created), 'second')
 
@@ -38,7 +42,7 @@ export class SubmissionSetFieldService {
       field = new SubmissionFieldEntity()
 
       field.submission = submission
-      field.field = submission.form.fields.find(field => field.id.toString() === input.field)
+      field.field = submission.form.fields.find(field => field.id === formFieldId)
       field.type = field.field.type
       field.content = this.parseData(field, input.data)
 

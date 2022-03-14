@@ -26,6 +26,8 @@ Template for next version
 
 ### Fixed
 
+- missing encode / decode for form fields within submissions (https://github.com/ohmyform/ui/commit/30ff2c96bca20c1641d9cbb96c34cce934e1afea#r68602651)
+
 ### Security
 
 ## [1.0.2] - 2022-03-13

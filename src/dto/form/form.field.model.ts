@@ -6,6 +6,8 @@ import { FormFieldRatingModel } from './form.field.rating.model'
 
 @ObjectType('FormField')
 export class FormFieldModel {
+  readonly _id: number
+
   @Field(() => ID)
   readonly id: string
 
@@ -39,8 +41,9 @@ export class FormFieldModel {
   @Field(() => FormFieldRatingModel, { nullable: true })
   readonly rating: FormFieldRatingModel
 
-  constructor(document: FormFieldEntity) {
-    this.id = document.id.toString()
+  constructor(id: string, document: FormFieldEntity) {
+    this._id = document.id
+    this.id = id
     this.idx = document.idx
     this.title = document.title
     this.slug = document.slug

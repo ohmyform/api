@@ -30,7 +30,16 @@ export class FormResolver {
   ): Promise<FormFieldModel[]> {
     const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
 
-    return form.fields?.map(field => new FormFieldModel(field)).sort((a,b) => a.idx - b.idx) || []
+    if (!form.fields) {
+      return []
+    }
+
+    return form.fields
+      .sort((a,b) => a.idx - b.idx)
+      .map(field => new FormFieldModel(
+        this.idService.encode(field.id),
+        field,
+      ))
   }
 
   @ResolveField(() => [FormHookModel])
