@@ -43,12 +43,17 @@ export class FormResolver {
   }
 
   @ResolveField(() => [FormHookModel])
+  @Roles('admin')
   async hooks(
     @User() user: UserEntity,
     @Parent() parent: FormModel,
     @Context('cache') cache: ContextCache,
   ): Promise<FormHookModel[]> {
     const form = await cache.get<FormEntity>(cache.getCacheKey(FormEntity.name, parent._id))
+
+    if (!this.formService.isAdmin(form, user)) {
+      throw new Error('no access to field')
+    }
 
     return form.hooks?.map(hook => new FormHookModel(hook)) || []
   }

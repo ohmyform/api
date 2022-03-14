@@ -30,6 +30,8 @@ Template for next version
 
 ### Security
 
+- form hooks should only be queryable for form admins
+
 ## [1.0.2] - 2022-03-13
 
 ### Fixed
