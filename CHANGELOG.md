@@ -26,6 +26,8 @@ Template for next version
 
 ### Fixed
 
+- creation of new logic elements
+
 ### Security
 
 ## [1.0.3] - 2022-03-27

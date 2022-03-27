@@ -276,7 +276,7 @@ export class FormUpdateService {
   }
 
   private findByIdInList<T extends { id: number }>(list: T[], id: string, fallback: T): T {
-    if (!list || /^NEW-/.test(id)) {
+    if (!list || /^NEW-/.test(id) || !id) {
       return fallback
     }
 
