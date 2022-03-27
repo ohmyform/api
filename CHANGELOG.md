@@ -22,6 +22,8 @@ Template for next version
 
 ### Added
 
+- add start and end page to form create call
+
 ### Changed
 
 - notifications / hooks / pages and buttons encode and decode their ids
@@ -29,6 +31,9 @@ Template for next version
 ### Fixed
 
 - missing encode / decode for form fields within submissions (https://github.com/ohmyform/ui/commit/30ff2c96bca20c1641d9cbb96c34cce934e1afea#r68602651)
+- form field resolvers were missing
+- node-gyp update to enable build on osx 12.3
+- creating of new fields
 
 ### Security
 

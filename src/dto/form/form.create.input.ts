@@ -1,4 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql'
+import { PageInput } from './page.input'
 
 @InputType('FormCreateInput')
 export class FormCreateInput {
@@ -19,4 +20,10 @@ export class FormCreateInput {
 
   @Field({ nullable: true })
   readonly layout: string
+
+  @Field({ nullable: true })
+  readonly startPage: PageInput
+
+  @Field({ nullable: true })
+  readonly endPage: PageInput
 }

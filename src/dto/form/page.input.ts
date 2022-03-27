@@ -18,6 +18,6 @@ export class PageInput {
   @Field({ nullable: true })
   readonly buttonText?: string
 
-  @Field(() => [ButtonInput])
+  @Field(() => [ButtonInput], { nullable: true })
   readonly buttons: ButtonInput[]
 }

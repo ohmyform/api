@@ -9,6 +9,7 @@ import { FormNotificationModel } from '../../dto/form/form.notification.model'
 import { PageModel } from '../../dto/form/page.model'
 import { UserModel } from '../../dto/user/user.model'
 import { FormEntity } from '../../entity/form.entity'
+import { FormFieldEntity } from '../../entity/form.field.entity'
 import { PageEntity } from '../../entity/page.entity'
 import { UserEntity } from '../../entity/user.entity'
 import { FormService } from '../../service/form/form.service'
@@ -37,10 +38,14 @@ export class FormResolver {
 
     return form.fields
       .sort((a,b) => a.idx - b.idx)
-      .map(field => new FormFieldModel(
-        this.idService.encode(field.id),
-        field,
-      ))
+      .map(field => {
+        cache.add(cache.getCacheKey(FormFieldEntity.name, field.id), field)
+
+        return new FormFieldModel(
+          this.idService.encode(field.id),
+          field,
+        )
+      })
   }
 
   @ResolveField(() => [FormHookModel])

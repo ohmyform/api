@@ -11,6 +11,7 @@ import { FormNotificationEntity } from '../../entity/form.notification.entity'
 import { PageButtonEntity } from '../../entity/page.button.entity'
 import { PageEntity } from '../../entity/page.entity'
 import { IdService } from '../id.service'
+import { FormPageUpdateService } from './form.page.update.service'
 
 @Injectable()
 export class FormUpdateService {
@@ -22,6 +23,7 @@ export class FormUpdateService {
     @InjectRepository(FormHookEntity)
     private readonly formHookRepository: Repository<FormHookEntity>,
     private readonly idService: IdService,
+    private readonly pageService: FormPageUpdateService,
   ) {
   }
 
@@ -261,87 +263,11 @@ export class FormUpdateService {
     */
 
     if (input.startPage !== undefined) {
-      if (!form.startPage) {
-        form.startPage = new PageEntity()
-        form.startPage.show = false
-      }
-
-      if (input.startPage.show !== undefined) {
-        form.startPage.show = input.startPage.show
-      }
-
-      if (input.startPage.title !== undefined) {
-        form.startPage.title = input.startPage.title
-      }
-
-      if (input.startPage.paragraph !== undefined) {
-        form.startPage.paragraph = input.startPage.paragraph
-      }
-
-      if (input.startPage.buttonText !== undefined) {
-        form.startPage.buttonText = input.startPage.buttonText
-      }
-
-      if (input.startPage.buttons !== undefined) {
-        form.startPage.buttons = input.startPage.buttons.map(buttonInput => {
-          const entity = this.findByIdInList(
-            form.startPage?.buttons,
-            buttonInput.id,
-            new PageButtonEntity()
-          )
-          entity.page = form.startPage
-          entity.url = buttonInput.url
-          entity.action = buttonInput.action
-          entity.text = buttonInput.text
-          entity.color = buttonInput.color
-          entity.bgColor = buttonInput.bgColor
-          entity.activeColor = buttonInput.activeColor
-
-          return entity
-        })
-      }
+      form.startPage = this.pageService.update(form.startPage, input.startPage)
     }
 
     if (input.endPage !== undefined) {
-      if (!form.endPage) {
-        form.endPage = new PageEntity()
-        form.endPage.show = false
-      }
-
-      if (input.endPage.show !== undefined) {
-        form.endPage.show = input.endPage.show
-      }
-
-      if (input.endPage.title !== undefined) {
-        form.endPage.title = input.endPage.title
-      }
-
-      if (input.endPage.paragraph !== undefined) {
-        form.endPage.paragraph = input.endPage.paragraph
-      }
-
-      if (input.endPage.buttonText !== undefined) {
-        form.endPage.buttonText = input.endPage.buttonText
-      }
-
-      if (input.endPage.buttons !== undefined) {
-        form.endPage.buttons = input.endPage.buttons.map(buttonInput => {
-          const entity = this.findByIdInList(
-            form.endPage?.buttons,
-            buttonInput.id,
-            new PageButtonEntity()
-          )
-          entity.page = form.endPage
-          entity.url = buttonInput.url
-          entity.action = buttonInput.action
-          entity.text = buttonInput.text
-          entity.color = buttonInput.color
-          entity.bgColor = buttonInput.bgColor
-          entity.activeColor = buttonInput.activeColor
-
-          return entity
-        })
-      }
+      form.endPage = this.pageService.update(form.endPage, input.endPage)
     }
 
     await this.formRepository.save(form)
@@ -350,7 +276,7 @@ export class FormUpdateService {
   }
 
   private findByIdInList<T extends { id: number }>(list: T[], id: string, fallback: T): T {
-    if (!list) {
+    if (!list || /^NEW-/.test(id)) {
       return fallback
     }
 
