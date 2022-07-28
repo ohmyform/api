@@ -27,6 +27,7 @@ Template for next version
 ### Fixed
 
 - creation of new logic elements
+- node prune location (https://github.com/ohmyform/ohmyform/issues/184)
 
 ### Security
 
