@@ -1,3 +1,7 @@
+> [!IMPORTANT]  
+> All further development of the API is now done in our main repo at https://github.com/ohmyform/ohmyform
+
+
 # OhMyForm API 
 
 [![Build Status](https://travis-ci.org/ohmyform/api.svg?branch=master)](https://travis-ci.org/ohmyform/api)
